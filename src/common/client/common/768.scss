@@ -1,0 +1,9 @@
+$min-width:640px;
+$max-width:768px;
+@media screen and (max-width:$max-width) and (min-width: $min-width){
+    body{
+        .container {
+            width: 640px !important;
+        }
+    }
+}
