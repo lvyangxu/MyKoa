@@ -1,0 +1,11 @@
+{
+  "name": "karl-jwt",
+  "version": "1.0.6",
+  "description": "my json web token",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "license": "ISC",
+  "dependencies": {
+    "crypto": "latest"
+  }
+}

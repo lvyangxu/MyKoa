@@ -1,0 +1,15 @@
+{
+  "name": "karl-component-datepicker",
+  "version": "4.1.3",
+  "description": "react component datepicker",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "license": "ISC",
+  "devDependencies": {
+    "react": "latest",
+    "font-awesome-webpack": "latest",
+    "karl-date": "latest"
+  },
+  "dependencies": {
+  }
+}

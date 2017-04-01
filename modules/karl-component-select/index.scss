@@ -1,0 +1,89 @@
+.base {
+    position: relative;
+    display: inline-block;
+    white-space:nowrap;
+    $min-width: 50px;
+    font-size: 13px;
+    user-select: none;
+    .input {
+        min-width: $min-width;
+        height: 16px;
+        padding: 8px;
+        border: 1px solid rgba(204, 204, 204, 1);
+        background: linear-gradient(to bottom, rgba(253, 253, 253, 1), rgba(244, 244, 244, 1));
+
+        color: rgba(34, 34, 34, 1);
+        font-family: Arial;
+        border-radius: 3px;
+        cursor: pointer;
+        text-decoration: none;
+        text-shadow: 0 1px 0 #f2f2f2;
+        font-weight: bold;
+        text-align: left;
+
+        i {
+            margin-left: 5px;
+        }
+    }
+
+    .input:hover {
+        background: linear-gradient(to bottom, rgba(237, 237, 237, 1), rgba(219, 219, 219, 1));
+        box-shadow: inset 0px 0px 2px 2px rgba(200, 200, 200, 1);
+
+    }
+
+    .panel {
+        z-index: 2;
+        position: absolute;
+        background: white;
+        padding: 5px;
+        border: 1px solid rgba(174, 174, 174, 1);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        margin-top: 4px;
+
+        .checkAll {
+            font-size: 14px;
+            padding: 5px;
+            input[type=checkbox] {
+                cursor: pointer;
+                width: 24px;
+                height: 24px;
+                vertical-align: middle;
+            }
+            label{
+                vertical-align: middle;
+            }
+        }
+        .checkAll:hover {
+            background-color: rgba(238, 238, 238, 1);
+        }
+
+        .options {
+            .column {
+                display: inline-block;
+                margin-top: 10px;
+                vertical-align: top;
+                div {
+                    padding: 5px;
+                    height: 30px;
+                    vertical-align: middle;
+                    input[type=checkbox] {
+                        cursor: pointer;
+                        vertical-align: middle;
+                        width: 24px;
+                        height: 24px;
+                    }
+                    label{
+                        vertical-align: middle;
+                    }
+                }
+                div:hover {
+                    background-color: rgba(238, 238, 238, 1);
+                }
+            }
+
+        }
+
+    }
+
+}

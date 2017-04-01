@@ -1,0 +1,11 @@
+{
+  "name": "karl-cookie",
+  "version": "4.0.0",
+  "description": "cookie get and set",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "license": "ISC",
+  "dependencies": {
+    "karl-extend": "latest"
+  }
+}

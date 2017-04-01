@@ -1,0 +1,15 @@
+{
+  "name": "karl-component-select",
+  "version": "4.0.6",
+  "description": "react component select",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "license": "ISC",
+  "devDependencies": {
+    "react": "latest",
+    "redux": "latest",
+    "font-awesome-webpack": "latest"
+  },
+  "dependencies": {
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "karl-http",
+  "version": "5.0.3",
+  "description": "promise style http request with fetch",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "license": "ISC",
+  "devDependencies": {
+
+  },
+  "dependencies": {
+  }
+}

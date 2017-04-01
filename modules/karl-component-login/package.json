@@ -1,0 +1,15 @@
+{
+  "name": "karl-component-login",
+  "version": "6.0.3",
+  "description": "react component login",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "license": "ISC",
+  "devDependencies": {
+    "react": "latest"
+  },
+  "dependencies": {
+    "jquery": "latest",
+    "karl-http": "latest"
+  }
+}

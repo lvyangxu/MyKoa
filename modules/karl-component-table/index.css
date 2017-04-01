@@ -1,0 +1,152 @@
+.react-table .table-head {
+  margin-bottom: 50px; }
+  .react-table .table-head .column-filter {
+    display: inline-block; }
+  .react-table .table-head .row-filter {
+    display: inline-block;
+    margin-left: 20px; }
+    .react-table .table-head .row-filter input {
+      height: 28px;
+      padding: 2px 10px;
+      border: 1px solid #ccc;
+      outline: none;
+      width: 120px;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); }
+  .react-table .table-head .select-filter {
+    margin-top: 20px; }
+    .react-table .table-head .select-filter .react-select {
+      margin-right: 20px; }
+  .react-table .table-head .create, .react-table .table-head .update, .react-table .table-head .refresh, .react-table .table-head .delete, .react-table .table-head .attachment {
+    display: inline-block; }
+    .react-table .table-head .create button, .react-table .table-head .update button, .react-table .table-head .refresh button, .react-table .table-head .delete button, .react-table .table-head .attachment button {
+      height: 34px;
+      padding-left: 10px;
+      padding-right: 10px;
+      border: 1px solid #ccc;
+      width: 80px;
+      background-color: white;
+      outline: none;
+      cursor: pointer; }
+      .react-table .table-head .create button i.loading, .react-table .table-head .update button i.loading, .react-table .table-head .refresh button i.loading, .react-table .table-head .delete button i.loading, .react-table .table-head .attachment button i.loading {
+        animation: loading 5s infinite linear; }
+@keyframes loading {
+  from {
+    transform: rotateZ(0deg); }
+  to {
+    transform: rotateZ(360deg); } }
+    .react-table .table-head .create button.loading, .react-table .table-head .update button.loading, .react-table .table-head .refresh button.loading, .react-table .table-head .delete button.loading, .react-table .table-head .attachment button.loading {
+      background-color: #ccc; }
+.react-table .panel-head {
+  margin-bottom: 50px; }
+  .react-table .panel-head .backToMain, .react-table .panel-head .submit {
+    height: 34px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid #ccc;
+    min-width: 80px;
+    background-color: white;
+    outline: none;
+    cursor: pointer;
+    margin-right: 20px; }
+.react-table .panel-attachment .upload {
+  margin-bottom: 20px; }
+  .react-table .panel-attachment .upload input {
+    height: 20px;
+    padding: 6px 6px;
+    width: 186px;
+    font-size: 14px;
+    color: #555;
+    vertical-align: middle;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s; }
+  .react-table .panel-attachment .upload .progress {
+    margin-top: 15px;
+    background-color: #f3f3f3;
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center; }
+  .react-table .panel-attachment .upload button {
+    height: 34px;
+    margin-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid #ccc;
+    width: 200px;
+    background-color: white;
+    outline: none;
+    cursor: pointer;
+    margin-right: 20px; }
+.react-table .panel-attachment table thead tr th {
+  min-width: 100px;
+  text-align: center; }
+.react-table .panel-attachment table thead tr th:first-child {
+  min-width: 200px; }
+.react-table .panel-attachment table tbody tr td {
+  text-align: center; }
+  .react-table .panel-attachment table tbody tr td i {
+    cursor: pointer; }
+.react-table table {
+  border-collapse: collapse; }
+  .react-table table thead {
+    background-color: #e9e9e9;
+    color: #252525;
+    font-weight: bold;
+    font-size: 14px; }
+    .react-table table thead tr th {
+      padding: 10px;
+      border: 1px solid #cccccc;
+      text-align: center;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -webkit-user-select: none; }
+    .react-table table thead tr th.checkbox {
+      padding: 2px; }
+      .react-table table thead tr th.checkbox input[type=checkbox] {
+        height: 20px;
+        width: 20px;
+        cursor: pointer; }
+    .react-table table thead tr th.hide {
+      display: none; }
+    .react-table table thead tr th:hover {
+      cursor: pointer;
+      box-shadow: inset 0 0 0 1px #dedede;
+      background-color: #f3f3f3; }
+    .react-table table thead tr th.checkbox:hover {
+      cursor: auto; }
+  .react-table table tbody {
+    background-color: white;
+    color: #272727;
+    font-size: 12px; }
+    .react-table table tbody tr td {
+      padding: 10px;
+      border: 1px solid #cccccc;
+      word-break: break-all;
+      text-align: center; }
+      .react-table table tbody tr td input {
+        width: 120px;
+        height: 30px;
+        padding-left: 10px;
+        padding-right: 10px;
+        border: 1px solid #cccccc; }
+      .react-table table tbody tr td select {
+        height: 36px;
+        border: 1px solid #cccccc; }
+      .react-table table tbody tr td textarea {
+        overflow-y: visible; }
+      .react-table table tbody tr td a {
+        text-decoration: none;
+        color: #14c864; }
+      .react-table table tbody tr td a:hover {
+        color: rgba(20, 200, 100, 0.8); }
+    .react-table table tbody tr td.checkbox {
+      padding: 2px; }
+      .react-table table tbody tr td.checkbox input[type=checkbox] {
+        height: 20px;
+        width: 20px;
+        cursor: pointer; }
+    .react-table table tbody tr td.hide {
+      display: none; }

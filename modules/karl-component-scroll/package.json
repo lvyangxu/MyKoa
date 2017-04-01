@@ -1,0 +1,14 @@
+{
+  "name": "karl-component-scroll",
+  "version": "2.0.0",
+  "description": "react component scroll",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "license": "ISC",
+  "devDependencies": {
+    "react": "latest",
+    "jquery": "latest"
+  },
+  "dependencies": {
+  }
+}

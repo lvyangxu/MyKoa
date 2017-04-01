@@ -1,0 +1,6 @@
+*.jsx
+*.es6
+*.scss
+*.log
+.npmignore
+.gitignore

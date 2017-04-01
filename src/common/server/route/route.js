@@ -8,8 +8,8 @@ router.get("/", function (ctx, next) {
 });
 
 router.post("/account/getItemName", function (ctx, next) {
-    ctx.body = {};
+    ctx.res.statusCode = 401;
+    // ctx.body = {test:2};
 });
-
 
 module.exports = router;

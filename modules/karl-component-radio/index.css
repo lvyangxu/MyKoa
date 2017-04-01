@@ -1,0 +1,74 @@
+.base {
+  display: inline-block;
+  font-size: 12px;
+  position: relative; }
+  .base .display {
+    padding: 8px 20px;
+    height: 16px;
+    border: 1px solid #cccccc;
+    background: linear-gradient(to bottom, #fdfdfd, #f4f4f4);
+    color: #222222;
+    font-size: 13px;
+    font-family: Arial;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #f2f2f2;
+    font-weight: bold;
+    text-align: center;
+    user-select: none; }
+    .base .display i {
+      margin-left: 10px; }
+  .base .display:hover {
+    background: linear-gradient(to bottom, #ededed, #dbdbdb);
+    box-shadow: inset 0px 0px 2px 2px #c8c8c8; }
+  .base .panel {
+    z-index: 2;
+    position: absolute;
+    height: 370px;
+    min-width: 200px;
+    background: white;
+    padding: 5px;
+    border: 1px solid #aeaeae;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    margin-top: 4px; }
+  .base .filter {
+    border: 1px solid #cccccc; }
+    .base .filter i {
+      margin-left: 5px; }
+    .base .filter input {
+      padding: 5px 4px 5px 4px;
+      border: none;
+      outline: none; }
+  .base .options div {
+    height: 30px;
+    line-height: 30px; }
+  .base .options .option {
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer; }
+  .base .options .option:hover {
+    background-color: #eeeeee; }
+  .base .options .page {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none; }
+    .base .options .page button {
+      border: none;
+      outline: none;
+      background-color: transparent;
+      font-weight: bolder;
+      font-size: 14px;
+      cursor: pointer;
+      padding-left: 10px;
+      padding-right: 10px; }
+    .base .options .page button:hover {
+      background-color: #eeeeee; }
+    .base .options .page button.page-left {
+      margin-right: 5px; }
+    .base .options .page button.page-right {
+      margin-left: 5px; }

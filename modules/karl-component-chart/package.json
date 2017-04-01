@@ -1,0 +1,16 @@
+{
+  "name": "karl-component-chart",
+  "version": "4.5.2",
+  "description": "react component chart",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "author": "lvyangxu",
+  "license": "ISC",
+  "devDependencies": {
+    "react": "latest",
+    "karl-extend": "latest",
+    "jquery": "latest"
+  },
+  "dependencies": {
+  }
+}

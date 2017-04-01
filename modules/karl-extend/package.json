@@ -1,0 +1,8 @@
+{
+  "name": "karl-extend",
+  "version": "4.0.0",
+  "description": "string and number extend prototype",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "license": "ISC"
+}

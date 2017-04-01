@@ -1,0 +1,13 @@
+{
+  "name": "karl-component-slider",
+  "version": "1.0.0",
+  "description": "react component slider",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "license": "ISC",
+  "devDependencies": {
+    "react": "latest"
+  },
+  "dependencies": {
+  }
+}

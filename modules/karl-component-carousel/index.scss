@@ -1,0 +1,47 @@
+.base {
+    position: relative;
+    overflow: hidden;
+    .container {
+        .item {
+            vertical-align: top;
+            user-select: none;
+            display: inline-block;
+            font-size: 0;
+            background-color: transparent;
+            .inner {
+                background-color: white;
+                margin: 10px;
+                img {
+                    width: 100%;
+                }
+            }
+        }
+
+    }
+
+    .dots {
+        height: 10px;
+        background-color: transparent;
+        text-align: center;
+        padding-bottom: 10px;
+        .dot {
+            display: inline-block;
+            cursor: pointer;
+            margin-left: 20px;
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            background-color: rgba(214, 214, 214, 1);
+        }
+        .dot:first-child {
+            margin-left: 0;
+        }
+        .dot:hover {
+            background-color: rgba(134, 151, 145, 1);
+        }
+        .dot.active {
+            background-color: rgba(134, 151, 145, 1);
+        }
+    }
+
+}

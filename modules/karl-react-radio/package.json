@@ -1,0 +1,15 @@
+{
+  "name": "karl-react-radio",
+  "version": "1.0.1",
+  "description": "react component radio with redux",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "license": "ISC",
+  "devDependencies": {
+  },
+  "dependencies": {
+    "karl-http": "latest",
+    "font-awesome-webpack": "latest",
+    "font-awesome": "latest"
+  }
+}

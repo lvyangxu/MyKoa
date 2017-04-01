@@ -1,0 +1,32 @@
+.base {
+  position: relative; }
+  .base .menu {
+    position: absolute;
+    overflow-y: auto;
+    font-size: 13px;
+    width: 200px;
+    background-color: #f2f2f2; }
+    .base .menu .li {
+      user-select: none;
+      padding-left: 40px;
+      height: 40px;
+      line-height: 40px;
+      padding-top: 10px;
+      font-size: 13px;
+      cursor: pointer;
+      color: #444444; }
+      .base .menu .li i {
+        margin-right: 5px; }
+    .base .menu .li:hover {
+      background-color: #e5e5e5 !important; }
+    .base .menu .li.active {
+      font-weight: bold;
+      color: rgba(0, 0, 0, 0.8) !important; }
+    .base .menu .li1 {
+      margin-left: 20px; }
+  .base .content {
+    display: inline-block;
+    box-sizing: border-box;
+    margin-left: 200px;
+    vertical-align: top;
+    overflow-y: scroll; }

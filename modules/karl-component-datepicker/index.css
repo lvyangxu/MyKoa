@@ -1,0 +1,127 @@
+.base {
+  display: inline-block;
+  font-size: 12px;
+  position: relative; }
+  .base .input {
+    width: 170px;
+    height: 32px;
+    line-height: 32px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border: 1px solid #cccccc;
+    background: linear-gradient(to bottom, #fdfdfd, #f4f4f4);
+    user-select: none;
+    color: #222222;
+    font-size: 0;
+    font-family: Arial;
+    border-radius: 3px;
+    cursor: pointer;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #f2f2f2;
+    font-weight: bold;
+    text-align: left; }
+    .base .input .value {
+      font-size: 13px;
+      width: 150px;
+      display: inline-block;
+      box-sizing: border-box;
+      text-align: center;
+      height: 100%;
+      line-height: 100%; }
+      .base .input .value .left {
+        display: inline-block;
+        margin-right: 5px; }
+      .base .input .value .right {
+        display: inline-block;
+        cursor: auto;
+        height: 32px;
+        line-height: 32px; }
+        .base .input .value .right input[type=number] {
+          font-family: Arial;
+          font-size: 13px;
+          font-weight: bold;
+          text-align: center;
+          height: 20px;
+          line-height: 20px;
+          width: 20px;
+          border: none;
+          outline: none;
+          -moz-appearance: textfield; }
+        .base .input .value .right input[type=number]::-webkit-inner-spin-button, .base .input .value .right input[type=number]::-webkit-outer-spin-button {
+          appearance: none; }
+    .base .input .icon {
+      font-size: 13px;
+      display: inline-block;
+      width: 20px; }
+  .base .input:hover {
+    background: linear-gradient(to bottom, #ededed, #dbdbdb);
+    box-shadow: inset 0px 0px 2px 2px #c8c8c8; }
+    .base .input:hover .value .right input[type=number] {
+      background: linear-gradient(to bottom, rgba(237, 237, 237, 0.5), rgba(219, 219, 219, 0.5));
+      border-bottom: 1px solid rgba(0, 0, 0, 0.8); }
+  .base .panel {
+    z-index: 2;
+    position: absolute;
+    background: white;
+    padding: 5px;
+    border: 1px solid #aeaeae;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    margin-top: 4px; }
+    .base .panel .content .contentHead {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      /*add 1 px to fit firefox*/
+      width: 177px;
+      font-size: 0; }
+      .base .panel .content .contentHead .left, .base .panel .content .contentHead .middle, .base .panel .content .contentHead .right {
+        display: inline-block;
+        font-size: 12px;
+        text-align: center;
+        padding-top: 5px;
+        padding-bottom: 5px; }
+      .base .panel .content .contentHead .left, .base .panel .content .contentHead .right {
+        width: 44px; }
+      .base .panel .content .contentHead .middle {
+        width: 88px; }
+      .base .panel .content .contentHead .left:hover, .base .panel .content .contentHead .middle:hover, .base .panel .content .contentHead .right:hover {
+        user-select: none;
+        cursor: pointer;
+        background: linear-gradient(to bottom, #ededed, #dbdbdb);
+        box-shadow: inset 0px 0px 2px 2px #c8c8c8; }
+    .base .panel .content .contentBody .page .row {
+      /*add 1 px to fit firefox*/
+      width: 177px; }
+      .base .panel .content .contentBody .page .row .cell {
+        cursor: pointer;
+        user-select: none;
+        text-align: center;
+        float: left;
+        font-size: 12px; }
+      .base .panel .content .contentBody .page .row .cell:hover {
+        background: linear-gradient(to bottom, #ededed, #dbdbdb);
+        box-shadow: inset 0px 0px 2px 2px #c8c8c8; }
+      .base .panel .content .contentBody .page .row .cell.active {
+        background: linear-gradient(to bottom, #ededed, #dbdbdb); }
+      .base .panel .content .contentBody .page .row .year, .base .panel .content .contentBody .page .row .month {
+        width: 44px;
+        height: 44px;
+        line-height: 44px; }
+      .base .panel .content .contentBody .page .row .day {
+        width: 25.14286px;
+        height: 25.14286px;
+        line-height: 25.14286px; }
+      .base .panel .content .contentBody .page .row .hour {
+        width: 29.33333px;
+        height: 29.33333px;
+        line-height: 29.33333px; }
+      .base .panel .content .contentBody .page .row .minute, .base .panel .content .contentBody .page .row .second {
+        width: 17.6px;
+        height: 17.6px;
+        line-height: 17.6px; }
+      .base .panel .content .contentBody .page .row .day.title {
+        cursor: auto; }
+      .base .panel .content .contentBody .page .row .day.title:hover {
+        background: inherit;
+        box-shadow: none; }
+      .base .panel .content .contentBody .page .row .day.dark {
+        color: rgba(150, 150, 150, 0.6); }

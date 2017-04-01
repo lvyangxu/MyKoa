@@ -1,0 +1,12 @@
+{
+  "name": "karl-xml",
+  "version": "4.0.0",
+  "description": "xml read and write",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "license": "ISC",
+  "dependencies": {
+    "fs": "latest",
+    "xml2js": "latest"
+  }
+}

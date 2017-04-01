@@ -1,0 +1,14 @@
+{
+  "name": "karl-component-carousel",
+  "version": "4.0.1",
+  "description": "react component carousel",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "license": "ISC",
+  "devDependencies": {
+    "react": "latest",
+    "jquery": "latest"
+  },
+  "dependencies": {
+  }
+}

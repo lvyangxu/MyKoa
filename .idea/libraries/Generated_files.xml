@@ -1,0 +1,40 @@
+<component name="libraryTable">
+  <library name="Generated files" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/modules/karl-http/index.js" />
+        <item url="file://$PROJECT_DIR$/src/project/FrontEnd/client/manage/main.js" />
+        <item url="file://$PROJECT_DIR$/dist/FrontEnd/client/manage/main.js" />
+        <item url="file://$PROJECT_DIR$/modules/karl-extend/index.js" />
+        <item url="file://$PROJECT_DIR$/dist/FrontEnd/client/login/main.js" />
+        <item url="file://$PROJECT_DIR$/modules/karl-component-login/index.js" />
+        <item url="file://$PROJECT_DIR$/modules/karl-jwt/index.js" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/index.js" />
+      <root url="file://$PROJECT_DIR$/index.js" />
+      <root url="file://$PROJECT_DIR$/index.js" />
+      <root url="file://$PROJECT_DIR$/dist/Authorize/client/login/main.js" />
+      <root url="file://$PROJECT_DIR$/dist/Authorize/client/login/main.js" />
+      <root url="file://$PROJECT_DIR$/dist/Cave/client/login/main.js" />
+      <root url="file://$PROJECT_DIR$/dist/Cave/client/manage/main.js" />
+      <root url="file://$PROJECT_DIR$/dist/Cave/client/manage/main.js" />
+      <root url="file://$PROJECT_DIR$/dist/Cave/client/login/main.js" />
+      <root url="file://$PROJECT_DIR$/dist/Cave/client/manage/main.js" />
+      <root url="file://$PROJECT_DIR$/dist/Cave/client/login/main.js" />
+      <root url="file://$PROJECT_DIR$/dist/FrontEnd/client/login/main.js" />
+      <root url="file://$PROJECT_DIR$/dist/FrontEnd/client/manage/main.js" />
+      <root url="file://$PROJECT_DIR$/dist/FrontEnd/client/login/main.js" />
+      <root url="file://$PROJECT_DIR$/dist/FrontEnd/client/manage/main.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-http/index.js" />
+      <root url="file://$PROJECT_DIR$/src/project/FrontEnd/client/manage/main.js" />
+      <root url="file://$PROJECT_DIR$/dist/FrontEnd/client/manage/main.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-extend/index.js" />
+      <root url="file://$PROJECT_DIR$/dist/FrontEnd/client/login/main.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-component-login/index.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-jwt/index.js" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,48 @@
+.base {
+    position: relative;
+    $backColor: rgba(242, 242, 242, 1);
+    $fontColor: rgba(68, 68, 68, 1);
+    $hoverBackColor: rgba(229, 229, 229, 1);
+    $activeFontColor: rgba(0, 0, 0, 0.8);
+
+    .menu {
+        position: absolute;
+        overflow-y: auto;
+        font-size: 13px;
+        width: 200px;
+        background-color: $backColor;
+
+        .li {
+            user-select: none;
+            padding-left: 40px;
+            height: 40px;
+            line-height: 40px;
+            padding-top: 10px;
+            font-size: 13px;
+            cursor: pointer;
+            color: $fontColor;
+
+            i {
+                margin-right: 5px;
+            }
+        }
+        .li:hover {
+            background-color: $hoverBackColor !important;
+        }
+        .li.active {
+            font-weight: bold;
+            color: $activeFontColor !important;
+        }
+        .li1 {
+            margin-left: 20px;
+        }
+    }
+
+    .content {
+        display: inline-block;
+        box-sizing: border-box;
+        margin-left: 200px;
+        vertical-align: top;
+        overflow-y: scroll;
+    }
+}

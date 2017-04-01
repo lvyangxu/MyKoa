@@ -1,0 +1,11 @@
+{
+  "name": "karl-excel",
+  "version": "1.0.1",
+  "description": "excel function",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "license": "ISC",
+  "dependencies": {
+    "xlsx": "latest"
+  }
+}

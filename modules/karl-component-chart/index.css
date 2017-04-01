@@ -1,0 +1,115 @@
+.base {
+  box-shadow: 2px 2px 4px #ddd;
+  border: 1px solid #ddd;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  position: relative; }
+  .base .top {
+    height: 32px;
+    margin-bottom: 5px; }
+    .base .top .title {
+      display: inline-block;
+      height: 100%;
+      font-size: 24px;
+      font-weight: bolder;
+      color: #333333;
+      text-align: center; }
+    .base .top .resetColor {
+      display: inline-block;
+      font-size: 16px;
+      height: 100%; }
+      .base .top .resetColor button {
+        height: 30px;
+        line-height: 30px;
+        padding-left: 8px;
+        padding-right: 8px;
+        border: 1px solid #cccccc;
+        background: linear-gradient(to bottom, #fdfdfd, #f4f4f4);
+        user-select: none;
+        color: #222222;
+        font-family: Arial;
+        border-radius: 3px;
+        cursor: pointer;
+        text-decoration: none;
+        text-shadow: 0 1px 0 #f2f2f2;
+        font-weight: bold;
+        outline: none; }
+      .base .top .resetColor button:hover {
+        background: linear-gradient(to bottom, #ededed, #dbdbdb);
+        box-shadow: inset 0px 0px 2px 2px #c8c8c8; }
+  .base .barTips {
+    position: relative; }
+    .base .barTips .table {
+      z-index: 12;
+      position: absolute;
+      opacity: 0.8;
+      font-size: 10px; }
+      .base .barTips .table table {
+        margin: auto;
+        border-collapse: collapse; }
+        .base .barTips .table table thead {
+          background-color: #e9e9e9;
+          color: #252525; }
+          .base .barTips .table table thead tr th {
+            padding: 5px; }
+        .base .barTips .table table tbody {
+          background-color: white;
+          color: #272727; }
+          .base .barTips .table table tbody tr td {
+            text-align: center;
+            padding: 5px; }
+    .base .barTips .cover {
+      z-index: 11;
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.2); }
+  .base svg {
+    width: 100%;
+    overflow-x: hidden; }
+    .base svg text {
+      font-family: Arial; }
+    .base svg .xAxis {
+      stroke-width: 0.2; }
+      .base svg .xAxis path {
+        stroke: #e6e6e6; }
+      .base svg .xAxis text {
+        text-anchor: middle;
+        font-size: 1.5px; }
+    .base svg .yAxis {
+      stroke-width: 0.2; }
+      .base svg .yAxis text {
+        font-size: 1.5px;
+        text-anchor: end; }
+    .base svg .yAxisText {
+      stroke-width: 0.2; }
+      .base svg .yAxisText text {
+        text-anchor: middle;
+        font-size: 2px; }
+    .base svg .xGrid {
+      stroke-width: 0.2; }
+      .base svg .xGrid path {
+        stroke: #e6e6e6; }
+    .base svg .curve path {
+      stroke-linejoin: round;
+      stroke-width: 0.2;
+      fill: transparent; }
+    .base svg .dots {
+      stroke-width: 0.3; }
+    .base svg .declare {
+      stroke-width: 0.3;
+      text-anchor: start; }
+      .base svg .declare text {
+        font-size: 1.5px; }
+    .base svg .typeList {
+      cursor: pointer; }
+      .base svg .typeList .typeIcon path {
+        stroke-width: 0.1;
+        stroke: black; }
+      .base svg .typeList .typeIcon .iconBackground {
+        fill: transparent;
+        stroke: transparent; }
+    .base svg .tips path {
+      stroke-width: 0.1;
+      fill: rgba(255, 255, 255, 0.8); }
+    .base svg .tips text {
+      font-size: 1.5px;
+      text-anchor: middle; }

@@ -1,0 +1,33 @@
+.base {
+  position: relative;
+  overflow: hidden; }
+  .base .container .item {
+    vertical-align: top;
+    user-select: none;
+    display: inline-block;
+    font-size: 0;
+    background-color: transparent; }
+    .base .container .item .inner {
+      background-color: white;
+      margin: 10px; }
+      .base .container .item .inner img {
+        width: 100%; }
+  .base .dots {
+    height: 10px;
+    background-color: transparent;
+    text-align: center;
+    padding-bottom: 10px; }
+    .base .dots .dot {
+      display: inline-block;
+      cursor: pointer;
+      margin-left: 20px;
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+      background-color: #d6d6d6; }
+    .base .dots .dot:first-child {
+      margin-left: 0; }
+    .base .dots .dot:hover {
+      background-color: #869791; }
+    .base .dots .dot.active {
+      background-color: #869791; }

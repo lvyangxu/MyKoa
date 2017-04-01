@@ -1,0 +1,15 @@
+.base {
+    display: inline-block;
+    font-size: 13px;
+    user-select: none;
+    .container{
+        width: 300px;
+        .rod{
+            .slider{
+                height: 15px;
+
+            }
+        }
+    }
+
+}

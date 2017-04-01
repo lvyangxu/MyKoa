@@ -1,0 +1,11 @@
+{
+  "name": "karl-date",
+  "version": "4.0.5",
+  "description": "date function",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "license": "ISC",
+  "dependencies": {
+
+  }
+}

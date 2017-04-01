@@ -1,0 +1,15 @@
+{
+  "name": "karl-component-radio",
+  "version": "4.1.4",
+  "description": "react component radio",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "license": "ISC",
+  "devDependencies": {
+    "react": "latest",
+    "font-awesome-webpack": "latest",
+    "karl-http": "latest"
+  },
+  "dependencies": {
+  }
+}
