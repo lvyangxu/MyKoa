@@ -1,0 +1,14 @@
+{
+  "name": "karl-react-nav",
+  "version": "0.1.0",
+  "description": "react component nav with redux",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "license": "ISC",
+  "devDependencies": {
+  },
+  "dependencies": {
+    "font-awesome-webpack": "latest",
+    "font-awesome": "latest"
+  }
+}

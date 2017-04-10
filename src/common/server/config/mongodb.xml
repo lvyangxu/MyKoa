@@ -2,5 +2,7 @@
 <root>
     <host>{host}</host>
     <port>{port}</port>
+    <username>{username}</username>
+    <password>{password}</password>
     <database>{database}</database>
 </root>

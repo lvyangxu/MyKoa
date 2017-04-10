@@ -77,9 +77,14 @@ let getPageData = (filterData, pageIndex) => {
 }
 
 let getMarkedHtml = (optionValue, filterValue) => {
+    let markedHtml
     optionValue = optionValue.toString()
-    let regex = new RegExp(filterValue, "g")
-    let markedHtml = optionValue.replace(regex, `<strong>${filterValue}</strong>`)
+    if (filterValue === "") {
+        markedHtml = optionValue
+    } else {
+        let regex = new RegExp(filterValue, "g")
+        markedHtml = optionValue.replace(regex, `<strong>${filterValue}</strong>`)
+    }
     return {__html: markedHtml}
 }
 

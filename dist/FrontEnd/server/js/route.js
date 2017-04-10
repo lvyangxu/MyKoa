@@ -4,11 +4,18 @@ let response = require("./response");
 /**
  * 初始化工程名称（前端存放localstorage）及登录后跳转路径
  */
-router.post("/authorize/init", function (ctx, next) {
+router.post("/authorize/init", async (ctx, next) => {
     response.success(ctx, {
         project: global.accountConfig.project,
         loginRedirect: global.accountConfig.loginRedirect
     });
+});
+
+/**
+ * 初始页面跳转到登录
+ */
+router.get("/", async (ctx, next) => {
+    await ctx.redirect("/login/");
 });
 
 router.post("/test", function (ctx, next) {
@@ -17,20 +24,21 @@ router.post("/test", function (ctx, next) {
     };
 });
 
+/**
+ * 登录操作，账号密码验证，成功返回jwt及project
+ */
 router.post("/authorize/login", async (ctx, next) => {
-    // ctx.res.statusCode = 401;
 
-    let pool = global.mysqlObject.find(d => {
-        return d.database === "Authorize";
-    }).pool;
-
+    let db = global.mongodbObject.find(d => {
+        return d.database === "FrontEnd";
+    }).db;
     let {username, password} = ctx.request.body;
-    let sqlCommand = `select * from account where username="${username}" and password="${password}"`;
-    let data = await global.mysql.excuteQuery({
-        pool: pool,
-        sqlCommand: sqlCommand
+    let data = await global.mongodb.excuteQuery(db, "authorize", {
+        jsonFilter: {
+            username: username,
+            password: password
+        }
     });
-
     if (data.length === 0) {
         response.fail(ctx, "帐号名或密码不正确");
     } else {
@@ -50,5 +58,13 @@ router.post("/authorize/login", async (ctx, next) => {
 
 });
 
+/**
+ * 对其他api的访问请求
+ */
+router.post("/api/:id", async (ctx, next) => {
+    //检查api请求权限，是否需要验证jwt
+
+    //转发到其他服务
+});
 
 module.exports = router;

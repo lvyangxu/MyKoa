@@ -24,7 +24,7 @@ class MyComponent extends React.Component {
     async componentWillMount() {
         let data = []
         if (this.props.hasOwnProperty("url")) {
-            data = await http.post(url)
+            data = await http.post(this.props.url)
         } else {
             data = this.props.data
         }

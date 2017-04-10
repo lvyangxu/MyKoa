@@ -124,9 +124,14 @@ var getPageData = function getPageData(filterData, pageIndex) {
 };
 
 var getMarkedHtml = function getMarkedHtml(optionValue, filterValue) {
+    var markedHtml = void 0;
     optionValue = optionValue.toString();
-    var regex = new RegExp(filterValue, "g");
-    var markedHtml = optionValue.replace(regex, "<strong>" + filterValue + "</strong>");
+    if (filterValue === "") {
+        markedHtml = optionValue;
+    } else {
+        var regex = new RegExp(filterValue, "g");
+        markedHtml = optionValue.replace(regex, "<strong>" + filterValue + "</strong>");
+    }
     return { __html: markedHtml };
 };
 

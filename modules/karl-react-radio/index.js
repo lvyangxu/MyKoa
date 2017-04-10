@@ -26,8 +26,6 @@ var _karlHttp2 = _interopRequireDefault(_karlHttp);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -59,61 +57,53 @@ var MyComponent = function (_React$Component) {
 
     _createClass(MyComponent, [{
         key: "componentWillMount",
-        value: function () {
-            var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-                var data, value, preloadedState;
-                return regeneratorRuntime.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                data = [];
+        value: function componentWillMount() {
+            var data, value, preloadedState;
+            return regeneratorRuntime.async(function componentWillMount$(_context) {
+                while (1) {
+                    switch (_context.prev = _context.next) {
+                        case 0:
+                            data = [];
 
-                                if (!this.props.hasOwnProperty("url")) {
-                                    _context.next = 7;
-                                    break;
-                                }
-
-                                _context.next = 4;
-                                return _karlHttp2.default.post(url);
-
-                            case 4:
-                                data = _context.sent;
-                                _context.next = 8;
+                            if (!this.props.hasOwnProperty("url")) {
+                                _context.next = 7;
                                 break;
+                            }
 
-                            case 7:
-                                data = this.props.data;
+                            _context.next = 4;
+                            return regeneratorRuntime.awrap(_karlHttp2.default.post(this.props.url));
 
-                            case 8:
-                                value = this.props.hasOwnProperty("initValue") ? this.props.initValue : data[0];
-                                preloadedState = {
-                                    data: data,
-                                    value: value,
-                                    prefix: this.props.prefix,
-                                    suffix: this.props.suffix,
-                                    isPanelShow: false,
-                                    pageIndex: 0,
-                                    filterValue: "",
-                                    initCallback: this.props.initCallback,
-                                    callback: this.props.callback
-                                };
+                        case 4:
+                            data = _context.sent;
+                            _context.next = 8;
+                            break;
 
-                                store = (0, _redux.createStore)(_reducer2.default, preloadedState);
+                        case 7:
+                            data = this.props.data;
 
-                            case 11:
-                            case "end":
-                                return _context.stop();
-                        }
+                        case 8:
+                            value = this.props.hasOwnProperty("initValue") ? this.props.initValue : data[0];
+                            preloadedState = {
+                                data: data,
+                                value: value,
+                                prefix: this.props.prefix,
+                                suffix: this.props.suffix,
+                                isPanelShow: false,
+                                pageIndex: 0,
+                                filterValue: "",
+                                initCallback: this.props.initCallback,
+                                callback: this.props.callback
+                            };
+
+                            store = (0, _redux.createStore)(_reducer2.default, preloadedState);
+
+                        case 11:
+                        case "end":
+                            return _context.stop();
                     }
-                }, _callee, this);
-            }));
-
-            function componentWillMount() {
-                return _ref.apply(this, arguments);
-            }
-
-            return componentWillMount;
-        }()
+                }
+            }, null, this);
+        }
     }, {
         key: "render",
         value: function render() {

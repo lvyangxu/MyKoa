@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<root>
-    <host>localhost</host>
-    <user>root</user>
-    <password>root</password>
-    <database>Authorize</database>
-</root>

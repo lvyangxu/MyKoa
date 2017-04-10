@@ -15,7 +15,7 @@
       </option>
       <option name="outputFromStdout" value="false" />
       <option name="program" value="$PROJECT_DIR$/node_modules/.bin/babel.cmd" />
-      <option name="scopeName" value="All Places" />
+      <option name="scopeName" value="module jsx" />
       <option name="trackOnlyRoot" value="false" />
       <option name="workingDir" value="$FileDir$" />
       <envs />

@@ -4,7 +4,7 @@ module.exports = {
     module: {
         loaders: [
             {test: /\.css$/, loader: "style-loader!css-loader?modules!postcss-loader"},
-            {test: /\.scss$/,loader: "style-loader!css-loader?modules!postcss-loader!sass-loader"},
+            {test: /\.scss$/, loader: "style-loader!css-loader?modules!postcss-loader!sass-loader"},
             {test: /\.png$/, loader: "url-loader?limit=100000"},
             {test: /\.jpg$/, loader: "file-loader"},
             // the url-loader uses DataUrls.
@@ -20,7 +20,7 @@ module.exports = {
                 loader: "babel-loader",
                 query: {
                     presets: ["es2015", "react"],
-                    plugins: ["syntax-async-functions", "transform-regenerator"]
+                    plugins: ["syntax-async-functions", "transform-regenerator", "transform-class-properties"]
                 }
             }
         ]

@@ -20,16 +20,16 @@ export default class http {
                 data: data,
                 textStatus: textStatus,
                 jqXHR: jqXHR
-            });
+            })
         }).fail(function (jqXHR, textStatus, errorThrown) {
             param.failureCallback({
                 jqXHR: jqXHR,
                 textStatus: textStatus,
                 errorThrown: errorThrown
-            });
-        });
-        return request;
-    };
+            })
+        })
+        return request
+    }
 
     /**
      * 执行http post请求，contentType和dataType均为json
@@ -46,28 +46,28 @@ export default class http {
                 dataType: "json",
                 successCallback: ({data, textStatus, jqXHR}) => {
                     if (data.success === undefined || data.message === undefined) {
-                        reject("unexpected json:" + data);
-                        return;
+                        reject("unexpected json:" + data)
+                        return
                     }
                     if (data.success === true) {
                         if (data.hasOwnProperty("project") && data.hasOwnProperty("jwt")) {
-                            localStorage[data.project + "-jwt"] = data.jwt;
+                            localStorage[data.project + "-jwt"] = data.jwt
                         }
-                        resolve(data.message);
+                        resolve(data.message)
                     } else {
-                        reject(data.message);
+                        reject(data.message)
                     }
                 },
                 failureCallback: ({jqXHR, textStatus, errorThrown}) => {
                     if (jqXHR.status === 401) {
-                        window.location.href = "../login/";
+                        window.location.href = "../login/"
                         return
                     }
-                    reject("http请求失败");
+                    reject("http请求失败")
                 }
-            });
-        });
-        return promise;
+            })
+        })
+        return promise
     }
 
     /**

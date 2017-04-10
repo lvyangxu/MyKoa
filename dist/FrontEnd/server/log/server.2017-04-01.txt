@@ -1,3 +1,0 @@
-[2017-04-01 17:06:18.336] [INFO] server - there is no need to init mongodb
-[2017-04-01 17:06:18.445] [INFO] server - mysql init success
-[2017-04-01 17:06:18.461] [INFO] server - get mysql database structure successfully

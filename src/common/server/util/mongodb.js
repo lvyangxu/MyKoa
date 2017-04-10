@@ -1,8 +1,16 @@
 let MongoClient = require('mongodb').MongoClient;
 
 let mongodb = {
-    init: async(host, port, database)=> {
-        let url = `mongodb://${host}:${port}/${database}`;
+    init: async (host, port, database, username, password) => {
+        let url;
+        if(username !== undefined && password !== undefined){
+            username = encodeURIComponent(username);
+            password = encodeURIComponent(password);
+            url = `mongodb://${username}:${password}@${host}:${port}/${database}?authMechanism=DEFAULT`;
+        }else{
+            url = `mongodb://${host}:${port}/${database}`;
+        }
+
         let promise = new Promise((resolve, reject) => {
             MongoClient.connect(url, function (err, db) {
                 if (err) {
@@ -15,7 +23,7 @@ let mongodb = {
         global.mongodb = mongodb;
         return promise;
     },
-    insert: (db, collection, arrayDocs)=> {
+    insert: (db, collection, arrayDocs) => {
         let c = db.collection(collection);
         let promise = new Promise((resolve, reject) => {
             c.insertMany(arrayDocs, function (err, result) {
@@ -23,11 +31,11 @@ let mongodb = {
                     reject(err);
                     return;
                 }
-                if (result.result.n != arrayDocs.length) {
+                if (result.result.n !== arrayDocs.length) {
                     reject("result.n is not equal arrayDocs.length");
                     return;
                 }
-                if (result.ops.length != arrayDocs.length) {
+                if (result.ops.length !== arrayDocs.length) {
                     reject("ops.length is not equal arrayDocs.length");
                     return;
                 }
@@ -36,7 +44,7 @@ let mongodb = {
         });
         return promise;
     },
-    excuteQuery: (db, collection, json)=> {
+    excuteQuery: (db, collection, json) => {
         let c = db.collection(collection);
         let promise = new Promise((resolve, reject) => {
             let jsonFilter = json.hasOwnProperty("jsonFilter") ? json.jsonFilter : {};

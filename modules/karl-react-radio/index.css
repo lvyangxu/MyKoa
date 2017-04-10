@@ -1,7 +1,8 @@
 .base {
   display: inline-block;
   font-size: 12px;
-  position: relative; }
+  position: relative;
+  text-align: left !important; }
   .base .button {
     padding: 8px 20px;
     height: 16px;
@@ -26,7 +27,6 @@
     z-index: 2;
     position: absolute;
     height: 370px;
-    min-width: 200px;
     background: white;
     padding: 5px;
     border: 1px solid #aeaeae;
@@ -73,5 +73,5 @@
           margin-right: 5px; }
         .base .panel .options .page button.pageRight {
           margin-left: 5px; }
-  .base .panel.hide {
-    display: none; }
+    .base .panel.hide {
+      display: none; }

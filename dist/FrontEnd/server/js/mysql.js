@@ -13,9 +13,7 @@ let mysql = {
         return pool;
     },
     excuteQuery: (json) => {
-        let {pool, sqlCommand, values} = json;
-        values = (values == undefined) ? {} : values;
-        pool = (pool == undefined) ? global.mysqlObject[0].pool : pool;
+        let {pool = global.mysqlObject[0].pool, sqlCommand, values = {}} = json;
         return new Promise((resolve, reject) => {
             pool.query(sqlCommand, values, function (err, rows, fields) {
                 if (err) {

@@ -2,7 +2,7 @@ let xml = require("karl-xml");
 let fs = require("fs");
 let mongodb = require("./mongodb");
 
-let load = async()=> {
+let load = async () => {
     try {
         //如果不存在mysql.xml,则跳过mysql初始化
         let path = "./server/config/mongodb.xml";
@@ -11,7 +11,9 @@ let load = async()=> {
             config = config.root;
             global.mongodbObject = [];
             for (let i = 0; i < config.host.length; i++) {
-                let db = await mongodb.init(config.host[i], config.port[i], config.database[i]);
+                let username = config.username[i] === "undefined" ? undefined : config.username[i];
+                let password = config.password[i] === "undefined" ? undefined : config.password[i];
+                let db = await mongodb.init(config.host[i], config.port[i], config.database[i], username, password);
                 global.mongodbObject.push({database: config.database[i], db: db});
             }
             console.log("mongodb init success");

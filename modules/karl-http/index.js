@@ -51,9 +51,6 @@ var http = function () {
             });
             return request;
         }
-    }, {
-        key: "post",
-
 
         /**
          * 执行http post请求，contentType和dataType均为json
@@ -61,6 +58,9 @@ var http = function () {
          * @param data
          * @returns {Promise}
          */
+
+    }, {
+        key: "post",
         value: function post(url) {
             var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 

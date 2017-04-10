@@ -1,6 +1,6 @@
 {
   "name": "karl-jwt",
-  "version": "1.0.6",
+  "version": "2.0.1",
   "description": "my json web token",
   "main": "index.js",
   "author": "lvyangxu",

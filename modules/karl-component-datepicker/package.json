@@ -6,10 +6,9 @@
   "author": "lvyangxu",
   "license": "ISC",
   "devDependencies": {
-    "react": "latest",
-    "font-awesome-webpack": "latest",
-    "karl-date": "latest"
   },
   "dependencies": {
+    "font-awesome-webpack": "latest",
+    "karl-date": "latest"
   }
 }

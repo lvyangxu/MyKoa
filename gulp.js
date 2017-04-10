@@ -17,25 +17,30 @@ let path = require("path");
 let webpack = require("webpack");
 let webpackStream = require("webpack-stream");
 let xml = require("karl-xml");
+let webpackConfig = require('./webpack.config.js');
 
-let project = process.argv[6].replace("--project=", "");
+let params = process.argv[6];
+let project = params === undefined ? "" : params.replace("--project=", "");
 
 let config = {
     isProduction: false,
-    isOnlyServer: {},
+    isOnlyServer: {
+        RewardCode: true
+    },
     mysql: {
         BI: {
             user: "root",
             password: "root",
             database: "BI"
         },
+    },
+    mongodb: {
         FrontEnd: {
-            user: "root",
-            password: "root",
-            database: "Authorize"
+            host: "localhost",
+            port: 27017,
+            database: "FrontEnd"
         }
     },
-    mongodb: {},
     account: {
         BI: {
             username: "radiumme",
@@ -118,7 +123,7 @@ gulp.task("move-project-server", ["clean-up", "move-server"], () => {
 });
 gulp.task("move-client", ["clean-up"], () => {
     let stream = gulp.src([
-        `src/project/${project}/client/*/*`,
+        `src/project/${project}/client/**`,
         "src/common/client/*/*",
         "!src/common/client/icon/*",
         `!src/project/${project}/client/*/*.html`,
@@ -225,6 +230,8 @@ gulp.task("build-mongodb", ["clean-up"], () => {
                 gulp.src("src/common/server/config/mongodb.xml")
                     .pipe(replace(/{host}/g, config.mongodb[project].host))
                     .pipe(replace(/{port}/g, config.mongodb[project].port))
+                    .pipe(replace(/{username}/g, config.mongodb[project].username))
+                    .pipe(replace(/{password}/g, config.mongodb[project].password))
                     .pipe(replace(/{database}/g, config.mongodb[project].database))
                     .pipe(gulp.dest(`./dist/${project}/server/config`))
                     .on("end", () => {
@@ -295,7 +302,6 @@ gulp.task("concat-css", ["compile-scss", "get-views"], () => {
 });
 //编译jsx
 gulp.task("compile-jsx", ["concat-css"], () => {
-    let webpackConfig = require('./webpack.config.js');
     if (config.isProduction) {
         //压缩
         webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
@@ -321,7 +327,20 @@ gulp.task("compile-clean", ["compile-jsx"], () => {
         `dist/${project}/client/*/*.css`,
         `dist/${project}/client/*/*.jsx`,
         `dist/${project}/client/*/*.js`,
+        `dist/${project}/client/*/actions`,
+        `dist/${project}/client/*/components`,
+        `dist/${project}/client/*/containers`,
+        `dist/${project}/client/*/reducers`,
         `!dist/${project}/client/*/bundle.css`,
         `!dist/${project}/client/*/bundle.js`
     ]);
+});
+
+
+gulp.task('test', function () {
+    let config = require('./webpack.config.js');
+    gulp.src('test/main.jsx')
+        .pipe(webpackStream(webpackConfig))
+        .pipe(gulp.dest('test/'));
+
 });

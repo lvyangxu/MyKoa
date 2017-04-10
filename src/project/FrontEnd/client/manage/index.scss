@@ -1,12 +1,74 @@
 @charset "utf-8";
 body {
     font-family: "Microsoft YaHei UI", Arial;
-    .top{
+    .top {
         height: 40px;
         line-height: 40px;
         padding-left: 40px;
-        background-color: rgba(45,135,226,1);
+        background-color: rgba(45, 135, 226, 1);
         font-size: 13px;
         color: white;
+    }
+
+    $backColor: rgba(242, 242, 242, 1);
+    .game {
+        display: inline-block;
+        background-color: $backColor;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        width: 200px;
+        text-align: center;
+        .icon {
+            width: 160px;
+            padding-bottom: 15px;
+        }
+    }
+
+    .menu {
+        position: absolute;
+        $fontColor: rgba(68, 68, 68, 1);
+        $hoverBackColor: rgba(229, 229, 229, 1);
+        $activeFontColor: rgba(0, 0, 0, 0.8);
+        overflow-y: auto;
+        font-size: 13px;
+        width: 200px;
+        background-color: $backColor;
+
+        a {
+            text-decoration: none;
+            color: $fontColor;
+            &:visited, &:link, &:active {
+                color: $fontColor
+            }
+        }
+
+        .li {
+            user-select: none;
+            padding-left: 20px;
+            height: 40px;
+            line-height: 40px;
+            padding-top: 10px;
+            font-size: 13px;
+            cursor: pointer;
+            color: $fontColor;
+
+            i {
+                margin-right: 5px;
+            }
+
+            &:hover {
+                background-color: $hoverBackColor !important;
+            }
+            &.active {
+                font-weight: bold;
+                color: $activeFontColor !important;
+            }
+        }
+
+    }
+
+    .content {
+        display: inline-block;
+        vertical-align: top;
     }
 }
