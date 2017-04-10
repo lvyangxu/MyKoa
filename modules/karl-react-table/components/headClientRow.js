@@ -18,6 +18,10 @@ var _index = require("../index.css");
 
 var _index2 = _interopRequireDefault(_index);
 
+var _karlComponentSelect = require("karl-component-select");
+
+var _karlComponentSelect2 = _interopRequireDefault(_karlComponentSelect);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -38,12 +42,10 @@ var MyComponent = function (_Component) {
     _createClass(MyComponent, [{
         key: "render",
         value: function render() {
-            var hideClass = {};
-            hideClass[_index2.default.hide] = !this.props.isPanelShow;
             return _react2.default.createElement(
                 "div",
-                { className: (0, _classnames2.default)(_index2.default.panel, hideClass) },
-                this.props.children
+                { className: _index2.default.headClientRow },
+                _react2.default.createElement(_karlComponentSelect2.default, { data: this.props.columns })
             );
         }
     }]);
@@ -51,7 +53,5 @@ var MyComponent = function (_Component) {
     return MyComponent;
 }(_react.Component);
 
-MyComponent.propTypes = {
-    isPanelShow: _react.PropTypes.bool.isRequired
-};
+MyComponent.propTypes = {};
 exports.default = MyComponent;

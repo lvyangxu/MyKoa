@@ -12,25 +12,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = require("react-redux");
 
-var _button = require("../components/button");
+var _headClientRow = require("../components/headClientRow");
 
-var _button2 = _interopRequireDefault(_button);
-
-var _panel = require("../components/panel");
-
-var _panel2 = _interopRequireDefault(_panel);
-
-var _filter = require("../components/filter");
-
-var _filter2 = _interopRequireDefault(_filter);
-
-var _option = require("../components/option");
-
-var _option2 = _interopRequireDefault(_option);
-
-var _page = require("../components/page");
-
-var _page2 = _interopRequireDefault(_page);
+var _headClientRow2 = _interopRequireDefault(_headClientRow);
 
 var _index = require("../index.css");
 
@@ -66,74 +50,21 @@ var MyComponent = function (_Component) {
     }, {
         key: "render",
         value: function render() {
-            return _react2.default.createElement("div", { className: _index2.default.base });
+            return _react2.default.createElement(
+                "div",
+                { className: _index2.default.base },
+                _react2.default.createElement(_headClientRow2.default, { columns: this.props.columns, curd: this.props.curd })
+            );
         }
     }]);
 
     return MyComponent;
 }(_react.Component);
 
-var getFilterData = function getFilterData(data, filterValue) {
-    var filterData = data.filter(function (d) {
-        return d.toString().includes(filterValue);
-    });
-    return filterData;
-};
-
-var getPageEndIndex = function getPageEndIndex(filterData) {
-    var pageEndIndex = Math.floor(filterData.length / 10);
-    return pageEndIndex;
-};
-
-var getPageData = function getPageData(filterData, pageIndex) {
-    var start = pageIndex * 10;
-    var end = pageIndex * 10 + 10;
-    end = end > filterData.length ? filterData.length : end;
-    var pageData = filterData.slice(start, end);
-    return pageData;
-};
-
-var getMarkedHtml = function getMarkedHtml(optionValue, filterValue) {
-    var markedHtml = void 0;
-    optionValue = optionValue.toString();
-    if (filterValue === "") {
-        markedHtml = optionValue;
-    } else {
-        var regex = new RegExp(filterValue, "g");
-        markedHtml = optionValue.replace(regex, "<strong>" + filterValue + "</strong>");
-    }
-    return { __html: markedHtml };
-};
-
-var getButtonValue = function getButtonValue(prefix, value, suffix) {
-    prefix = prefix === undefined ? "" : prefix + " ";
-    suffix = suffix === undefined ? "" : " " + suffix;
-    return prefix + value + suffix;
-};
-
 var mapStateToProps = function mapStateToProps(state) {
-    var filterData = getFilterData(state.data, state.filterValue);
-    var pageEndIndex = getPageEndIndex(filterData);
-    var pageData = getPageData(filterData, state.pageIndex);
-    pageData = pageData.map(function (d) {
-        var html = getMarkedHtml(d, state.filterValue);
-        return { value: d, html: html };
-    });
-    var buttonValue = getButtonValue(state.prefix, state.value, state.suffix);
     return {
-        isPanelShow: state.isPanelShow,
-        value: state.value,
-        buttonValue: buttonValue,
-        prefix: state.prefix,
-        suffix: state.suffix,
-        data: state.data,
-        filterValue: state.filterValue,
-        filterData: filterData,
-        pageIndex: state.pageIndex,
-        pageEndIndex: pageEndIndex,
-        pageData: pageData,
-        initCallback: state.initCallback,
-        callback: state.callback
+        columns: state.columns,
+        curd: state.curd
     };
 };
 
@@ -141,31 +72,6 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     return {
         togglePanel: function togglePanel() {
             dispatch({ type: _action.TOGGLE_PANEL });
-        },
-        hidePanel: function hidePanel() {
-            dispatch({ type: _action.HIDE_PANEL });
-        },
-        stopPropagation: function stopPropagation(e) {
-            dispatch({ type: _action.STOP_PROPAGATION, e: e });
-        },
-        onFilterChange: function onFilterChange(e) {
-            dispatch({ type: _action.CHANGE_INPUT, e: e });
-        },
-        chooseItem: function chooseItem(d) {
-            dispatch({ type: _action.CHOOSE_ITEM, value: d });
-            dispatch({ type: _action.HIDE_PANEL });
-        },
-        doPageStart: function doPageStart() {
-            dispatch({ type: _action.DO_PAGE_START });
-        },
-        doPageLeft: function doPageLeft(pageIndex) {
-            dispatch({ type: _action.DO_PAGE_LEFT, pageIndex: pageIndex });
-        },
-        doPageRight: function doPageRight(pageIndex, pageEndIndex) {
-            dispatch({ type: _action.DO_PAGE_RIGHT, pageIndex: pageIndex, pageEndIndex: pageEndIndex });
-        },
-        doPageEnd: function doPageEnd(pageEndIndex) {
-            dispatch({ type: _action.DO_PAGE_END, pageEndIndex: pageEndIndex });
         }
     };
 };

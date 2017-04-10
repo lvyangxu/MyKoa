@@ -25,7 +25,11 @@ let project = params === undefined ? "" : params.replace("--project=", "");
 let config = {
     isProduction: false,
     isOnlyServer: {
+        AuthorizeServer: true,
         RewardCode: true
+    },
+    isOnlyClient: {
+        AvalonFrontEnd: true
     },
     mysql: {
         BI: {
@@ -35,24 +39,20 @@ let config = {
         },
     },
     mongodb: {
-        FrontEnd: {
+        AuthorizeServer: {
             host: "localhost",
             port: 27017,
             database: "FrontEnd"
         }
     },
     account: {
-        BI: {
-            username: "radiumme",
-            password: "radiumme",
-            loginRedirect: "manage"
-        },
-        FrontEnd: {
+        AuthorizeServer: {
             loginRedirect: "manage"
         }
     },
     port: {
-        FrontEnd: 3001
+        AuthorizeServer: 3001,
+        RewardCode: 3002
     }
 };
 
@@ -65,8 +65,9 @@ gulp.task("build", taskArr, () => {
  * 清理上次生成的文件
  */
 gulp.task("clean-up", () => {
+    let port = config.port.hasOwnProperty(project) ? config.port[project] : 3000;
     let promise = new Promise((resolve, reject) => {
-        exec("netstat -ano | findstr 3000", (error, stdout) => {
+        exec(`netstat -ano | findstr ${port}`, (error, stdout) => {
             if (error) {
                 //端口没有使用
                 del.sync([`dist/${project}`]);
@@ -96,7 +97,10 @@ gulp.task("clean-up", () => {
 //移动文件
 if (config.isOnlyServer[project] === true) {
     gulp.task("move", ["move-server", "move-project-server", "move-app", "move-project-app", "move-package", "build-mysql", "build-mongodb", "build-account"]);
-} else {
+} else if (config.isOnlyClient[project] === true) {
+    gulp.task("move", ["move-client", "move-common-html", "move-project-html", "move-icon"]);
+}
+else {
     gulp.task("move", ["move-server", "move-project-server", "move-client", "move-common-html", "move-project-html", "move-icon", "move-app",
         "move-project-app", "move-package", "build-mysql", "build-mongodb", "build-account"]);
 }
@@ -159,7 +163,7 @@ gulp.task("move-icon", ["clean-up"], () => {
 });
 gulp.task("move-app", ["clean-up"], () => {
     let stream = gulp.src(`src/common/server/app.js`);
-    if (config.isProduction && config.port.hasOwnProperty(project)) {
+    if (config.port.hasOwnProperty(project)) {
         stream = stream.pipe(replace(/3000/g, config.port[project]));
     }
     stream = stream.pipe(gulp.dest(`dist/${project}/server/js/`));
@@ -167,7 +171,7 @@ gulp.task("move-app", ["clean-up"], () => {
 });
 gulp.task("move-project-app", ["clean-up", "move-app"], () => {
     let stream = gulp.src(`src/project/${project}/server/app.js`);
-    if (config.isProduction && config.port.hasOwnProperty(project)) {
+    if (config.port.hasOwnProperty(project)) {
         stream = stream.pipe(replace(/3000/g, config.port[project]));
     }
     stream = stream.pipe(gulp.dest(`dist/${project}/server/js/`));
@@ -250,8 +254,6 @@ gulp.task("build-account", ["clean-up"], () => {
         if (config.account.hasOwnProperty(project)) {
             gulp.src("src/common/server/config/account.xml")
                 .pipe(replace(/{project}/g, project))
-                .pipe(replace(/{username}/g, config.account[project].username))
-                .pipe(replace(/{password}/g, config.account[project].password))
                 .pipe(replace(/{loginRedirect}/g, config.account[project].loginRedirect))
                 .pipe(gulp.dest(`dist/${project}/server/config`))
                 .on("end", () => {

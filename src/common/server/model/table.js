@@ -1,9 +1,8 @@
 let response = require("./response");
 let fs = require("fs");
-let excel = require("karl-excel");
 
-module.exports = {
-    init: async(req, res, config) => {
+module.exports = (ctx, config) => ({
+    init: async () => {
 
         //设置最终要返回的数据
         let data = {
@@ -26,7 +25,7 @@ module.exports = {
         }
 
         //每一页显示的行数和图表
-        ["rowPerPage", "chart"].forEach(d=> {
+        ["rowPerPage", "chart"].forEach(d => {
             if (config.hasOwnProperty(d)) {
                 data[d] = config[d];
             }
@@ -52,7 +51,7 @@ module.exports = {
         }
 
         //将初始化的值附加到data属性中
-        let attachData = async(sourceData)=> {
+        let attachData = async (sourceData) => {
             let mapData = [];
             for (let i = 0; i < sourceData.length; i++) {
                 let d = sourceData[i];
@@ -81,12 +80,12 @@ module.exports = {
                         let id = d.id;
                         switch (d.type) {
                             case "select":
-                                componentData = componentData.map((d1, j)=> {
+                                componentData = componentData.map((d1, j) => {
                                     return {id: j, name: d1[id], checked: false};
                                 });
                                 break;
                             case "radio":
-                                componentData = componentData.map(d1=> {
+                                componentData = componentData.map(d1 => {
                                     return d1[id];
                                 })
                                 break;
@@ -103,8 +102,8 @@ module.exports = {
         if (config.hasOwnProperty("extraFilter")) {
             data.extraFilter = await attachData(config.extraFilter);
             //附加其他属性
-            data.extraFilter = data.extraFilter.map(d=> {
-                let findElement = config.extraFilter.find(d1=> {
+            data.extraFilter = data.extraFilter.map(d => {
+                let findElement = config.extraFilter.find(d1 => {
                     return d.id == d1.id;
                 });
                 if (findElement.hasOwnProperty("required")) {
@@ -291,7 +290,7 @@ module.exports = {
             response.fail(res, "mysql excuteQuery error");
         });
     },
-    read: async(req, res, config) => {
+    read: async (req, res, config) => {
         let table = config.id;
         //执行查询前的参数检查
         if (config.hasOwnProperty("readCheck")) {
@@ -374,28 +373,28 @@ module.exports = {
         //如果是动态列，则同时返回本次的columns
         if (config.hasOwnProperty("dynamicColumn")) {
             let columnArr = [];
-            data.forEach(d=> {
+            data.forEach(d => {
                 for (let key in d) {
                     if (!columnArr.includes(key)) {
                         columnArr.push(key);
                     }
                 }
             });
-            columnArr = columnArr.filter(d=> {
+            columnArr = columnArr.filter(d => {
                 //排除掉所有为空的列
-                let isAllEmpty = data.every(d1=> {
+                let isAllEmpty = data.every(d1 => {
                     return !d1.hasOwnProperty(d) || d1[d] == "";
                 });
                 return !isAllEmpty;
-            }).map(d=> {
-                let findColumn = config.dynamicColumn.find(d1=> {
+            }).map(d => {
+                let findColumn = config.dynamicColumn.find(d1 => {
                     return d1.id == d;
                 });
                 let name = findColumn == undefined ? d : findColumn.name;
                 let checked = findColumn == undefined ? true : findColumn.checked;
                 let json = {id: d, name: name, checked: checked};
                 if (findColumn != undefined) {
-                    ["thStyle", "tdStyle"].forEach(d1=> {
+                    ["thStyle", "tdStyle"].forEach(d1 => {
                         if (findColumn.hasOwnProperty(d1)) {
                             json[d1] = findColumn[d1];
                         }
@@ -404,7 +403,7 @@ module.exports = {
                 return json;
             });
             //去除_id列
-            columnArr = columnArr.filter(d=> {
+            columnArr = columnArr.filter(d => {
                 return d.id != "_id";
             });
             message.columns = columnArr;
@@ -439,15 +438,8 @@ module.exports = {
             response.fail(res, "mysql excuteQuery error");
         });
     },
-    download: (req, res, config)=> {
-        let name = config.hasOwnProperty("name") ? config.name : config.id;
-        let prefix = "client/";
-        let filePath = "data/" + name + ".xlsx";
-        excel.write(prefix + filePath, [{
-            sheetName: name,
-            data: req.body.data
-        }]);
-        response.success(res, {filePath: filePath});
+    download: (req, res, config) => {
+
     },
     attachmentRead: (req, res, config) => {
         let table = config.id;
@@ -492,4 +484,4 @@ module.exports = {
         });
         response.success(res);
     },
-};
+});

@@ -4,37 +4,41 @@ import {Provider} from "react-redux"
 import App from "./containers/app"
 import reducer from "./reducers/reducer"
 import "font-awesome-webpack"
-import http from "karl-http"
+import Ajax from "karl-ajax"
 
 let store = {}
 
 /**
  * react表格
  * 示例：
- * <Table data=[1,"a","b"]/>
+ * <Table id="aa" project="vgas"/>
  */
 class MyComponent extends React.Component {
 
     async componentWillMount() {
-        let data = []
-        if (this.props.hasOwnProperty("url")) {
-            data = await http.post(this.props.url)
-        } else {
-            data = this.props.data
-        }
-        let value = this.props.hasOwnProperty("initValue") ? this.props.initValue : data[0]
+        let data = await this.request("init")
+        let {columns, curd} = data
+        console.log(data)
         let preloadedState = {
-            data: data,
-            value: value,
-            prefix: this.props.prefix,
-            suffix: this.props.suffix,
-            isPanelShow: false,
-            pageIndex: 0,
-            filterValue: "",
-            initCallback: this.props.initCallback,
-            callback: this.props.callback
+            columns: columns,
+            curd: curd
         }
         store = createStore(reducer, preloadedState)
+    }
+
+    /**
+     * 带jwt的http请求
+     */
+    async request(action, data = {}) {
+        let jwt = localStorage.getItem(this.props.project + "-jwt")
+        if (jwt === null) {
+            location.href = "../login/"
+        } else {
+            data.jwt = jwt
+            data = Object.assign(data, {id: this.props.id, action: action})
+            let d = await Ajax.post(`../${this.props.serviceName}/table`, data)
+            return d
+        }
     }
 
     render() {

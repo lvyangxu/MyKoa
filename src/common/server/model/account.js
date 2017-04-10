@@ -10,7 +10,7 @@ module.exports = {
     login: (req, res) => {
         let username = req.body.username;
         let password = req.body.password;
-        if (username == global.accountConfig.username && password == global.accountConfig.password) {
+        if (username === global.accountConfig.username && password === global.accountConfig.password) {
 
             let currentTimestamp = new Date().getTime();
             //设置有效期为1天

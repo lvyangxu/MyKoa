@@ -1,12 +1,12 @@
 import $ from "jquery"
 
-export default class http {
+export default class Ajax {
     /**
      * 用jquery的ajax方法执行http请求
      * @param param ajax option
      * @returns {*|void}
      */
-    static doAjaxInJquery(param) {
+    static doRequest(param) {
         let request = $.ajax({
             type: param.type || "post",
             url: param.url,
@@ -39,7 +39,7 @@ export default class http {
      */
     static post(url, data = {}) {
         let promise = new Promise((resolve, reject) => {
-            http.doAjaxInJquery({
+            Ajax.doRequest({
                 url: url,
                 data: data,
                 contentType: "application/json",

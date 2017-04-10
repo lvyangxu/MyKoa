@@ -8,8 +8,6 @@ let load = async () => {
         config = config.root;
         global.accountConfig = {
             project: config.project[0],
-            username: config.username[0],
-            password: config.password[0],
             loginRedirect: config.loginRedirect[0]
         };
 

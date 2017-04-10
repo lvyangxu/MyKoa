@@ -35,5 +35,7 @@ class MyComponent extends React.Component {
 
 ReactDom.render(
     <MyComponent/>
-    , document.getElementById("content"));
+    , document.getElementById("content"))
 
+// import Ajax from "karl-ajax"
+// Ajax.post("../api/rewardCode", {path: "/rewardCode/check"});

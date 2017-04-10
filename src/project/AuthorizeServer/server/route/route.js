@@ -1,5 +1,6 @@
 let router = require("koa-router")();
 let response = require("./response");
+let http = require("karl-http");
 
 /**
  * 初始化工程名称（前端存放localstorage）及登录后跳转路径
@@ -9,13 +10,6 @@ router.post("/authorize/init", async (ctx, next) => {
         project: global.accountConfig.project,
         loginRedirect: global.accountConfig.loginRedirect
     });
-});
-
-/**
- * 初始页面跳转到登录
- */
-router.get("/", async (ctx, next) => {
-    await ctx.redirect("/login/");
 });
 
 router.post("/test", function (ctx, next) {
@@ -58,13 +52,36 @@ router.post("/authorize/login", async (ctx, next) => {
 
 });
 
+let services = [
+    {id: "rewardCode", port: 3002}
+]
+
 /**
  * 对其他api的访问请求
  */
-router.post("/api/:id", async (ctx, next) => {
+router.post("/api/:services", async (ctx, next) => {
     //检查api请求权限，是否需要验证jwt
 
+    let path = ctx.request.path;
+    let findService = services.find(d => {
+        return d.id === ctx.params.services;
+    })
+    if (findService === undefined) {
+        response.fail400(ctx);
+        return;
+    }
+
     //转发到其他服务
+    try {
+        let data = await http.post({
+            port: ctx.params.port,
+            path: path
+        });
+        response.success(ctx, data.message);
+    } catch (e) {
+        response.fail(ctx, "fail to get service");
+    }
+
 });
 
 module.exports = router;

@@ -2,9 +2,9 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _karlHttp = require("karl-http");
+var _karlAjax = require("karl-ajax");
 
-var _karlHttp2 = _interopRequireDefault(_karlHttp);
+var _karlAjax2 = _interopRequireDefault(_karlAjax);
 
 var _react = require("react");
 
@@ -103,7 +103,7 @@ var login = function (_React$Component) {
                         case 0:
                             _context.prev = 0;
                             _context.next = 3;
-                            return regeneratorRuntime.awrap(_karlHttp2.default.post("../authorize/init"));
+                            return regeneratorRuntime.awrap(_karlAjax2.default.post("../authorize/init"));
 
                         case 3:
                             data = _context.sent;
@@ -157,7 +157,7 @@ var login = function (_React$Component) {
                             };
                             _context2.prev = 1;
                             _context2.next = 4;
-                            return regeneratorRuntime.awrap(_karlHttp2.default.post("../authorize/login", data));
+                            return regeneratorRuntime.awrap(_karlAjax2.default.post("../authorize/login", data));
 
                         case 4:
                             d = _context2.sent;

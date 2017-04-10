@@ -1,4 +1,4 @@
-import http from "karl-http";
+import Ajax from "karl-ajax";
 import React from "react";
 import css from "./index.css";
 
@@ -49,7 +49,7 @@ class login extends React.Component {
      */
     async getItemName() {
         try {
-            let data = await http.post("../authorize/init");
+            let data = await Ajax.post("../authorize/init");
             this.setState({
                 loginRedirect: data.loginRedirect
             });
@@ -78,7 +78,7 @@ class login extends React.Component {
             password: this.state.password
         };
         try {
-            let d = await http.post("../authorize/login", data);
+            let d = await Ajax.post("../authorize/login", data);
             localStorage.setItem(d.project + "-jwt", d.jwt);
             window.location.href = "../" + this.state.loginRedirect + "/";
         } catch (e) {

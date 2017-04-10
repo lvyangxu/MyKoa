@@ -1,6 +1,6 @@
 {
   "name": "karl-component-login",
-  "version": "6.0.3",
+  "version": "6.0.4",
   "description": "react component login",
   "main": "index.js",
   "author": "lvyangxu",
@@ -10,6 +10,6 @@
   },
   "dependencies": {
     "jquery": "latest",
-    "karl-http": "latest"
+    "karl-ajax": "latest"
   }
 }

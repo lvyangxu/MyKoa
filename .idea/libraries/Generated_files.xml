@@ -2,43 +2,39 @@
   <library name="Generated files" type="javaScript">
     <properties>
       <sourceFilesUrls>
-        <item url="file://$PROJECT_DIR$/modules/karl-react-table/components/thead.js" />
+        <item url="file://$PROJECT_DIR$/modules/karl-react-table/components/headClientRow.js" />
+        <item url="file://$PROJECT_DIR$/modules/karl-react-table/components/headServerRow.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-extend/index.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-nav/index.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-nav/reducers/reducer.js" />
-        <item url="file://$PROJECT_DIR$/src/project/FrontEnd/client/manage/actions/action.js" />
+        <item url="file://$PROJECT_DIR$/src/project/AvalonFrontEnd/client/manage/actions/action.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-radio/containers/app.js" />
         <item url="file://$PROJECT_DIR$/test/main.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-nav/containers/app.js" />
-        <item url="file://$PROJECT_DIR$/modules/karl-http/index.js" />
+        <item url="file://$PROJECT_DIR$/modules/karl-ajax/index.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-nav/components/option.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-nav/components/filter.js" />
+        <item url="file://$PROJECT_DIR$/src/project/AvalonFrontEnd/client/manage/reducers/reducer.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-datepicker/index.js" />
-        <item url="file://$PROJECT_DIR$/modules/karl-react-nav/components/button.js" />
-        <item url="file://$PROJECT_DIR$/src/project/FrontEnd/client/manage/reducers/reducer.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-table/index.js" />
+        <item url="file://$PROJECT_DIR$/modules/karl-react-nav/components/button.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-nav/components/panel.js" />
+        <item url="file://$PROJECT_DIR$/src/project/AvalonFrontEnd/client/manage/containers/app.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-nav/components/page.js" />
-        <item url="file://$PROJECT_DIR$/src/project/FrontEnd/client/manage/containers/app.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-component-login/index.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-nav/actions/action.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-datepicker/reducers/reducer.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-table/reducers/reducer.js" />
-        <item url="file://$PROJECT_DIR$/src/project/FrontEnd/client/manage/components/panel.js" />
+        <item url="file://$PROJECT_DIR$/src/project/AvalonFrontEnd/client/manage/components/panel.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-datepicker/containers/app.js" />
-        <item url="file://$PROJECT_DIR$/modules/karl-react-table/containers/app.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-radio/index.js" />
-        <item url="file://$PROJECT_DIR$/modules/karl-react-table/components/option.js" />
-        <item url="file://$PROJECT_DIR$/modules/karl-react-table/components/filter.js" />
+        <item url="file://$PROJECT_DIR$/modules/karl-react-table/containers/app.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-datepicker/components/button.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-datepicker/components/panel.js" />
-        <item url="file://$PROJECT_DIR$/modules/karl-react-table/components/button.js" />
-        <item url="file://$PROJECT_DIR$/modules/karl-react-table/components/panel.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-jwt/index.js" />
-        <item url="file://$PROJECT_DIR$/modules/karl-react-table/components/page.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-datepicker/actions/action.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-table/actions/action.js" />
-        <item url="file://$PROJECT_DIR$/modules/karl-react-table/components/tbody.js" />
+        <item url="file://$PROJECT_DIR$/modules/karl-react-table/components/table.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
@@ -73,43 +69,49 @@
       <root url="file://$PROJECT_DIR$/src/project/FrontEnd/client/manage/components/filter.js" />
       <root url="file://$PROJECT_DIR$/src/project/FrontEnd/client/manage/components/button.js" />
       <root url="file://$PROJECT_DIR$/src/project/FrontEnd/client/manage/components/page.js" />
-      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/thead.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/option.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/filter.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/button.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/panel.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/page.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/option.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/filter.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/button.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/panel.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/page.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/headClientRow.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/headServerRow.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-extend/index.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-nav/index.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-nav/reducers/reducer.js" />
-      <root url="file://$PROJECT_DIR$/src/project/FrontEnd/client/manage/actions/action.js" />
+      <root url="file://$PROJECT_DIR$/src/project/AvalonFrontEnd/client/manage/actions/action.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-radio/containers/app.js" />
       <root url="file://$PROJECT_DIR$/test/main.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-nav/containers/app.js" />
-      <root url="file://$PROJECT_DIR$/modules/karl-http/index.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-ajax/index.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-nav/components/option.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-nav/components/filter.js" />
+      <root url="file://$PROJECT_DIR$/src/project/AvalonFrontEnd/client/manage/reducers/reducer.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-datepicker/index.js" />
-      <root url="file://$PROJECT_DIR$/modules/karl-react-nav/components/button.js" />
-      <root url="file://$PROJECT_DIR$/src/project/FrontEnd/client/manage/reducers/reducer.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-table/index.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-nav/components/button.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-nav/components/panel.js" />
+      <root url="file://$PROJECT_DIR$/src/project/AvalonFrontEnd/client/manage/containers/app.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-nav/components/page.js" />
-      <root url="file://$PROJECT_DIR$/src/project/FrontEnd/client/manage/containers/app.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-component-login/index.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-nav/actions/action.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-datepicker/reducers/reducer.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-table/reducers/reducer.js" />
-      <root url="file://$PROJECT_DIR$/src/project/FrontEnd/client/manage/components/panel.js" />
+      <root url="file://$PROJECT_DIR$/src/project/AvalonFrontEnd/client/manage/components/panel.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-datepicker/containers/app.js" />
-      <root url="file://$PROJECT_DIR$/modules/karl-react-table/containers/app.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-radio/index.js" />
-      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/option.js" />
-      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/filter.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-table/containers/app.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-datepicker/components/button.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-datepicker/components/panel.js" />
-      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/button.js" />
-      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/panel.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-jwt/index.js" />
-      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/page.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-datepicker/actions/action.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-table/actions/action.js" />
-      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/tbody.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/table.js" />
     </CLASSES>
     <SOURCES />
   </library>
