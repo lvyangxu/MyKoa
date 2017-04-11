@@ -48,13 +48,27 @@ module.exports = ctx => {
     return {
         item: {
             name: "道具列表",
-            database: "item",
+            database: "RewardCode",
             curd: "curd",
             columns: [
                 {id: "id", name: "道具id", checked: true},
                 {id: "name", name: "道具名称", checked: true},
                 {id: "value", name: "价值", checked: true},
                 {id: "image", name: "图片", checked: true},
+            ]
+        },
+        itemBundle: {
+            name: "礼包管理",
+            database: "RewardCode",
+            curd: "curd",
+            columns: [
+                {id: "name", name: "名称", checked: true},
+                {id: "id", name: "ID", checked: true},
+                {id: "creater", name: "创建者", checked: true},
+                {id: "createTime", name: "创建日期", checked: true},
+                {id: "itemNum", name: "包含物品数量", checked: true},
+                {id: "usedTimes", name: "被引用次数", checked: true},
+                {id: "review", name: "审核", checked: true},
             ]
         }
     }

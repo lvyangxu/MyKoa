@@ -14,8 +14,7 @@ router.get("/", (ctx, next) => {
  * 表格路由
  */
 router.get("/table/:id/:action", (ctx, next) => {
-    let action = ctx.params.action;
-    let id = ctx.params.id;
+    let {id, action} = ctx.params;
     if (!table(ctx).hasOwnProperty(action)) {
         console.log("unknown action:table/" + id + "/" + action);
         response.fail(ctx, "unknown action");
@@ -28,7 +27,7 @@ router.get("/table/:id/:action", (ctx, next) => {
 
         //执行表格对应的action
         let config = tableConfig(ctx)[id];
-        table(ctx, config)[action]();
+        table(ctx, config)[action](id);
     }
 });
 

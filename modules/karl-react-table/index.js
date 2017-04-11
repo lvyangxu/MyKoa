@@ -20,9 +20,9 @@ var _reducer2 = _interopRequireDefault(_reducer);
 
 require("font-awesome-webpack");
 
-var _karlAjax = require("karl-ajax");
+var _reduxThunk = require("redux-thunk");
 
-var _karlAjax2 = _interopRequireDefault(_karlAjax);
+var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -40,8 +40,8 @@ var store = {};
  * <Table id="aa" project="vgas"/>
  */
 
-var MyComponent = function (_React$Component) {
-    _inherits(MyComponent, _React$Component);
+var MyComponent = function (_Component) {
+    _inherits(MyComponent, _Component);
 
     function MyComponent() {
         _classCallCheck(this, MyComponent);
@@ -52,74 +52,35 @@ var MyComponent = function (_React$Component) {
     _createClass(MyComponent, [{
         key: "componentWillMount",
         value: function componentWillMount() {
-            var data, columns, curd, preloadedState;
-            return regeneratorRuntime.async(function componentWillMount$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-                            _context.next = 2;
-                            return regeneratorRuntime.awrap(this.request("init"));
+            var _props = this.props,
+                id = _props.id,
+                project = _props.project,
+                serviceName = _props.serviceName,
+                _props$curd = _props.curd,
+                curd = _props$curd === undefined ? "r" : _props$curd,
+                _props$rowFilterValue = _props.rowFilterValue,
+                rowFilterValue = _props$rowFilterValue === undefined ? "" : _props$rowFilterValue,
+                _props$rowPerPage = _props.rowPerPage,
+                rowPerPage = _props$rowPerPage === undefined ? 10 : _props$rowPerPage;
+            //数据顺序为 sourceData > componentFilterData > inputFilterData > sortedData > displayData
 
-                        case 2:
-                            data = _context.sent;
-                            columns = data.columns, curd = data.curd;
+            var preloadedState = {
+                id: id,
+                project: project,
+                serviceName: serviceName,
+                curd: curd,
+                rowPerPage: rowPerPage,
+                rowFilterValue: rowFilterValue,
+                isMinColumn: false,
+                sortDesc: true,
+                sourceData: [],
+                componentFilterData: [],
+                inputFilterData: [],
+                sortedData: [],
+                displayData: []
 
-                            console.log(data);
-                            preloadedState = {
-                                columns: columns,
-                                curd: curd
-                            };
-
-                            store = (0, _redux.createStore)(_reducer2.default, preloadedState);
-
-                        case 7:
-                        case "end":
-                            return _context.stop();
-                    }
-                }
-            }, null, this);
-        }
-
-        /**
-         * 带jwt的http请求
-         */
-
-    }, {
-        key: "request",
-        value: function request(action) {
-            var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-            var jwt, d;
-            return regeneratorRuntime.async(function request$(_context2) {
-                while (1) {
-                    switch (_context2.prev = _context2.next) {
-                        case 0:
-                            jwt = localStorage.getItem(this.props.project + "-jwt");
-
-                            if (!(jwt === null)) {
-                                _context2.next = 5;
-                                break;
-                            }
-
-                            location.href = "../login/";
-                            _context2.next = 11;
-                            break;
-
-                        case 5:
-                            data.jwt = jwt;
-                            data = Object.assign(data, { id: this.props.id, action: action });
-                            _context2.next = 9;
-                            return regeneratorRuntime.awrap(_karlAjax2.default.post("../" + this.props.serviceName + "/table", data));
-
-                        case 9:
-                            d = _context2.sent;
-                            return _context2.abrupt("return", d);
-
-                        case 11:
-                        case "end":
-                            return _context2.stop();
-                    }
-                }
-            }, null, this);
+            };
+            store = (0, _redux.createStore)(_reducer2.default, preloadedState, (0, _redux.applyMiddleware)(_reduxThunk2.default));
         }
     }, {
         key: "render",
@@ -133,6 +94,13 @@ var MyComponent = function (_React$Component) {
     }]);
 
     return MyComponent;
-}(_react2.default.Component);
+}(_react.Component);
+
+MyComponent.propTypes = {
+    id: _react.PropTypes.string.isRequired,
+    project: _react.PropTypes.string.isRequired,
+    serviceName: _react.PropTypes.string.isRequired
+};
+
 
 module.exports = MyComponent;

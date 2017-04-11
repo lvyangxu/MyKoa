@@ -1,10 +1,10 @@
-import React from "react"
-import {createStore} from "redux"
+import React, {PropTypes, Component} from "react"
+import {createStore, applyMiddleware} from "redux"
 import {Provider} from "react-redux"
 import App from "./containers/app"
 import reducer from "./reducers/reducer"
 import "font-awesome-webpack"
-import Ajax from "karl-ajax"
+import thunkMiddleware from 'redux-thunk'
 
 let store = {}
 
@@ -13,32 +13,34 @@ let store = {}
  * 示例：
  * <Table id="aa" project="vgas"/>
  */
-class MyComponent extends React.Component {
+class MyComponent extends Component {
 
-    async componentWillMount() {
-        let data = await this.request("init")
-        let {columns, curd} = data
-        console.log(data)
-        let preloadedState = {
-            columns: columns,
-            curd: curd
-        }
-        store = createStore(reducer, preloadedState)
+    static propTypes = {
+        id: PropTypes.string.isRequired,
+        project: PropTypes.string.isRequired,
+        serviceName: PropTypes.string.isRequired,
     }
 
-    /**
-     * 带jwt的http请求
-     */
-    async request(action, data = {}) {
-        let jwt = localStorage.getItem(this.props.project + "-jwt")
-        if (jwt === null) {
-            location.href = "../login/"
-        } else {
-            data.jwt = jwt
-            data = Object.assign(data, {id: this.props.id, action: action})
-            let d = await Ajax.post(`../${this.props.serviceName}/table`, data)
-            return d
+    componentWillMount() {
+        let {id, project, serviceName, curd = "r", rowFilterValue = "", rowPerPage = 10} = this.props;
+        //数据顺序为 sourceData > componentFilterData > inputFilterData > sortedData > displayData
+        let preloadedState = {
+            id: id,
+            project: project,
+            serviceName: serviceName,
+            curd: curd,
+            rowPerPage: rowPerPage,
+            rowFilterValue: rowFilterValue,
+            isMinColumn: false,
+            sortDesc: true,
+            sourceData: [],
+            componentFilterData: [],
+            inputFilterData: [],
+            sortedData: [],
+            displayData: [],
+
         }
+        store = createStore(reducer, preloadedState, applyMiddleware(thunkMiddleware))
     }
 
     render() {

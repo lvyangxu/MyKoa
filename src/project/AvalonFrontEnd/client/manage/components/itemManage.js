@@ -4,17 +4,13 @@ import css from "../index.css"
 import Table from "../../../../../modules/karl-react-table/index"
 
 export default class MyComponent extends Component {
-    static propTypes = {
-        columns: PropTypes.array.isRequired,
-        curd: PropTypes.string.isRequired
-    }
+    static propTypes = {}
 
     render() {
 
         return (
             <div>
-                <div>2222</div>
-                <Table id="item" project="AvalonFrontEnd" serviceName="rewardCode"/>
+                <Table id="itemBundle" project="AuthorizeServer" serviceName="rewardCode"/>
             </div>
         )
     }

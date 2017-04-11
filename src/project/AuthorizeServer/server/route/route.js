@@ -62,7 +62,7 @@ let services = [
 router.post("/api/:services", async (ctx, next) => {
     //检查api请求权限，是否需要验证jwt
 
-    let path = ctx.request.path;
+    let {path} = ctx.request.body;
     let findService = services.find(d => {
         return d.id === ctx.params.services;
     })
@@ -74,12 +74,18 @@ router.post("/api/:services", async (ctx, next) => {
     //转发到其他服务
     try {
         let data = await http.post({
-            port: ctx.params.port,
+            port: findService.port,
             path: path
         });
+        if (data === "NOT FOUND") {
+            console.log("NOT FOUND");
+            response.fail(ctx, "service is not available");
+            return;
+        }
         response.success(ctx, data.message);
     } catch (e) {
-        response.fail(ctx, "fail to get service");
+        console.log(e);
+        response.fail(ctx, "service is not available");
     }
 
 });

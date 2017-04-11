@@ -2,8 +2,9 @@
   <library name="Generated files" type="javaScript">
     <properties>
       <sourceFilesUrls>
-        <item url="file://$PROJECT_DIR$/modules/karl-react-table/components/headClientRow.js" />
-        <item url="file://$PROJECT_DIR$/modules/karl-react-table/components/headServerRow.js" />
+        <item url="file://$PROJECT_DIR$/modules/karl-react-table/components/clientFilter.js" />
+        <item url="file://$PROJECT_DIR$/modules/karl-react-table/components/serverFilter.js" />
+        <item url="file://$PROJECT_DIR$/modules/karl-react-table/utils/request.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-extend/index.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-nav/index.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-nav/reducers/reducer.js" />
@@ -79,8 +80,9 @@
       <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/button.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/panel.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/page.js" />
-      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/headClientRow.js" />
-      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/headServerRow.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/clientFilter.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-table/components/serverFilter.js" />
+      <root url="file://$PROJECT_DIR$/modules/karl-react-table/utils/request.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-extend/index.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-nav/index.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-nav/reducers/reducer.js" />

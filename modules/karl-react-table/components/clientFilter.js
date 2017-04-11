@@ -42,10 +42,48 @@ var MyComponent = function (_Component) {
     _createClass(MyComponent, [{
         key: "render",
         value: function render() {
+            var _this2 = this;
+
             return _react2.default.createElement(
                 "div",
-                { className: _index2.default.headClientRow },
-                _react2.default.createElement(_karlComponentSelect2.default, { data: this.props.columns })
+                { className: _index2.default.clientFilter },
+                _react2.default.createElement(
+                    "div",
+                    { className: _index2.default.section },
+                    _react2.default.createElement(_karlComponentSelect2.default, { data: this.props.columns, text: "\u5217\u8FC7\u6EE4" })
+                ),
+                _react2.default.createElement(
+                    "div",
+                    { className: _index2.default.section },
+                    _react2.default.createElement("input", { className: _index2.default.rowFilter, placeholder: "\u884C\u8FC7\u6EE4", value: this.props.rowFilterValue,
+                        onChange: function onChange(e) {
+                            _this2.props.rowFilterChangeCallback(e.target.value);
+                        } })
+                ),
+                _react2.default.createElement(
+                    "div",
+                    { className: _index2.default.section },
+                    _react2.default.createElement(
+                        "select",
+                        { className: _index2.default.page, value: this.props.pageIndex, onChange: function onChange(e) {
+                                _this2.props.pageIndexChangeCallback(e.target.value);
+                            } },
+                        this.props.pageArr.map(function (d) {
+                            return _react2.default.createElement(
+                                "option",
+                                { value: d },
+                                d
+                            );
+                        })
+                    ),
+                    _react2.default.createElement(
+                        "label",
+                        null,
+                        "\u5171",
+                        this.props.pageArr.length,
+                        "\u9875"
+                    )
+                )
             );
         }
     }]);
@@ -53,5 +91,15 @@ var MyComponent = function (_Component) {
     return MyComponent;
 }(_react.Component);
 
-MyComponent.propTypes = {};
+MyComponent.propTypes = {
+    rowFilterValue: _react.PropTypes.string.isRequired,
+    rowFilterChangeCallback: _react.PropTypes.func.isRequired,
+    pageIndexChangeCallback: _react.PropTypes.func.isRequired,
+    pageArr: _react.PropTypes.array.isRequired
+};
+MyComponent.defaultProps = {
+    pageArr: [],
+    pageIndex: 0,
+    columns: []
+};
 exports.default = MyComponent;

@@ -1,5 +1,7 @@
 let router = require("koa-router")();
 let response = require("./response");
+let table = require("./table");
+let tableConfig = require("./tableConfig");
 
 /**
  * 验证兑换码
@@ -27,9 +29,8 @@ router.post("/rewardCode/add", async (ctx, next) => {
 /**
  * 表格路由
  */
-router.get("/rewardCode/table", (ctx, next) => {
-    let action = ctx.request.action;
-    let id = ctx.request.id;
+router.post("/table/:id/:action", (ctx, next) => {
+    let {id, action} = ctx.params;
     if (!table(ctx).hasOwnProperty(action)) {
         console.log("unknown action:table/" + id + "/" + action);
         response.fail(ctx, "unknown action");
@@ -42,7 +43,7 @@ router.get("/rewardCode/table", (ctx, next) => {
 
         //执行表格对应的action
         let config = tableConfig(ctx)[id];
-        table(ctx, config)[action]();
+        table(ctx, config)[action](id);
     }
 });
 

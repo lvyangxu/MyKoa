@@ -18,5 +18,8 @@ module.exports = {
      */
     fail401: ctx => {
         ctx.res.statusCode = 401;
+    },
+    fail500: ctx => {
+        ctx.res.statusCode = 500;
     }
 };

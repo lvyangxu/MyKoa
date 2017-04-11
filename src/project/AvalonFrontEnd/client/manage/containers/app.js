@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 import {connect} from "react-redux"
-import Item from "../components/item"
+import ItemMange from "../components/itemManage"
 import ItemCreate from "../components/itemCreate"
 import Game from "../components/game"
 import css from "../index.css"
@@ -67,7 +67,7 @@ class MyComponent extends Component {
                         </div>
                     </div>
                     <div className={css.content}>
-                        <Route exact path="/item" component={Item}/>
+                        <Route exact path="/item" component={ItemMange}/>
                         <Route path="/itemCreate" component={ItemCreate}/>
                     </div>
                 </div>
@@ -76,12 +76,13 @@ class MyComponent extends Component {
     }
 }
 
+
 let mapStateToProps = state => {
     return {
         menuHeight: state.menuHeight,
         games: state.games,
         menuStatus: state.menuStatus,
-        activeTab: state.activeTab
+        activeTab: state.activeTab,
     }
 }
 

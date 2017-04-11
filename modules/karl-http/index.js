@@ -14,7 +14,12 @@ module.exports = {
             let req = http.get(options, res => {
                 res.setEncoding('utf8');
                 res.on('data', (chunk) => {
-                    resolve(chunk);
+                    try {
+                        let jsonData = JSON.parse(chunk);
+                        resolve(jsonData);
+                    } catch (e) {
+                        reject("invalid json:" + chunk);
+                    }
                 });
             });
 
@@ -40,7 +45,12 @@ module.exports = {
             let req = http.request(options, res => {
                 res.setEncoding('utf8');
                 res.on('data', (chunk) => {
-                    resolve(chunk);
+                    try {
+                        let jsonData = JSON.parse(chunk);
+                        resolve(jsonData);
+                    } catch (e) {
+                        reject("invalid json:" + chunk);
+                    }
                 });
             });
 

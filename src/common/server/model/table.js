@@ -33,11 +33,11 @@ module.exports = (ctx, config) => ({
 
         //根据所属的database获取对应的mysql对象或mongodb的db对象
         let database, pool, db;
-        if (!config.hasOwnProperty("type") || config.type == "mysql") {
+        if (!config.hasOwnProperty("type") || config.type === "mysql") {
             if (config.hasOwnProperty("database")) {
                 database = config.database;
                 pool = global.mysqlObject.find(d => {
-                    return d.database == database;
+                    return d.database === database;
                 }).pool;
             } else {
                 database = global.mysqlObject[0].database;
@@ -46,7 +46,7 @@ module.exports = (ctx, config) => ({
         } else {
             database = config.database;
             db = global.mongodbObject.find(d => {
-                return d.database == database;
+                return d.database === database;
             }).db;
         }
 
@@ -57,8 +57,8 @@ module.exports = (ctx, config) => ({
                 let d = sourceData[i];
                 let componentData = [];
                 if (d.hasOwnProperty("data")) {
-                    if (typeof(d.data) == "function") {
-                        if (!config.hasOwnProperty("type") || config.type == "mysql") {
+                    if (typeof(d.data) === "function") {
+                        if (!config.hasOwnProperty("type") || config.type === "mysql") {
                             try {
                                 componentData = await d.data(pool);
                                 if (d.hasOwnProperty("dataMap")) {
@@ -104,7 +104,7 @@ module.exports = (ctx, config) => ({
             //附加其他属性
             data.extraFilter = data.extraFilter.map(d => {
                 let findElement = config.extraFilter.find(d1 => {
-                    return d.id == d1.id;
+                    return d.id === d1.id;
                 });
                 if (findElement.hasOwnProperty("required")) {
                     d.required = findElement.required;
@@ -113,7 +113,7 @@ module.exports = (ctx, config) => ({
             })
 
         }
-        response.success(res, data);
+        response.success(ctx, data);
     },
     create: (req, res, config) => {
         //find table struct
@@ -290,25 +290,26 @@ module.exports = (ctx, config) => ({
             response.fail(res, "mysql excuteQuery error");
         });
     },
-    read: async (req, res, config) => {
-        let table = config.id;
+    read: async id => {
+        let table = id;
         //执行查询前的参数检查
         if (config.hasOwnProperty("readCheck")) {
             if (!config.readCheck()) {
-                response.fail(res, "invalid param");
+                response.fail400(ctx);
                 return;
             }
         }
 
         //根据数据库类型进行查询
         let database, data;
-        if (!config.hasOwnProperty("type") || config.type == "mysql") {
+        let {type = "mysql"} = config;
+        if (type === "mysql") {
             //mysql
             let pool;
             if (config.hasOwnProperty("database")) {
                 database = config.database;
                 pool = global.mysqlObject.find(d => {
-                    return d.database == database;
+                    return d.database === database;
                 }).pool;
             } else {
                 database = global.mysqlObject[0].database;
@@ -316,21 +317,22 @@ module.exports = (ctx, config) => ({
             }
 
             let sqlCommand = config.hasOwnProperty("read") ?
-                (typeof(config.read) == "function" ? config.read() : config.read) : `select * from ${table}`;
-            let values = config.hasOwnProperty("readValue") ? config.readValue : {};
+                (typeof(config.read) === "function" ? config.read() : config.read) : `select * from ${table}`;
+            let {readValue: values = {}} = config;
             try {
-                data = await global.mysql.excuteQuery({
-                    pool: pool,
-                    sqlCommand: sqlCommand,
-                    values: values
-                });
+                data = await
+                    global.mysql.excuteQuery({
+                        pool: pool,
+                        sqlCommand: sqlCommand,
+                        values: values
+                    });
                 global.log.table.info(`read done:${database},${sqlCommand}`);
                 global.log.table.info(values);
             } catch (e) {
                 global.log.error.info("mysql excuteQuery error:" + e);
                 global.log.error.info(database + "," + sqlCommand);
                 global.log.error.info(values);
-                response.fail(res, "mysql excuteQuery error");
+                response.fail(ctx, "mysql excuteQuery error");
                 return;
             }
         } else {
@@ -339,14 +341,14 @@ module.exports = (ctx, config) => ({
             if (config.hasOwnProperty("database")) {
                 database = config.database;
                 db = global.mongodbObject.find(d => {
-                    return d.database == database;
+                    return d.database === database;
                 }).db;
             } else {
                 database = global.mongodbObject[0].database;
                 db = global.mongodbObject[0].db;
             }
-            let collection = typeof(config.collection) == "function" ? config.collection() : config.collection;
-            let jsonFilter = config.hasOwnProperty("read") ? (typeof(config.read) == "function" ? config.read() : config.read) : {};
+            let collection = typeof(config.collection) === "function" ? config.collection() : config.collection;
+            let jsonFilter = config.hasOwnProperty("read") ? (typeof(config.read) === "function" ? config.read() : config.read) : {};
             let queryJson = {jsonFilter: jsonFilter};
             try {
                 if (config.hasOwnProperty("limitNum")) {
@@ -355,14 +357,15 @@ module.exports = (ctx, config) => ({
                 if (config.hasOwnProperty("sort")) {
                     queryJson.sort = config.sort;
                 }
-                data = await global.mongodb.excuteQuery(db, collection, queryJson);
+                data = await
+                    global.mongodb.excuteQuery(db, collection, queryJson);
                 global.log.table.info(`read done:${database}`);
                 global.log.table.info(jsonFilter);
             } catch (e) {
                 global.log.error.info("mongodb excuteQuery error:" + e);
                 global.log.error.info(database);
                 global.log.error.info(jsonFilter);
-                response.fail(res, "mongodb excuteQuery error");
+                response.fail(ctx, "mongodb excuteQuery error");
                 return;
             }
         }
@@ -383,17 +386,17 @@ module.exports = (ctx, config) => ({
             columnArr = columnArr.filter(d => {
                 //排除掉所有为空的列
                 let isAllEmpty = data.every(d1 => {
-                    return !d1.hasOwnProperty(d) || d1[d] == "";
+                    return !d1.hasOwnProperty(d) || d1[d] === "";
                 });
                 return !isAllEmpty;
             }).map(d => {
                 let findColumn = config.dynamicColumn.find(d1 => {
-                    return d1.id == d;
+                    return d1.id === d;
                 });
-                let name = findColumn == undefined ? d : findColumn.name;
-                let checked = findColumn == undefined ? true : findColumn.checked;
+                let name = findColumn === undefined ? d : findColumn.name;
+                let checked = findColumn === undefined ? true : findColumn.checked;
                 let json = {id: d, name: name, checked: checked};
-                if (findColumn != undefined) {
+                if (findColumn !== undefined) {
                     ["thStyle", "tdStyle"].forEach(d1 => {
                         if (findColumn.hasOwnProperty(d1)) {
                             json[d1] = findColumn[d1];
@@ -404,12 +407,11 @@ module.exports = (ctx, config) => ({
             });
             //去除_id列
             columnArr = columnArr.filter(d => {
-                return d.id != "_id";
+                return d.id !== "_id";
             });
             message.columns = columnArr;
         }
-        res.send({success: "true", message: message});
-
+        response.success(ctx, message);
     },
     delete: (req, res, config) => {
         let table = config.id;

@@ -32,10 +32,10 @@ let config = {
         AvalonFrontEnd: true
     },
     mysql: {
-        BI: {
+        RewardCode: {
             user: "root",
             password: "root",
-            database: "BI"
+            database: "RewardCode"
         },
     },
     mongodb: {
