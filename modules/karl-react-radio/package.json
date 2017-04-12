@@ -1,6 +1,6 @@
 {
   "name": "karl-react-radio",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "description": "react component radio with redux",
   "main": "index.js",
   "author": "lvyangxu",

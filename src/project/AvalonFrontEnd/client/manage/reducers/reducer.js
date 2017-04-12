@@ -1,18 +1,18 @@
 import {
-    SET_MENU_HEIGHT,
+    SET_HEIGHT,
     CHANGE_GAME,
     TOGGLE_MENU,
-    SET_ACTIVE_TAB
+    SET_ACTIVE_TAB,
 } from "../actions/action"
 import $ from "jquery"
 
 export default (state, action) => {
     let newState, pageIndex
     switch (action.type) {
-        case SET_MENU_HEIGHT:
+        case SET_HEIGHT:
             let marginTop = $(action.menuRef).offset().top
-            let menuHeight = $(window).height() - marginTop
-            newState = Object.assign({}, state, {menuHeight: menuHeight})
+            let height = $(window).height() - marginTop
+            newState = Object.assign({}, state, {height: height})
             break
         case CHANGE_GAME:
             let games = state.games.map(d => {

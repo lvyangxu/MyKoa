@@ -6,56 +6,41 @@ Object.defineProperty(exports, "__esModule", {
 
 var _action = require("../actions/action");
 
+var _dataMap = require("../utils/dataMap");
+
 exports.default = function (state, action) {
-    var newState = void 0;
+    var newState = void 0,
+        inputFilterData = void 0,
+        sortedData = void 0,
+        displayData = void 0;
     switch (action.type) {
         case _action.INIT:
             newState = Object.assign({}, state, { columns: action.columns, curd: action.curd });
             break;
         case _action.CHANGE_ROW_FILTER:
-            // let matchValue = value == undefined ? this.state.rowFilterValue : value;
-            // let inputFilterData = this.state.componentFilterData.filter(d => {
-            //     let isFind = false;
-            //     for (let k in d) {
-            //         if (d[k] != null && d[k].toString().toLowerCase().includes(matchValue.toLowerCase())) {
-            //             isFind = true;
-            //             break;
-            //         }
-            //     }
-            //     return isFind;
-            // });
-            // let json = this.sort();
-            // let json2 = {
-            //     pageIndex: 1,
-            //     inputFilterData: inputFilterData
-            // };
-            // if (value != undefined) {
-            //     json2.rowFilterValue = matchValue;
-            // }
-            // this.setState(json2, ()=> {
-            //     let json1 = this.sort();
-            //     for (let k in json1) {
-            //         json[k] = json1[k];
-            //     }
-            //     json.displayData = this.setDisplayData(json.sortedData);
-            //     this.setState(json);
-            // });
-            newState = Object.assign({}, state, { rowFilterValue: action.rowFilterValue });
+            inputFilterData = (0, _dataMap.mapComponentFilterDataToInputFilterData)(state.componentFilterData, action.rowFilterValue);
+            sortedData = (0, _dataMap.mapInputFilterDataToSortedData)(inputFilterData, state.sortColumnId, state.sortDesc);
+            displayData = (0, _dataMap.mapSortedDataToDisplayData)(sortedData, 0, state.rowPerPage);
+            newState = Object.assign({}, state, {
+                rowFilterValue: action.rowFilterValue,
+                pageIndex: 0,
+                inputFilterData: inputFilterData,
+                sortedData: sortedData,
+                displayData: displayData
+            });
             break;
         case _action.CHANGE_COLUMN_FILTER:
-            newState = Object.assign({}, state, { columns: columns });
+            newState = Object.assign({}, state, { columns: action.columns });
             break;
         case _action.CHANGE_PAGE_INDEX:
-            // this.setState({pageIndex: e.target.value}, ()=> {
-            //     let json = this.sort();
-            //     json.displayData = this.setDisplayData(json.sortedData);
-            //     this.setState(json);
-            // });
-            newState = Object.assign({}, state, { pageIndex: pageIndex });
+            displayData = (0, _dataMap.mapSortedDataToDisplayData)(state.sortedData, action.pageIndex, state.rowPerPage);
+            newState = Object.assign({}, state, {
+                pageIndex: action.pageIndex,
+                displayData: displayData
+            });
             break;
         // case READ:
         //     // try {
-
         //     //     //附加查询条件的数据
         //     //     let requestData = {};
         //     //     this.state.serverFilter.forEach(d=> {
@@ -133,6 +118,26 @@ exports.default = function (state, action) {
         case _action.END_LOADING:
             newState = Object.assign({}, state, { isLoading: false });
             break;
+        case _action.SET_SOURCE_DATA:
+            newState = Object.assign({}, state, { sourceData: action.data });
+            break;
+        case _action.SET_COMPONENT_FILTER_DATA:
+            newState = Object.assign({}, state, { componentFilterData: action.data });
+            break;
+        case _action.SET_INPUT_FILTER_DATA:
+            newState = Object.assign({}, state, { inputFilterData: action.data });
+            break;
+        case _action.SET_SORTED_DATA:
+            newState = Object.assign({}, state, { sortedData: action.data });
+            break;
+        case _action.SET_DISPLAY_DATA:
+            newState = Object.assign({}, state, { displayData: action.data });
+            break;
+
+        case _action.UPDATE_COMPONENT_FILTER_DATA:
+            state.newState = Object.assign({}, state, { displayData: action.data });
+            break;
+
         default:
             newState = Object.assign({}, state);
             break;

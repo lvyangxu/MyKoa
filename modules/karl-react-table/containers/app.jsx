@@ -6,12 +6,17 @@ import Table from "../components/table"
 import css from "../index.css"
 import {
     INIT,
-    CHANGE_ROW_FILTER,
-    CHANGE_COLUMN_FILTER,
+    CHANGE_ROW_FILTER, CHANGE_COLUMN_FILTER,
     CHANGE_PAGE_INDEX,
-    READ,
+    SET_SOURCE_DATA, SET_COMPONENT_FILTER_DATA, SET_INPUT_FILTER_DATA, SET_SORTED_DATA, SET_DISPLAY_DATA,
+    START_LOADING, END_LOADING,
 } from "../actions/action"
 import request from "../utils/request"
+import {
+    mapSourceDataToComponentFilterData,
+    mapComponentFilterDataToInputFilterData,
+    mapSortedDataToDisplayData
+} from "../utils/dataMap"
 
 class MyComponent extends Component {
 
@@ -74,6 +79,7 @@ class MyComponent extends Component {
                               columnFilterChangeCallback={this.props.columnFilterChangeCallback}
                               pageIndex={this.props.pageIndex}
                               pageIndexChangeCallback={this.props.pageIndexChangeCallback}
+                              pageArr={this.props.pageArr}
                 />
                 <Table columns={this.props.columns} displayData={this.props.displayData}/>
             </div>
@@ -82,7 +88,6 @@ class MyComponent extends Component {
 
 
 }
-
 
 let mapStateToProps = state => {
     let pageArr = []
@@ -110,8 +115,34 @@ let mapDispatchToProps = dispatch => ({
     pageIndexChangeCallback: pageIndex => {
         dispatch({type: CHANGE_PAGE_INDEX, pageIndex: pageIndex})
     },
-    read: props => {
-        dispatch(READ(props))
+    read: async props => {
+        dispatch({type: START_LOADING})
+        let data
+        try {
+            let message = await request("read", props)
+            data = message.data
+            dispatch({type: END_LOADING})
+        } catch (e) {
+            dispatch({type: END_LOADING})
+            console.log(e)
+            return
+        }
+        dispatch({type: SET_SOURCE_DATA, data: data})
+
+        let componentFilterData = mapSourceDataToComponentFilterData(props, data)
+        dispatch({type: SET_COMPONENT_FILTER_DATA, data: componentFilterData})
+
+        let inputFilterData = mapComponentFilterDataToInputFilterData(componentFilterData, "")
+        dispatch({type: SET_INPUT_FILTER_DATA, data: inputFilterData})
+
+        let sortedData = inputFilterData
+        dispatch({type: SET_SORTED_DATA, data: sortedData})
+
+        let displayData = mapSortedDataToDisplayData(sortedData, 1, props.rowPerPage)
+        dispatch({type: SET_DISPLAY_DATA, data: displayData})
+
+        dispatch({type: CHANGE_PAGE_INDEX, pageIndex: 1})
+
     }
 })
 

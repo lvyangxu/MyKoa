@@ -18,7 +18,7 @@ module.exports = {
                         let jsonData = JSON.parse(chunk);
                         resolve(jsonData);
                     } catch (e) {
-                        reject("invalid json:" + chunk);
+                        reject(chunk);
                     }
                 });
             });
@@ -49,7 +49,7 @@ module.exports = {
                         let jsonData = JSON.parse(chunk);
                         resolve(jsonData);
                     } catch (e) {
-                        reject("invalid json:" + chunk);
+                        reject(chunk);
                     }
                 });
             });

@@ -13,22 +13,22 @@ router.get("/", (ctx, next) => {
 /**
  * 表格路由
  */
-router.get("/table/:id/:action", (ctx, next) => {
-    let {id, action} = ctx.params;
-    if (!table(ctx).hasOwnProperty(action)) {
-        console.log("unknown action:table/" + id + "/" + action);
-        response.fail(ctx, "unknown action");
-    } else {
-        //根据表格id获得表格配置
-        if (!tableConfig(ctx).hasOwnProperty(id)) {
-            response.fail(res, "unknown table " + name);
-            return;
-        }
-
-        //执行表格对应的action
-        let config = tableConfig(ctx)[id];
-        table(ctx, config)[action](id);
-    }
-});
+// router.get("/table/:id/:action", (ctx, next) => {
+//     let {id, action} = ctx.params;
+//     if (!table(ctx).hasOwnProperty(action)) {
+//         console.log("unknown action:table/" + id + "/" + action);
+//         response.fail(ctx, "unknown action");
+//     } else {
+//         //根据表格id获得表格配置
+//         if (!tableConfig(ctx).hasOwnProperty(id)) {
+//             response.fail(res, "unknown table " + name);
+//             return;
+//         }
+//
+//         //执行表格对应的action
+//         let config = tableConfig(ctx)[id];
+//         table(ctx, config)[action](id);
+//     }
+// });
 
 module.exports = router;

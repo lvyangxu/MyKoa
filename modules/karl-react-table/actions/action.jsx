@@ -9,17 +9,13 @@ export const READ_SUCCESS = "READ_SUCCESS"
 export const READ_FAILURE = "READ_FAILURE"
 export const START_LOADING = "START_LOADING"
 export const END_LOADING = "END_LOADING"
+export const UPDATE_UI = "UPDATE_UI"
 
-export function READ(props) {
-    return async dispatch => {
-        dispatch({type: START_LOADING})
-        try {
-            let data = await request("read", props)
-            console.log(data)
-            dispatch({type: END_LOADING})
-        } catch (e) {
-            dispatch({type: END_LOADING})
-            console.log(e)
-        }
-    }
-}
+//设置表格数据
+export const SET_SOURCE_DATA = "SET_SOURCE_DATA"
+export const SET_COMPONENT_FILTER_DATA = "SET_COMPONENT_FILTER_DATA"
+export const SET_INPUT_FILTER_DATA = "SET_INPUT_FILTER_DATA"
+export const SET_SORTED_DATA = "SET_SORTED_DATA"
+export const SET_DISPLAY_DATA = "SET_DISPLAY_DATA"
+
+export const RESET_TABLE = "RESET_TABLE"

@@ -84,6 +84,7 @@ var MyComponent = function (_React$Component) {
                         case 8:
                             value = this.props.hasOwnProperty("initValue") ? this.props.initValue : data[0];
                             preloadedState = {
+                                classNames: this.props.classNames,
                                 data: data,
                                 value: value,
                                 prefix: this.props.prefix,

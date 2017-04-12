@@ -38,6 +38,10 @@ var _index2 = _interopRequireDefault(_index);
 
 var _action = require("../actions/action");
 
+var _classnames = require("classnames");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -70,7 +74,7 @@ var MyComponent = function (_Component) {
 
             return _react2.default.createElement(
                 "div",
-                { className: _index2.default.base, onClick: this.props.stopPropagation },
+                { className: (0, _classnames2.default)(_index2.default.base, this.props.classNames), onClick: this.props.stopPropagation },
                 _react2.default.createElement(_button2.default, { onClick: this.props.togglePanel, buttonValue: this.props.buttonValue, data: this.props.data,
                     prefix: this.props.prefix, suffix: this.props.suffix }),
                 _react2.default.createElement(
@@ -151,6 +155,7 @@ var mapStateToProps = function mapStateToProps(state) {
     });
     var buttonValue = getButtonValue(state.prefix, state.value, state.suffix);
     return {
+        classNames: state.classNames,
         isPanelShow: state.isPanelShow,
         value: state.value,
         buttonValue: buttonValue,

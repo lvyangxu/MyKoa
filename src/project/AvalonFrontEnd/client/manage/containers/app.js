@@ -6,20 +6,23 @@ import Game from "../components/game"
 import css from "../index.css"
 import classnames from "classnames"
 import $ from "jquery"
+import Radio from "karl-react-radio"
 import {
-    SET_MENU_HEIGHT,
+    SET_HEIGHT,
     CHANGE_GAME,
     TOGGLE_MENU,
-    SET_ACTIVE_TAB
+    SET_ACTIVE_TAB,
+
 } from "../actions/action"
 import {HashRouter as Router, Route, Link} from 'react-router-dom'
 
 class MyComponent extends Component {
 
     componentDidMount() {
-        this.props.setMenuHeight(this.menu)
+        console.log("app did mount")
+        this.props.setHeight(this.menu, this.content)
         $(window).resize(() => {
-            this.props.setMenuHeight(this.menu)
+            this.props.setHeight(this.menu, this.content)
         })
     }
 
@@ -33,10 +36,11 @@ class MyComponent extends Component {
         return (
             <Router>
                 <div>
-                    <Game games={this.props.games} changeGame={this.props.changeGame}/>
-                    <div className={css.menu} style={{height: this.props.menuHeight}} ref={d => {
+                    <Radio classNames={css.radio} data={this.props.gameNames} callback={this.props.changeGame}/>
+                    <div className={css.menu} style={{height: this.props.height}} ref={d => {
                         this.menu = d;
                     }}>
+                        <Game games={this.props.games} changeGame={this.props.changeGame}/>
                         <div className={css.li}>
                             <div onClick={() => {
                                 this.props.toggleMenu("礼包与兑换码")
@@ -66,7 +70,9 @@ class MyComponent extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className={css.content}>
+                    <div className={css.content} style={{height: this.props.height}} ref={d => {
+                        this.content = d
+                    }}>
                         <Route exact path="/item" component={ItemMange}/>
                         <Route path="/itemCreate" component={ItemCreate}/>
                     </div>
@@ -78,17 +84,21 @@ class MyComponent extends Component {
 
 
 let mapStateToProps = state => {
+    let gameNames = state.games.map(d => {
+        return d.name
+    })
     return {
-        menuHeight: state.menuHeight,
+        height: state.height,
         games: state.games,
+        gameNames: gameNames,
         menuStatus: state.menuStatus,
         activeTab: state.activeTab,
     }
 }
 
 const mapDispatchToProps = dispatch => ({
-    setMenuHeight: menuRef => {
-        dispatch({type: SET_MENU_HEIGHT, menuRef: menuRef})
+    setHeight: (menuRef, contentRef) => {
+        dispatch({type: SET_HEIGHT, menuRef: menuRef, contentRef: contentRef})
     },
     changeGame: currentGame => {
         dispatch({type: CHANGE_GAME, currentGame: currentGame})
@@ -98,7 +108,10 @@ const mapDispatchToProps = dispatch => ({
     },
     setActiveTab: activeTab => {
         dispatch({type: SET_ACTIVE_TAB, activeTab: activeTab})
-    }
+    },
+    setMenuRef: menuRef => {
+        dispatch({type: SET_MENU_REF, menuRef: menuRef})
+    },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyComponent)

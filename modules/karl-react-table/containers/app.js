@@ -34,6 +34,8 @@ var _request = require("../utils/request");
 
 var _request2 = _interopRequireDefault(_request);
 
+var _dataMap = require("../utils/dataMap");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -134,7 +136,8 @@ var MyComponent = function (_Component) {
                     rowFilterChangeCallback: this.props.rowFilterChangeCallback,
                     columnFilterChangeCallback: this.props.columnFilterChangeCallback,
                     pageIndex: this.props.pageIndex,
-                    pageIndexChangeCallback: this.props.pageIndexChangeCallback
+                    pageIndexChangeCallback: this.props.pageIndexChangeCallback,
+                    pageArr: this.props.pageArr
                 }),
                 _react2.default.createElement(_table2.default, { columns: this.props.columns, displayData: this.props.displayData })
             );
@@ -177,7 +180,60 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
             dispatch({ type: _action.CHANGE_PAGE_INDEX, pageIndex: pageIndex });
         },
         read: function read(props) {
-            dispatch((0, _action.READ)(props));
+            var data, message, componentFilterData, inputFilterData, sortedData, displayData;
+            return regeneratorRuntime.async(function read$(_context2) {
+                while (1) {
+                    switch (_context2.prev = _context2.next) {
+                        case 0:
+                            dispatch({ type: _action.START_LOADING });
+                            data = void 0;
+                            _context2.prev = 2;
+                            _context2.next = 5;
+                            return regeneratorRuntime.awrap((0, _request2.default)("read", props));
+
+                        case 5:
+                            message = _context2.sent;
+
+                            data = message.data;
+                            dispatch({ type: _action.END_LOADING });
+                            _context2.next = 15;
+                            break;
+
+                        case 10:
+                            _context2.prev = 10;
+                            _context2.t0 = _context2["catch"](2);
+
+                            dispatch({ type: _action.END_LOADING });
+                            console.log(_context2.t0);
+                            return _context2.abrupt("return");
+
+                        case 15:
+                            dispatch({ type: _action.SET_SOURCE_DATA, data: data });
+
+                            componentFilterData = (0, _dataMap.mapSourceDataToComponentFilterData)(props, data);
+
+                            dispatch({ type: _action.SET_COMPONENT_FILTER_DATA, data: componentFilterData });
+
+                            inputFilterData = (0, _dataMap.mapComponentFilterDataToInputFilterData)(componentFilterData, "");
+
+                            dispatch({ type: _action.SET_INPUT_FILTER_DATA, data: inputFilterData });
+
+                            sortedData = inputFilterData;
+
+                            dispatch({ type: _action.SET_SORTED_DATA, data: sortedData });
+
+                            displayData = (0, _dataMap.mapSortedDataToDisplayData)(sortedData, 1, props.rowPerPage);
+
+                            dispatch({ type: _action.SET_DISPLAY_DATA, data: displayData });
+
+                            dispatch({ type: _action.CHANGE_PAGE_INDEX, pageIndex: 1 });
+
+                        case 25:
+                        case "end":
+                            return _context2.stop();
+                    }
+                }
+            }, null, undefined, [[2, 10]]);
         }
     };
 };

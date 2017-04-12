@@ -6,58 +6,54 @@ import {
     READ,
     START_LOADING,
     END_LOADING,
+    SET_SOURCE_DATA,
+    SET_COMPONENT_FILTER_DATA,
+    SET_INPUT_FILTER_DATA,
+    SET_SORTED_DATA,
+    SET_DISPLAY_DATA,
+
+    UPDATE_COMPONENT_FILTER_DATA,
+
+    RESET_TABLE,
 } from "../actions/action"
 
+import {
+    mapSourceDataToComponentFilterData,
+    mapComponentFilterDataToInputFilterData,
+    mapInputFilterDataToSortedData,
+    mapSortedDataToDisplayData
+} from "../utils/dataMap"
+
 export default (state, action) => {
-    let newState
+    let newState, inputFilterData, sortedData, displayData
     switch (action.type) {
         case INIT:
             newState = Object.assign({}, state, {columns: action.columns, curd: action.curd})
             break
         case CHANGE_ROW_FILTER:
-            // let matchValue = value == undefined ? this.state.rowFilterValue : value;
-            // let inputFilterData = this.state.componentFilterData.filter(d => {
-            //     let isFind = false;
-            //     for (let k in d) {
-            //         if (d[k] != null && d[k].toString().toLowerCase().includes(matchValue.toLowerCase())) {
-            //             isFind = true;
-            //             break;
-            //         }
-            //     }
-            //     return isFind;
-            // });
-            // let json = this.sort();
-            // let json2 = {
-            //     pageIndex: 1,
-            //     inputFilterData: inputFilterData
-            // };
-            // if (value != undefined) {
-            //     json2.rowFilterValue = matchValue;
-            // }
-            // this.setState(json2, ()=> {
-            //     let json1 = this.sort();
-            //     for (let k in json1) {
-            //         json[k] = json1[k];
-            //     }
-            //     json.displayData = this.setDisplayData(json.sortedData);
-            //     this.setState(json);
-            // });
-            newState = Object.assign({}, state, {rowFilterValue: action.rowFilterValue})
+            inputFilterData = mapComponentFilterDataToInputFilterData(state.componentFilterData, action.rowFilterValue)
+            sortedData = mapInputFilterDataToSortedData(inputFilterData, state.sortColumnId, state.sortDesc)
+            displayData = mapSortedDataToDisplayData(sortedData, 0, state.rowPerPage)
+            newState = Object.assign({}, state, {
+                rowFilterValue: action.rowFilterValue,
+                pageIndex: 0,
+                inputFilterData: inputFilterData,
+                sortedData: sortedData,
+                displayData: displayData
+            })
             break
         case CHANGE_COLUMN_FILTER:
-            newState = Object.assign({}, state, {columns: columns})
+            newState = Object.assign({}, state, {columns: action.columns})
             break
         case CHANGE_PAGE_INDEX:
-            // this.setState({pageIndex: e.target.value}, ()=> {
-            //     let json = this.sort();
-            //     json.displayData = this.setDisplayData(json.sortedData);
-            //     this.setState(json);
-            // });
-            newState = Object.assign({}, state, {pageIndex: pageIndex})
+            displayData = mapSortedDataToDisplayData(state.sortedData, action.pageIndex, state.rowPerPage)
+            newState = Object.assign({}, state, {
+                pageIndex: action.pageIndex,
+                displayData: displayData
+            })
             break
         // case READ:
         //     // try {
-
         //     //     //附加查询条件的数据
         //     //     let requestData = {};
         //     //     this.state.serverFilter.forEach(d=> {
@@ -135,6 +131,27 @@ export default (state, action) => {
         case END_LOADING:
             newState = Object.assign({}, state, {isLoading: false})
             break
+        case SET_SOURCE_DATA:
+            newState = Object.assign({}, state, {sourceData: action.data})
+            break
+        case SET_COMPONENT_FILTER_DATA:
+            newState = Object.assign({}, state, {componentFilterData: action.data})
+            break
+        case SET_INPUT_FILTER_DATA:
+            newState = Object.assign({}, state, {inputFilterData: action.data})
+            break
+        case SET_SORTED_DATA:
+            newState = Object.assign({}, state, {sortedData: action.data})
+            break
+        case SET_DISPLAY_DATA:
+            newState = Object.assign({}, state, {displayData: action.data})
+            break
+
+        case UPDATE_COMPONENT_FILTER_DATA:
+            state.newState = Object.assign({}, state, {displayData: action.data})
+            break
+
+
         default:
             newState = Object.assign({}, state)
             break

@@ -77,7 +77,8 @@ var MyComponent = function (_Component) {
                 componentFilterData: [],
                 inputFilterData: [],
                 sortedData: [],
-                displayData: []
+                displayData: [],
+                pageIndex: 1
 
             };
             store = (0, _redux.createStore)(_reducer2.default, preloadedState, (0, _redux.applyMiddleware)(_reduxThunk2.default));

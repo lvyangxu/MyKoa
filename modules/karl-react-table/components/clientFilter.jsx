@@ -6,15 +6,15 @@ import Select from "karl-component-select"
 export default class MyComponent extends Component {
 
     static propTypes = {
+        columnFilterChangeCallback: PropTypes.func.isRequired,
         rowFilterValue: PropTypes.string.isRequired,
         rowFilterChangeCallback: PropTypes.func.isRequired,
         pageIndexChangeCallback: PropTypes.func.isRequired,
-        pageArr: PropTypes.array.isRequired
+        pageArr: PropTypes.array.isRequired,
     }
 
     static defaultProps = {
         pageArr: [],
-        pageIndex: 0,
         columns: [],
     }
 
@@ -22,7 +22,7 @@ export default class MyComponent extends Component {
         return (
             <div className={css.clientFilter}>
                 <div className={css.section}>
-                    <Select data={this.props.columns} text="列过滤"/>
+                    <Select data={this.props.columns} text="列过滤" callback={this.props.columnFilterChangeCallback}/>
                 </div>
                 <div className={css.section}>
                     <input className={css.rowFilter} placeholder="行过滤" value={this.props.rowFilterValue}
@@ -35,8 +35,8 @@ export default class MyComponent extends Component {
                         this.props.pageIndexChangeCallback(e.target.value)
                     }}>
                         {
-                            this.props.pageArr.map(d => {
-                                return <option value={d}>{d}</option>
+                            this.props.pageArr.map((d, i) => {
+                                return <option key={i} value={d}>{d}</option>
                             })
                         }
                     </select>

@@ -29,7 +29,7 @@ router.post("/rewardCode/add", async (ctx, next) => {
 /**
  * 表格路由
  */
-router.post("/table/:id/:action", (ctx, next) => {
+router.post("/table/:id/:action", async (ctx, next) => {
     let {id, action} = ctx.params;
     if (!table(ctx).hasOwnProperty(action)) {
         console.log("unknown action:table/" + id + "/" + action);
@@ -43,7 +43,9 @@ router.post("/table/:id/:action", (ctx, next) => {
 
         //执行表格对应的action
         let config = tableConfig(ctx)[id];
-        table(ctx, config)[action](id);
+        await table(ctx, config)[action](id);
+
+
     }
 });
 

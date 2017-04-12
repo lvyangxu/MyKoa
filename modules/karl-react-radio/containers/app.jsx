@@ -17,6 +17,7 @@ import {
     DO_PAGE_START,
     DO_PAGE_END
 } from "../actions/action"
+import classnames from "classnames"
 
 class MyComponent extends Component {
 
@@ -29,7 +30,7 @@ class MyComponent extends Component {
 
     render() {
         return (
-            <div className={css.base} onClick={this.props.stopPropagation}>
+            <div className={classnames(css.base, this.props.classNames)} onClick={this.props.stopPropagation}>
                 <Button onClick={this.props.togglePanel} buttonValue={this.props.buttonValue} data={this.props.data}
                         prefix={this.props.prefix} suffix={this.props.suffix}/>
                 <Panel isPanelShow={this.props.isPanelShow}>
@@ -104,6 +105,7 @@ let mapStateToProps = state => {
     })
     let buttonValue = getButtonValue(state.prefix, state.value, state.suffix)
     return {
+        classNames: state.classNames,
         isPanelShow: state.isPanelShow,
         value: state.value,
         buttonValue: buttonValue,

@@ -38,6 +38,7 @@ class MyComponent extends Component {
             inputFilterData: [],
             sortedData: [],
             displayData: [],
+            pageIndex: 1,
 
         }
         store = createStore(reducer, preloadedState, applyMiddleware(thunkMiddleware))

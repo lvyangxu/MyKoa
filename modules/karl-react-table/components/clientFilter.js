@@ -50,7 +50,7 @@ var MyComponent = function (_Component) {
                 _react2.default.createElement(
                     "div",
                     { className: _index2.default.section },
-                    _react2.default.createElement(_karlComponentSelect2.default, { data: this.props.columns, text: "\u5217\u8FC7\u6EE4" })
+                    _react2.default.createElement(_karlComponentSelect2.default, { data: this.props.columns, text: "\u5217\u8FC7\u6EE4", callback: this.props.columnFilterChangeCallback })
                 ),
                 _react2.default.createElement(
                     "div",
@@ -68,10 +68,10 @@ var MyComponent = function (_Component) {
                         { className: _index2.default.page, value: this.props.pageIndex, onChange: function onChange(e) {
                                 _this2.props.pageIndexChangeCallback(e.target.value);
                             } },
-                        this.props.pageArr.map(function (d) {
+                        this.props.pageArr.map(function (d, i) {
                             return _react2.default.createElement(
                                 "option",
-                                { value: d },
+                                { key: i, value: d },
                                 d
                             );
                         })
@@ -92,6 +92,7 @@ var MyComponent = function (_Component) {
 }(_react.Component);
 
 MyComponent.propTypes = {
+    columnFilterChangeCallback: _react.PropTypes.func.isRequired,
     rowFilterValue: _react.PropTypes.string.isRequired,
     rowFilterChangeCallback: _react.PropTypes.func.isRequired,
     pageIndexChangeCallback: _react.PropTypes.func.isRequired,
@@ -99,7 +100,6 @@ MyComponent.propTypes = {
 };
 MyComponent.defaultProps = {
     pageArr: [],
-    pageIndex: 0,
     columns: []
 };
 exports.default = MyComponent;

@@ -30,6 +30,7 @@ class MyComponent extends React.Component {
         }
         let value = this.props.hasOwnProperty("initValue") ? this.props.initValue : data[0]
         let preloadedState = {
+            classNames: this.props.classNames,
             data: data,
             value: value,
             prefix: this.props.prefix,
@@ -38,7 +39,7 @@ class MyComponent extends React.Component {
             pageIndex: 0,
             filterValue: "",
             initCallback: this.props.initCallback,
-            callback: this.props.callback
+            callback: this.props.callback,
         }
         store = createStore(reducer, preloadedState)
     }

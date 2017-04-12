@@ -1,6 +1,7 @@
 let response = require("./response");
 let fs = require("fs");
 
+
 module.exports = (ctx, config) => ({
     init: async () => {
 
@@ -357,8 +358,7 @@ module.exports = (ctx, config) => ({
                 if (config.hasOwnProperty("sort")) {
                     queryJson.sort = config.sort;
                 }
-                data = await
-                    global.mongodb.excuteQuery(db, collection, queryJson);
+                data = await global.mongodb.excuteQuery(db, collection, queryJson);
                 global.log.table.info(`read done:${database}`);
                 global.log.table.info(jsonFilter);
             } catch (e) {
