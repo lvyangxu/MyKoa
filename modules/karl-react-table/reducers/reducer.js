@@ -15,7 +15,9 @@ exports.default = function (state, action) {
         displayData = void 0;
     switch (action.type) {
         case _action.INIT:
-            newState = Object.assign({}, state, { columns: action.columns, curd: action.curd });
+            var initData = Object.assign({}, action);
+            delete initData.type;
+            newState = Object.assign({}, state, initData);
             break;
         case _action.CHANGE_ROW_FILTER:
             inputFilterData = (0, _dataMap.mapComponentFilterDataToInputFilterData)(state.componentFilterData, action.rowFilterValue);
@@ -32,6 +34,11 @@ exports.default = function (state, action) {
         case _action.CHANGE_COLUMN_FILTER:
             newState = Object.assign({}, state, { columns: action.columns });
             break;
+        case _action.CHANGE_SERVER_FILTER:
+            var serverFilterJson = {};
+            serverFilterJson[action.id] = action.value;
+            newState = Object.assign({}, state, serverFilterJson);
+            break;
         case _action.CHANGE_PAGE_INDEX:
             displayData = (0, _dataMap.mapSortedDataToDisplayData)(state.sortedData, action.pageIndex, state.rowPerPage);
             newState = Object.assign({}, state, {
@@ -39,6 +46,10 @@ exports.default = function (state, action) {
                 displayData: displayData
             });
             break;
+        case _action.CHANGE_ROW_PER_PAGE:
+            newState = Object.assign({}, state, { rowPerPage: action.rowPerPage });
+            break;
+
         // case READ:
         //     // try {
         //     //     //附加查询条件的数据
@@ -118,6 +129,8 @@ exports.default = function (state, action) {
         case _action.END_LOADING:
             newState = Object.assign({}, state, { isLoading: false });
             break;
+
+        //设置表格数据
         case _action.SET_SOURCE_DATA:
             newState = Object.assign({}, state, { sourceData: action.data });
             break;
@@ -135,7 +148,15 @@ exports.default = function (state, action) {
             break;
 
         case _action.UPDATE_COMPONENT_FILTER_DATA:
-            state.newState = Object.assign({}, state, { displayData: action.data });
+            newState = Object.assign({}, state, { displayData: action.data });
+            break;
+
+        //改变表格排序状态
+        case _action.CHANGE_SORT_DESC:
+            newState = Object.assign({}, state, { sortDesc: action.sortDesc });
+            break;
+        case _action.CHANGE_SORT_COLUMN_ID:
+            newState = Object.assign({}, state, { sortColumnId: action.sortColumnId });
             break;
 
         default:

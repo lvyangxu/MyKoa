@@ -71,16 +71,18 @@ router.post("/api/:services", async (ctx, next) => {
         return;
     }
 
-
+    let requestData = Object.assign({},ctx.request.body);
+    delete requestData.jwt;
+    console.log(requestData)
 
     //转发到其他服务
     try {
-        // let data = await http.post({
-        //     port: findService.port,
-        //     path: path
-        // });
         let res = await fetch(`http://localhost:${findService.port}${path}`,{
-            method: 'POST'
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify(requestData)
         })
         let data = await res.json();
 

@@ -30,7 +30,6 @@
         <item url="file://$PROJECT_DIR$/modules/karl-react-table/containers/app.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-table/utils/dataMap.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-radio/index.js" />
-        <item url="file://$PROJECT_DIR$/modules/karl-react-table/utils/dataMap.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-datepicker/components/button.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-react-datepicker/components/panel.js" />
         <item url="file://$PROJECT_DIR$/modules/karl-jwt/index.js" />
@@ -111,7 +110,6 @@
       <root url="file://$PROJECT_DIR$/modules/karl-react-table/containers/app.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-table/utils/dataMap.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-radio/index.js" />
-      <root url="file://$PROJECT_DIR$/modules/karl-react-table/utils/dataMap.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-datepicker/components/button.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-react-datepicker/components/panel.js" />
       <root url="file://$PROJECT_DIR$/modules/karl-jwt/index.js" />

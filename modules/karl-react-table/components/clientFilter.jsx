@@ -2,6 +2,7 @@ import React, {PropTypes, Component} from "react"
 import classnames from "classnames"
 import css from "../index.css"
 import Select from "karl-component-select"
+import Radio from "karl-react-radio"
 
 export default class MyComponent extends Component {
 
@@ -11,6 +12,8 @@ export default class MyComponent extends Component {
         rowFilterChangeCallback: PropTypes.func.isRequired,
         pageIndexChangeCallback: PropTypes.func.isRequired,
         pageArr: PropTypes.array.isRequired,
+        rowPerPageChangeCallback:PropTypes.func.isRequired,
+        rowPerPage:PropTypes.number.isRequired,
     }
 
     static defaultProps = {
@@ -42,6 +45,10 @@ export default class MyComponent extends Component {
                     </select>
                     <label>共{this.props.pageArr.length}页</label>
                 </div>
+                <Radio prefix="每页" initValue={this.props.rowPerPage} suffix="行" data={[5, 10, 15, 20, 25, 50, 100]}
+                       callback={d => {
+                           this.props.rowPerPageChangeCallback(d)
+                       }}/>
             </div>
         )
     }

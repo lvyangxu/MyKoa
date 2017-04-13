@@ -1,12 +1,13 @@
 import "babel-polyfill"
 import React from "react"
 import ReactDom from "react-dom"
-import {createStore} from "redux"
+import {createStore, applyMiddleware} from "redux"
 import {Provider} from "react-redux"
 import App from "./containers/app"
 import reducer from "./reducers/reducer"
 import "font-awesome-webpack"
-
+import thunkMiddleware from 'redux-thunk'
+import "isomorphic-fetch"
 let store = {}
 
 class MyComponent extends React.Component {
@@ -15,15 +16,18 @@ class MyComponent extends React.Component {
         let preloadedState = {
             prefix: this.props.prefix,
             games: [
-                {name: "贪婪洞窟1", imageName: "1.gif", checked: true},
-                {name: "贪婪洞窟2", imageName: "2.gif", checked: false}
+                {name: "贪婪洞窟1", imageName: "1.gif"},
+                {name: "贪婪洞窟2", imageName: "2.gif"}
             ],
+            currentGame: "贪婪洞窟1",
             menuStatus: [
                 {name: "礼包与兑换码", expand: false}
             ],
-            activeTab: "礼包管理"
+            activeTab: "礼包管理",
+            itemList: [],
+            currentItemList: [],
         }
-        store = createStore(reducer, preloadedState)
+        store = createStore(reducer, preloadedState, applyMiddleware(thunkMiddleware))
     }
 
     render() {

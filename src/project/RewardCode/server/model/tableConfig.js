@@ -45,6 +45,7 @@
  * @param ctx koa中的ctx对象
  */
 module.exports = ctx => {
+    let tableModel = require("./tableModel")(ctx);
     return {
         item: {
             name: "道具列表",
@@ -54,22 +55,32 @@ module.exports = ctx => {
                 {id: "id", name: "道具id", checked: true},
                 {id: "name", name: "道具名称", checked: true},
                 {id: "value", name: "价值", checked: true},
-                {id: "image", name: "图片", checked: true},
+                {id: "image", name: "图片", checked: true, type: "image", imageStyle: {height: "40px"}},
             ]
         },
         itemBundle: {
             name: "礼包管理",
             database: "RewardCode",
-            curd: "curd",
+            curd: "urd",
             columns: [
                 {id: "name", name: "名称", checked: true},
                 {id: "id", name: "ID", checked: true},
                 {id: "creater", name: "创建者", checked: true},
-                {id: "createTime", name: "创建日期", checked: true},
+                {id: "createTime", name: "创建日期", checked: true, type: "rangeDay", serverFilter: true},
                 {id: "itemNum", name: "包含物品数量", checked: true},
                 {id: "usedTimes", name: "被引用次数", checked: true},
                 {id: "review", name: "审核", checked: true},
-            ]
+            ],
+            read: () => {
+                console.log(ctx.request.body);
+                let whereArr = [
+                    tableModel.condition.rangeDate("createTime", "createTime")
+                ];
+                let whereStr = tableModel.where(whereArr);
+                let sqlCommond = `select id,name,creater,createTime,(length(itemIds)-length(replace(itemIds,",",""))+1) as itemNum
+                                    from itemBundle ${whereStr}`;
+                return sqlCommond;
+            }
         }
     }
 

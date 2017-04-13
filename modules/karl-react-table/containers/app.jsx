@@ -6,58 +6,46 @@ import Table from "../components/table"
 import css from "../index.css"
 import {
     INIT,
-    CHANGE_ROW_FILTER, CHANGE_COLUMN_FILTER,
+    CHANGE_ROW_FILTER, CHANGE_COLUMN_FILTER, CHANGE_SERVER_FILTER, CHANGE_ROW_PER_PAGE,
     CHANGE_PAGE_INDEX,
     SET_SOURCE_DATA, SET_COMPONENT_FILTER_DATA, SET_INPUT_FILTER_DATA, SET_SORTED_DATA, SET_DISPLAY_DATA,
     START_LOADING, END_LOADING,
+    CHANGE_SORT_DESC, CHANGE_SORT_COLUMN_ID,
 } from "../actions/action"
 import request from "../utils/request"
 import {
     mapSourceDataToComponentFilterData,
     mapComponentFilterDataToInputFilterData,
+    mapInputFilterDataToSortedData,
     mapSortedDataToDisplayData
 } from "../utils/dataMap"
 
 class MyComponent extends Component {
 
-    static defaultProps = {
-        inputFilterData: []
-    }
+    static defaultProps = {}
 
     async componentWillMount() {
+        let data
         try {
             //从服务器获取数据
-            let data = await request("init", this.props)
-            let initData = {
-                columns: data.columns,
-                curd: data.curd
-            }
-            //服务器过滤列组件
-            let serverFilter = data.columns.filter(d => {
-                return d.hasOwnProperty("serverFilter")
-            });
-            if (data.hasOwnProperty("extraFilter")) {
-                serverFilter = serverFilter.concat(data.extraFilter)
-            }
-            initData.serverFilter = serverFilter
-            //最小化列显示
-            if (data.hasOwnProperty("isMinColumn")) {
-                initData.isMinColumn = data.isMinColumn
-            }
-            //初始化图表
-            if (data.hasOwnProperty("chart")) {
-                initData.chart = data.chart
-            }
-            //每页显示的行数
-            if (data.hasOwnProperty("rowPerPage")) {
-                initData.rowPerPage = data.rowPerPage
-            }
-
-            this.props.init(initData)
+            data = await request("init", this.props)
         } catch (e) {
             console.log(`init table ${this.props.id} failed`)
             console.log(e)
         }
+
+        //服务器过滤列组件
+        let serverFilter = data.columns.filter(d => {
+            return d.hasOwnProperty("serverFilter")
+        });
+        if (data.hasOwnProperty("extraFilter")) {
+            serverFilter = serverFilter.concat(data.extraFilter)
+        }
+
+        let initData = Object.assign({}, data, {
+            serverFilter: serverFilter
+        })
+        this.props.init(initData)
     }
 
     componentDidMount() {
@@ -69,9 +57,16 @@ class MyComponent extends Component {
     render() {
         return (
             <div className={css.base}>
-                <ServerFilter read={() => {
-                    this.props.read(this.props)
-                }} isLoading={this.props.isLoading}/>
+                <ServerFilter isLoading={this.props.isLoading} serverFilter={this.props.serverFilter}
+                              serverFilterChangeCallback={this.props.serverFilterChangeCallback}
+                              read={() => {
+                                  this.props.read(this.props)
+                              }}
+                              curd={this.props.curd}
+                              exportClickCallback={this.props.exportClickCallback}
+                              createClickCallback={this.props.createClickCallback}
+                              createText={this.props.createText}
+                />
                 <ClientFilter columns={this.props.columns}
                               curd={this.props.curd}
                               rowFilterValue={this.props.rowFilterValue}
@@ -80,8 +75,17 @@ class MyComponent extends Component {
                               pageIndex={this.props.pageIndex}
                               pageIndexChangeCallback={this.props.pageIndexChangeCallback}
                               pageArr={this.props.pageArr}
+                              rowPerPage={this.props.rowPerPage}
+                              rowPerPageChangeCallback={rowPerPage => {
+                                  this.props.rowPerPageChangeCallback(rowPerPage, this.props)
+                              }}
                 />
-                <Table columns={this.props.columns} displayData={this.props.displayData}/>
+                <Table columns={this.props.columns} displayData={this.props.displayData}
+                       sortDesc={this.props.sortDesc} sortColumnId={this.props.sortColumnId}
+                       thClickCallback={id => {
+                           this.props.thClickCallback(id, this.props)
+                       }}
+                />
             </div>
         )
     }
@@ -115,11 +119,39 @@ let mapDispatchToProps = dispatch => ({
     pageIndexChangeCallback: pageIndex => {
         dispatch({type: CHANGE_PAGE_INDEX, pageIndex: pageIndex})
     },
+    rowPerPageChangeCallback: (rowPerPage, props) => {
+        dispatch({type: CHANGE_ROW_PER_PAGE, rowPerPage: rowPerPage})
+        dispatch({type: CHANGE_PAGE_INDEX, pageIndex: 1})
+        let displayData = mapSortedDataToDisplayData(props.sortedData, 1, rowPerPage)
+        dispatch({type: SET_DISPLAY_DATA, data: displayData})
+    },
     read: async props => {
         dispatch({type: START_LOADING})
         let data
+        //附加查询条件的数据
+        let requestData = {};
+        props.serverFilter.forEach(d => {
+            switch (d.type) {
+                case "day":
+                case "month":
+                case "select":
+                case "input":
+                case "integer":
+                case "radio":
+                    requestData[d.id] = props[d.id + "Condition"];
+                    break;
+                case "rangeDay":
+                case "rangeMonth":
+                case "rangeSecond":
+                    requestData[d.id] = {
+                        start: props[d.id + "ConditionStart"],
+                        end: props[d.id + "ConditionEnd"]
+                    };
+                    break;
+            }
+        })
         try {
-            let message = await request("read", props)
+            let message = await request("read", props, requestData)
             data = message.data
             dispatch({type: END_LOADING})
         } catch (e) {
@@ -143,6 +175,26 @@ let mapDispatchToProps = dispatch => ({
 
         dispatch({type: CHANGE_PAGE_INDEX, pageIndex: 1})
 
+    },
+    serverFilterChangeCallback: (id, value) => {
+        dispatch({type: CHANGE_SERVER_FILTER, id: id, value: value})
+    },
+    thClickCallback: (id, props) => {
+        let sortDesc = id === props.sortColumnId ? !props.sortDesc : true
+        let sortedData = mapInputFilterDataToSortedData(props.inputFilterData, id, sortDesc);
+        dispatch({type: SET_SORTED_DATA, data: sortedData})
+
+        let displayData = mapSortedDataToDisplayData(sortedData, props.pageIndex, props.rowPerPage)
+        dispatch({type: SET_DISPLAY_DATA, data: displayData})
+
+        dispatch({type: CHANGE_SORT_DESC, sortDesc: sortDesc})
+        dispatch({type: CHANGE_SORT_COLUMN_ID, sortColumnId: id})
+    },
+    exportClickCallback: () => {
+
+    },
+    createClickCallback: () => {
+        location.hash = "itemBundleCreate"
     }
 })
 

@@ -22,6 +22,10 @@ var _karlComponentSelect = require("karl-component-select");
 
 var _karlComponentSelect2 = _interopRequireDefault(_karlComponentSelect);
 
+var _karlReactRadio = require("karl-react-radio");
+
+var _karlReactRadio2 = _interopRequireDefault(_karlReactRadio);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -83,7 +87,11 @@ var MyComponent = function (_Component) {
                         this.props.pageArr.length,
                         "\u9875"
                     )
-                )
+                ),
+                _react2.default.createElement(_karlReactRadio2.default, { prefix: "\u6BCF\u9875", initValue: this.props.rowPerPage, suffix: "\u884C", data: [5, 10, 15, 20, 25, 50, 100],
+                    callback: function callback(d) {
+                        _this2.props.rowPerPageChangeCallback(d);
+                    } })
             );
         }
     }]);
@@ -96,7 +104,9 @@ MyComponent.propTypes = {
     rowFilterValue: _react.PropTypes.string.isRequired,
     rowFilterChangeCallback: _react.PropTypes.func.isRequired,
     pageIndexChangeCallback: _react.PropTypes.func.isRequired,
-    pageArr: _react.PropTypes.array.isRequired
+    pageArr: _react.PropTypes.array.isRequired,
+    rowPerPageChangeCallback: _react.PropTypes.func.isRequired,
+    rowPerPage: _react.PropTypes.number.isRequired
 };
 MyComponent.defaultProps = {
     pageArr: [],

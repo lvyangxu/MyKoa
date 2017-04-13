@@ -1,15 +1,21 @@
 import request from "../utils/request"
 
 export const INIT = "INIT"
+
+//改变过滤器的值
 export const CHANGE_ROW_FILTER = "CHANGE_ROW_FILTER"
 export const CHANGE_COLUMN_FILTER = "CHANGE_COLUMN_FILTER"
+export const CHANGE_SERVER_FILTER = "CHANGE_SERVER_FILTER"
+
+//改变排序状态
+export const CHANGE_SORT_DESC = "CHANGE_SORT_DESC"
+export const CHANGE_SORT_COLUMN_ID = "CHANGE_SORT_COLUMN_ID"
+
+//表格按钮状态
 export const CHANGE_PAGE_INDEX = "CHANGE_PAGE_INDEX"
-export const READ_START = "READ_START"
-export const READ_SUCCESS = "READ_SUCCESS"
-export const READ_FAILURE = "READ_FAILURE"
 export const START_LOADING = "START_LOADING"
 export const END_LOADING = "END_LOADING"
-export const UPDATE_UI = "UPDATE_UI"
+export const CHANGE_ROW_PER_PAGE = "CHANGE_ROW_PER_PAGE"
 
 //设置表格数据
 export const SET_SOURCE_DATA = "SET_SOURCE_DATA"

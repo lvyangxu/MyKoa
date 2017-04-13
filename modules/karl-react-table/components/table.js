@@ -58,9 +58,7 @@ var MyComponent = function (_Component) {
                         var th = _react2.default.createElement(
                             "th",
                             { key: i, style: style, onClick: function onClick() {
-                                    var json = _this2.sort(d.id);
-                                    json.displayData = _this2.setDisplayData(json.sortedData);
-                                    _this2.setState(json);
+                                    _this2.props.thClickCallback(d.id);
                                 } },
                             d.name,
                             _this2.props.sortColumnId === d.id ? _react2.default.createElement("i", { className: (0, _classnames2.default)("fa", {
@@ -77,22 +75,36 @@ var MyComponent = function (_Component) {
                 null,
                 this.props.displayData.map(function (d, i) {
                     var tds = _this2.props.columns.map(function (d1, j) {
-                        var tdHtml = d[d1.id];
-                        if (tdHtml) {
-                            tdHtml = tdHtml.toString().replace(/\n/g, "<br/>");
-                        }
-                        //当含有后缀并且不为空字符串时，附加后缀
-                        if (d1.hasOwnProperty("suffix") && tdHtml !== "") {
-                            tdHtml += d1.suffix;
-                        }
-                        var style = d1.hasOwnProperty("tdStyle") ? d1.tdStyle : {};
-                        if (d1.hasOwnProperty("checked") && d1.checked === false) {
-                            style.display = "none";
+                        var tdDom = void 0;
+                        var _d1$style = d1.style,
+                            style = _d1$style === undefined ? {} : _d1$style,
+                            _d1$imageStyle = d1.imageStyle,
+                            imageStyle = _d1$imageStyle === undefined ? {} : _d1$imageStyle;
+
+                        if (d1.type === "image") {
+                            tdDom = _react2.default.createElement(
+                                "td",
+                                { key: j, style: style },
+                                _react2.default.createElement("img", { style: imageStyle, src: "images/" + d[d1.id] })
+                            );
                         } else {
-                            delete style.display;
+                            var tdHtml = d[d1.id];
+                            if (tdHtml) {
+                                tdHtml = tdHtml.toString().replace(/\n/g, "<br/>");
+                            }
+                            //当含有后缀并且不为空字符串时，附加后缀
+                            if (d1.hasOwnProperty("suffix") && tdHtml !== "") {
+                                tdHtml += d1.suffix;
+                            }
+                            if (d1.hasOwnProperty("checked") && d1.checked === false) {
+                                style.display = "none";
+                            } else {
+                                delete style.display;
+                            }
+                            tdDom = _react2.default.createElement("td", { key: j, style: style, dangerouslySetInnerHTML: { __html: tdHtml } });
                         }
-                        return _react2.default.createElement("td", { key: j, style: style,
-                            dangerouslySetInnerHTML: { __html: tdHtml } });
+
+                        return tdDom;
                     });
                     var tr = _react2.default.createElement(
                         "tr",
@@ -119,7 +131,11 @@ var MyComponent = function (_Component) {
     return MyComponent;
 }(_react.Component);
 
-MyComponent.propTypes = {};
+MyComponent.propTypes = {
+    thClickCallback: _react.PropTypes.func.isRequired,
+    sortDesc: _react.PropTypes.bool.isRequired,
+    sortColumnId: _react.PropTypes.string.isRequired
+};
 MyComponent.defaultProps = {
     columns: []
 };

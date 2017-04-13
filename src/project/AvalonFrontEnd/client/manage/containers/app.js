@@ -1,7 +1,9 @@
 import React, {Component} from "react"
 import {connect} from "react-redux"
-import ItemMange from "../components/itemManage"
-import ItemCreate from "../components/itemCreate"
+import ItemBundle from "../components/itemBundle"
+import Item from "../components/item"
+import CodeBundle from "../components/codeBundle"
+import ItemBundleCreate from "../components/itemBundleCreate"
 import Game from "../components/game"
 import css from "../index.css"
 import classnames from "classnames"
@@ -12,14 +14,41 @@ import {
     CHANGE_GAME,
     TOGGLE_MENU,
     SET_ACTIVE_TAB,
-
+    SET_ITEM_LIST,
+    ADD_ITEM,
+    CHANGE_ITEM
 } from "../actions/action"
 import {HashRouter as Router, Route, Link} from 'react-router-dom'
 
 class MyComponent extends Component {
 
+    async componentWillMount() {
+        let jwt = localStorage.getItem("AuthorizeServer-jwt")
+        if (jwt === null) {
+            location.href = "../login/"
+            return
+        }
+        let data = {jwt: jwt}
+        let path = `/table/item/read`
+        data = Object.assign({}, {path: path}, data)
+        let itemList = []
+        try {
+            let response = await fetch(`../api/rewardCode`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            let responseData = await response.json()
+            itemList = responseData.message.data
+            this.props.setItemList(itemList)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     componentDidMount() {
-        console.log("app did mount")
         this.props.setHeight(this.menu, this.content)
         $(window).resize(() => {
             this.props.setHeight(this.menu, this.content)
@@ -36,11 +65,12 @@ class MyComponent extends Component {
         return (
             <Router>
                 <div>
-                    <Radio classNames={css.radio} data={this.props.gameNames} callback={this.props.changeGame}/>
                     <div className={css.menu} style={{height: this.props.height}} ref={d => {
                         this.menu = d;
                     }}>
-                        <Game games={this.props.games} changeGame={this.props.changeGame}/>
+                        <Game games={this.props.games} changeGame={this.props.changeGame}
+                              gameNames={this.props.gameNames} currentGame={this.props.currentGame}
+                              gameChangeCallback={this.props.changeGame}/>
                         <div className={css.li}>
                             <div onClick={() => {
                                 this.props.toggleMenu("礼包与兑换码")
@@ -51,7 +81,7 @@ class MyComponent extends Component {
                                 })}></i>礼包与兑换码
                             </div>
                             <div style={giftAndCodeExpand ? {} : {display: "none"}}>
-                                <Link to="/item" replace>
+                                <Link to="/itemBundle" replace>
                                     <div onClick={() => {
                                         this.props.setActiveTab("礼包管理")
                                     }}
@@ -59,12 +89,20 @@ class MyComponent extends Component {
                                         礼包管理
                                     </div>
                                 </Link>
-                                <Link to="/itemCreate" replace>
+                                <Link to="/item" replace>
                                     <div onClick={() => {
-                                        this.props.setActiveTab("新建礼包")
+                                        this.props.setActiveTab("道具列表")
                                     }}
-                                         className={classnames(css.li, this.props.activeTab === "新建礼包" ? css.active : "")}>
-                                        新建礼包
+                                         className={classnames(css.li, this.props.activeTab === "道具列表" ? css.active : "")}>
+                                        道具列表
+                                    </div>
+                                </Link>
+                                <Link to="/codeBundle" replace>
+                                    <div onClick={() => {
+                                        this.props.setActiveTab("兑换码管理")
+                                    }}
+                                         className={classnames(css.li, this.props.activeTab === "兑换码管理" ? css.active : "")}>
+                                        兑换码管理
                                     </div>
                                 </Link>
                             </div>
@@ -73,8 +111,16 @@ class MyComponent extends Component {
                     <div className={css.content} style={{height: this.props.height}} ref={d => {
                         this.content = d
                     }}>
-                        <Route exact path="/item" component={ItemMange}/>
-                        <Route path="/itemCreate" component={ItemCreate}/>
+                        <Route path="/itemBundle" component={ItemBundle}/>
+                        <Route path="/itemBundleCreate" component={() => {
+                            return <ItemBundleCreate itemList={this.props.itemList}
+                                                     currentItemList={this.props.currentItemList}
+                                                     addButtonClickCallback={this.props.addItem}
+                                                     currentItemChangeCallback={this.props.changeItem}
+                            />
+                        }}/>
+                        <Route path="/item" component={Item}/>
+                        <Route path="/codeBundle" component={CodeBundle}/>
                     </div>
                 </div>
             </Router>
@@ -87,13 +133,10 @@ let mapStateToProps = state => {
     let gameNames = state.games.map(d => {
         return d.name
     })
-    return {
-        height: state.height,
-        games: state.games,
+    let props = Object.assign({}, state, {
         gameNames: gameNames,
-        menuStatus: state.menuStatus,
-        activeTab: state.activeTab,
-    }
+    })
+    return props
 }
 
 const mapDispatchToProps = dispatch => ({
@@ -112,6 +155,15 @@ const mapDispatchToProps = dispatch => ({
     setMenuRef: menuRef => {
         dispatch({type: SET_MENU_REF, menuRef: menuRef})
     },
+    setItemList: itemList => {
+        dispatch({type: SET_ITEM_LIST, itemList: itemList})
+    },
+    addItem: () => {
+        dispatch({type: ADD_ITEM})
+    },
+    changeItem: (d, i) => {
+        dispatch({type: CHANGE_ITEM, itemName: d, index: i})
+    }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyComponent)

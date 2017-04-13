@@ -56,23 +56,31 @@ var MyComponent = function (_Component) {
     _createClass(MyComponent, [{
         key: "componentWillMount",
         value: function componentWillMount() {
-            var data, initData, serverFilter;
+            var data, serverFilter, initData;
             return regeneratorRuntime.async(function componentWillMount$(_context) {
                 while (1) {
                     switch (_context.prev = _context.next) {
                         case 0:
-                            _context.prev = 0;
-                            _context.next = 3;
+                            data = void 0;
+                            _context.prev = 1;
+                            _context.next = 4;
                             return regeneratorRuntime.awrap((0, _request2.default)("init", this.props));
 
-                        case 3:
+                        case 4:
                             data = _context.sent;
-                            initData = {
-                                columns: data.columns,
-                                curd: data.curd
-                            };
-                            //服务器过滤列组件
+                            _context.next = 11;
+                            break;
 
+                        case 7:
+                            _context.prev = 7;
+                            _context.t0 = _context["catch"](1);
+
+                            console.log("init table " + this.props.id + " failed");
+                            console.log(_context.t0);
+
+                        case 11:
+
+                            //服务器过滤列组件
                             serverFilter = data.columns.filter(function (d) {
                                 return d.hasOwnProperty("serverFilter");
                             });
@@ -80,37 +88,19 @@ var MyComponent = function (_Component) {
                             if (data.hasOwnProperty("extraFilter")) {
                                 serverFilter = serverFilter.concat(data.extraFilter);
                             }
-                            initData.serverFilter = serverFilter;
-                            //最小化列显示
-                            if (data.hasOwnProperty("isMinColumn")) {
-                                initData.isMinColumn = data.isMinColumn;
-                            }
-                            //初始化图表
-                            if (data.hasOwnProperty("chart")) {
-                                initData.chart = data.chart;
-                            }
-                            //每页显示的行数
-                            if (data.hasOwnProperty("rowPerPage")) {
-                                initData.rowPerPage = data.rowPerPage;
-                            }
+
+                            initData = Object.assign({}, data, {
+                                serverFilter: serverFilter
+                            });
 
                             this.props.init(initData);
-                            _context.next = 18;
-                            break;
 
-                        case 14:
-                            _context.prev = 14;
-                            _context.t0 = _context["catch"](0);
-
-                            console.log("init table " + this.props.id + " failed");
-                            console.log(_context.t0);
-
-                        case 18:
+                        case 15:
                         case "end":
                             return _context.stop();
                     }
                 }
-            }, null, this, [[0, 14]]);
+            }, null, this, [[1, 7]]);
         }
     }, {
         key: "componentDidMount",
@@ -127,9 +117,16 @@ var MyComponent = function (_Component) {
             return _react2.default.createElement(
                 "div",
                 { className: _index2.default.base },
-                _react2.default.createElement(_serverFilter2.default, { read: function read() {
+                _react2.default.createElement(_serverFilter2.default, { isLoading: this.props.isLoading, serverFilter: this.props.serverFilter,
+                    serverFilterChangeCallback: this.props.serverFilterChangeCallback,
+                    read: function read() {
                         _this2.props.read(_this2.props);
-                    }, isLoading: this.props.isLoading }),
+                    },
+                    curd: this.props.curd,
+                    exportClickCallback: this.props.exportClickCallback,
+                    createClickCallback: this.props.createClickCallback,
+                    createText: this.props.createText
+                }),
                 _react2.default.createElement(_clientFilter2.default, { columns: this.props.columns,
                     curd: this.props.curd,
                     rowFilterValue: this.props.rowFilterValue,
@@ -137,9 +134,18 @@ var MyComponent = function (_Component) {
                     columnFilterChangeCallback: this.props.columnFilterChangeCallback,
                     pageIndex: this.props.pageIndex,
                     pageIndexChangeCallback: this.props.pageIndexChangeCallback,
-                    pageArr: this.props.pageArr
+                    pageArr: this.props.pageArr,
+                    rowPerPage: this.props.rowPerPage,
+                    rowPerPageChangeCallback: function rowPerPageChangeCallback(rowPerPage) {
+                        _this2.props.rowPerPageChangeCallback(rowPerPage, _this2.props);
+                    }
                 }),
-                _react2.default.createElement(_table2.default, { columns: this.props.columns, displayData: this.props.displayData })
+                _react2.default.createElement(_table2.default, { columns: this.props.columns, displayData: this.props.displayData,
+                    sortDesc: this.props.sortDesc, sortColumnId: this.props.sortColumnId,
+                    thClickCallback: function thClickCallback(id) {
+                        _this2.props.thClickCallback(id, _this2.props);
+                    }
+                })
             );
         }
     }]);
@@ -147,9 +153,7 @@ var MyComponent = function (_Component) {
     return MyComponent;
 }(_react.Component);
 
-MyComponent.defaultProps = {
-    inputFilterData: []
-};
+MyComponent.defaultProps = {};
 
 
 var mapStateToProps = function mapStateToProps(state) {
@@ -179,35 +183,65 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
         pageIndexChangeCallback: function pageIndexChangeCallback(pageIndex) {
             dispatch({ type: _action.CHANGE_PAGE_INDEX, pageIndex: pageIndex });
         },
+        rowPerPageChangeCallback: function rowPerPageChangeCallback(rowPerPage, props) {
+            dispatch({ type: _action.CHANGE_ROW_PER_PAGE, rowPerPage: rowPerPage });
+            dispatch({ type: _action.CHANGE_PAGE_INDEX, pageIndex: 1 });
+            var displayData = (0, _dataMap.mapSortedDataToDisplayData)(props.sortedData, 1, rowPerPage);
+            dispatch({ type: _action.SET_DISPLAY_DATA, data: displayData });
+        },
         read: function read(props) {
-            var data, message, componentFilterData, inputFilterData, sortedData, displayData;
+            var data, requestData, message, componentFilterData, inputFilterData, sortedData, displayData;
             return regeneratorRuntime.async(function read$(_context2) {
                 while (1) {
                     switch (_context2.prev = _context2.next) {
                         case 0:
                             dispatch({ type: _action.START_LOADING });
                             data = void 0;
-                            _context2.prev = 2;
-                            _context2.next = 5;
-                            return regeneratorRuntime.awrap((0, _request2.default)("read", props));
+                            //附加查询条件的数据
 
-                        case 5:
+                            requestData = {};
+
+                            props.serverFilter.forEach(function (d) {
+                                switch (d.type) {
+                                    case "day":
+                                    case "month":
+                                    case "select":
+                                    case "input":
+                                    case "integer":
+                                    case "radio":
+                                        requestData[d.id] = props[d.id + "Condition"];
+                                        break;
+                                    case "rangeDay":
+                                    case "rangeMonth":
+                                    case "rangeSecond":
+                                        requestData[d.id] = {
+                                            start: props[d.id + "ConditionStart"],
+                                            end: props[d.id + "ConditionEnd"]
+                                        };
+                                        break;
+                                }
+                            });
+                            _context2.prev = 4;
+                            _context2.next = 7;
+                            return regeneratorRuntime.awrap((0, _request2.default)("read", props, requestData));
+
+                        case 7:
                             message = _context2.sent;
 
                             data = message.data;
                             dispatch({ type: _action.END_LOADING });
-                            _context2.next = 15;
+                            _context2.next = 17;
                             break;
 
-                        case 10:
-                            _context2.prev = 10;
-                            _context2.t0 = _context2["catch"](2);
+                        case 12:
+                            _context2.prev = 12;
+                            _context2.t0 = _context2["catch"](4);
 
                             dispatch({ type: _action.END_LOADING });
                             console.log(_context2.t0);
                             return _context2.abrupt("return");
 
-                        case 15:
+                        case 17:
                             dispatch({ type: _action.SET_SOURCE_DATA, data: data });
 
                             componentFilterData = (0, _dataMap.mapSourceDataToComponentFilterData)(props, data);
@@ -228,12 +262,30 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 
                             dispatch({ type: _action.CHANGE_PAGE_INDEX, pageIndex: 1 });
 
-                        case 25:
+                        case 27:
                         case "end":
                             return _context2.stop();
                     }
                 }
-            }, null, undefined, [[2, 10]]);
+            }, null, undefined, [[4, 12]]);
+        },
+        serverFilterChangeCallback: function serverFilterChangeCallback(id, value) {
+            dispatch({ type: _action.CHANGE_SERVER_FILTER, id: id, value: value });
+        },
+        thClickCallback: function thClickCallback(id, props) {
+            var sortDesc = id === props.sortColumnId ? !props.sortDesc : true;
+            var sortedData = (0, _dataMap.mapInputFilterDataToSortedData)(props.inputFilterData, id, sortDesc);
+            dispatch({ type: _action.SET_SORTED_DATA, data: sortedData });
+
+            var displayData = (0, _dataMap.mapSortedDataToDisplayData)(sortedData, props.pageIndex, props.rowPerPage);
+            dispatch({ type: _action.SET_DISPLAY_DATA, data: displayData });
+
+            dispatch({ type: _action.CHANGE_SORT_DESC, sortDesc: sortDesc });
+            dispatch({ type: _action.CHANGE_SORT_COLUMN_ID, sortColumnId: id });
+        },
+        exportClickCallback: function exportClickCallback() {},
+        createClickCallback: function createClickCallback() {
+            location.hash = "itemBundleCreate";
         }
     };
 };

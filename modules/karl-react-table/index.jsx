@@ -22,24 +22,21 @@ class MyComponent extends Component {
     }
 
     componentWillMount() {
-        let {id, project, serviceName, curd = "r", rowFilterValue = "", rowPerPage = 10} = this.props;
+        let {id, project, serviceName, curd = "r", rowFilterValue = "", rowPerPage = 10, createText = "新增"} = this.props;
         //数据顺序为 sourceData > componentFilterData > inputFilterData > sortedData > displayData
         let preloadedState = {
             id: id,
             project: project,
             serviceName: serviceName,
             curd: curd,
-            rowPerPage: rowPerPage,
             rowFilterValue: rowFilterValue,
             isMinColumn: false,
-            sortDesc: true,
-            sourceData: [],
-            componentFilterData: [],
-            inputFilterData: [],
-            sortedData: [],
-            displayData: [],
-            pageIndex: 1,
-
+            sortDesc: true, sortColumnId: "",
+            sourceData: [], componentFilterData: [], inputFilterData: [], sortedData: [], displayData: [],
+            pageIndex: 1, rowPerPage: rowPerPage,
+            serverFilter: [],
+            isLoading: false,
+            createText: createText
         }
         store = createStore(reducer, preloadedState, applyMiddleware(thunkMiddleware))
     }

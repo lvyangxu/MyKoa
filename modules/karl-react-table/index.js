@@ -61,7 +61,9 @@ var MyComponent = function (_Component) {
                 _props$rowFilterValue = _props.rowFilterValue,
                 rowFilterValue = _props$rowFilterValue === undefined ? "" : _props$rowFilterValue,
                 _props$rowPerPage = _props.rowPerPage,
-                rowPerPage = _props$rowPerPage === undefined ? 10 : _props$rowPerPage;
+                rowPerPage = _props$rowPerPage === undefined ? 10 : _props$rowPerPage,
+                _props$createText = _props.createText,
+                createText = _props$createText === undefined ? "新增" : _props$createText;
             //数据顺序为 sourceData > componentFilterData > inputFilterData > sortedData > displayData
 
             var preloadedState = {
@@ -69,17 +71,14 @@ var MyComponent = function (_Component) {
                 project: project,
                 serviceName: serviceName,
                 curd: curd,
-                rowPerPage: rowPerPage,
                 rowFilterValue: rowFilterValue,
                 isMinColumn: false,
-                sortDesc: true,
-                sourceData: [],
-                componentFilterData: [],
-                inputFilterData: [],
-                sortedData: [],
-                displayData: [],
-                pageIndex: 1
-
+                sortDesc: true, sortColumnId: "",
+                sourceData: [], componentFilterData: [], inputFilterData: [], sortedData: [], displayData: [],
+                pageIndex: 1, rowPerPage: rowPerPage,
+                serverFilter: [],
+                isLoading: false,
+                createText: createText
             };
             store = (0, _redux.createStore)(_reducer2.default, preloadedState, (0, _redux.applyMiddleware)(_reduxThunk2.default));
         }

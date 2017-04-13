@@ -1,17 +1,11 @@
 import {
     INIT,
-    CHANGE_ROW_FILTER,
-    CHANGE_COLUMN_FILTER,
+    CHANGE_ROW_FILTER, CHANGE_COLUMN_FILTER, CHANGE_SERVER_FILTER, CHANGE_ROW_PER_PAGE,
     CHANGE_PAGE_INDEX,
     READ,
-    START_LOADING,
-    END_LOADING,
-    SET_SOURCE_DATA,
-    SET_COMPONENT_FILTER_DATA,
-    SET_INPUT_FILTER_DATA,
-    SET_SORTED_DATA,
-    SET_DISPLAY_DATA,
-
+    START_LOADING, END_LOADING,
+    SET_SOURCE_DATA, SET_COMPONENT_FILTER_DATA, SET_INPUT_FILTER_DATA, SET_SORTED_DATA, SET_DISPLAY_DATA,
+    CHANGE_SORT_DESC, CHANGE_SORT_COLUMN_ID,
     UPDATE_COMPONENT_FILTER_DATA,
 
     RESET_TABLE,
@@ -28,7 +22,9 @@ export default (state, action) => {
     let newState, inputFilterData, sortedData, displayData
     switch (action.type) {
         case INIT:
-            newState = Object.assign({}, state, {columns: action.columns, curd: action.curd})
+            let initData = Object.assign({}, action)
+            delete initData.type
+            newState = Object.assign({}, state, initData)
             break
         case CHANGE_ROW_FILTER:
             inputFilterData = mapComponentFilterDataToInputFilterData(state.componentFilterData, action.rowFilterValue)
@@ -45,6 +41,11 @@ export default (state, action) => {
         case CHANGE_COLUMN_FILTER:
             newState = Object.assign({}, state, {columns: action.columns})
             break
+        case CHANGE_SERVER_FILTER:
+            let serverFilterJson = {}
+            serverFilterJson[action.id] = action.value
+            newState = Object.assign({}, state, serverFilterJson)
+            break
         case CHANGE_PAGE_INDEX:
             displayData = mapSortedDataToDisplayData(state.sortedData, action.pageIndex, state.rowPerPage)
             newState = Object.assign({}, state, {
@@ -52,6 +53,10 @@ export default (state, action) => {
                 displayData: displayData
             })
             break
+        case CHANGE_ROW_PER_PAGE:
+            newState = Object.assign({}, state, {rowPerPage: action.rowPerPage})
+            break
+
         // case READ:
         //     // try {
         //     //     //附加查询条件的数据
@@ -131,6 +136,8 @@ export default (state, action) => {
         case END_LOADING:
             newState = Object.assign({}, state, {isLoading: false})
             break
+
+        //设置表格数据
         case SET_SOURCE_DATA:
             newState = Object.assign({}, state, {sourceData: action.data})
             break
@@ -148,9 +155,16 @@ export default (state, action) => {
             break
 
         case UPDATE_COMPONENT_FILTER_DATA:
-            state.newState = Object.assign({}, state, {displayData: action.data})
+            newState = Object.assign({}, state, {displayData: action.data})
             break
 
+        //改变表格排序状态
+        case CHANGE_SORT_DESC:
+            newState = Object.assign({}, state, {sortDesc: action.sortDesc})
+            break
+        case CHANGE_SORT_COLUMN_ID:
+            newState = Object.assign({}, state, {sortColumnId: action.sortColumnId})
+            break
 
         default:
             newState = Object.assign({}, state)

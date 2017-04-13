@@ -4,13 +4,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _karlAjax = require("karl-ajax");
-
-var _karlAjax2 = _interopRequireDefault(_karlAjax);
-
 require("isomorphic-fetch");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function _callee(action, props) {
     var data = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
@@ -31,31 +25,29 @@ exports.default = function _callee(action, props) {
 
                 case 4:
                     data.jwt = jwt;
-                    // data = Object.assign({}, data, {path: `/table/${props.id}/${action}`})
-                    // return Ajax.post(`../api/${props.serviceName}`, data)
                     path = "/table/" + props.id + "/" + action;
-                    _context.next = 8;
+
+                    data = Object.assign({}, { path: path }, data);
+                    _context.next = 9;
                     return regeneratorRuntime.awrap(fetch("../api/" + props.serviceName, {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({
-                            path: path
-                        })
+                        body: JSON.stringify(data)
                     }));
 
-                case 8:
+                case 9:
                     response = _context.sent;
-                    _context.next = 11;
+                    _context.next = 12;
                     return regeneratorRuntime.awrap(response.json());
 
-                case 11:
+                case 12:
                     responseData = _context.sent;
                     message = responseData.message;
                     return _context.abrupt("return", message);
 
-                case 14:
+                case 15:
                 case "end":
                     return _context.stop();
             }

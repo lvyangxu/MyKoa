@@ -22,6 +22,10 @@ var _karlComponentSelect = require("karl-component-select");
 
 var _karlComponentSelect2 = _interopRequireDefault(_karlComponentSelect);
 
+var _karlComponentDatepicker = require("karl-component-datepicker");
+
+var _karlComponentDatepicker2 = _interopRequireDefault(_karlComponentDatepicker);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -40,9 +44,138 @@ var MyComponent = function (_Component) {
     }
 
     _createClass(MyComponent, [{
+        key: "condition",
+        value: function condition(d, i) {
+            var _this2 = this;
+
+            var conditionDom = void 0;
+            //设置条件筛选的默认日期
+            var add = 0,
+                startAdd = -7,
+                endAdd = 0;
+
+            if (d.type === "rangeMonth") {
+                startAdd = -1;
+            }
+            if (d.type === "rangeSecond") {
+                startAdd = -60 * 60 * 24 * 7;
+            }
+            if (d.hasOwnProperty("dateAdd")) {
+                var dateAdd = d.dateAdd;
+                add = dateAdd.hasOwnProperty("add") ? dateAdd.add : add;
+                startAdd = dateAdd.hasOwnProperty("startAdd") ? dateAdd.startAdd : startAdd;
+                endAdd = dateAdd.hasOwnProperty("endAdd") ? dateAdd.endAdd : endAdd;
+            }
+            var _d$placeholder = d.placeholder,
+                placeholder = _d$placeholder === undefined ? d.name : _d$placeholder;
+
+            var requiredJson = {};
+            requiredJson[_index2.default.required] = d.required;
+            switch (d.type) {
+                case "input":
+                    conditionDom = _react2.default.createElement(
+                        "div",
+                        { className: _index2.default.section, key: i },
+                        _react2.default.createElement("input", { className: (0, _classnames2.default)(_index2.default.filter, requiredJson),
+                            placeholder: placeholder, type: "text",
+                            value: this.props[d.id + "Condition"],
+                            onChange: function onChange(e) {
+                                _this2.props.serverFilterChangeCallback(d.id + "Condition", e.target.value);
+                            } })
+                    );
+                    break;
+                case "integer":
+                    conditionDom = _react2.default.createElement(
+                        "div",
+                        { className: _index2.default.section, key: i },
+                        _react2.default.createElement("input", { className: _index2.default.filter + requiredClassName, placeholder: placeholder, min: "0",
+                            type: "number",
+                            value: this.props[d.id + "Condition"],
+                            onChange: function onChange(e) {
+                                _this2.props.serverFilterChangeCallback(d.id + "Condition", e.target.value);
+                            } })
+                    );
+                    break;
+                case "radio":
+                    conditionDom = _react2.default.createElement(
+                        "div",
+                        { className: _index2.default.section, key: i },
+                        _react2.default.createElement(Radio, { data: d.data, prefix: d.name + " : ", initCallback: function initCallback(d1) {
+                                _this2.props.serverFilterChangeCallback(d.id + "Condition", d1);
+                            }, callback: function callback(d1) {
+                                _this2.props.serverFilterChangeCallback(d.id + "Condition", d1);
+                            } })
+                    );
+                    break;
+                case "day":
+                case "month":
+                case "second":
+                    conditionDom = _react2.default.createElement(
+                        "div",
+                        { className: _index2.default.section, key: i },
+                        _react2.default.createElement(_karlComponentDatepicker2.default, { type: d.type, add: add, initCallback: function initCallback(d1) {
+                                _this2.props.serverFilterChangeCallback(d.id + "Condition", d1);
+                            }, callback: function callback(d1) {
+                                _this2.props.serverFilterChangeCallback(d.id + "Condition", d1);
+                            } })
+                    );
+                    break;
+                case "rangeDay":
+                case "rangeMonth":
+                case "rangeSecond":
+                    var type = void 0;
+                    switch (d.type) {
+                        case "rangeDay":
+                            type = "day";
+                            break;
+                        case "rangeMonth":
+                            type = "month";
+                            break;
+                        case "rangeSecond":
+                            type = "second";
+                            break;
+                    }
+                    conditionDom = _react2.default.createElement(
+                        "div",
+                        { style: { display: "inline-block" }, key: i },
+                        _react2.default.createElement(
+                            "div",
+                            { className: _index2.default.section },
+                            _react2.default.createElement(_karlComponentDatepicker2.default, { type: type, add: startAdd, initCallback: function initCallback(d1) {
+                                    _this2.props.serverFilterChangeCallback(d.id + "ConditionStart", d1);
+                                }, callback: function callback(d1) {
+                                    _this2.props.serverFilterChangeCallback(d.id + "ConditionStart", d1);
+                                } })
+                        ),
+                        _react2.default.createElement(
+                            "div",
+                            { className: _index2.default.section },
+                            _react2.default.createElement(_karlComponentDatepicker2.default, { type: type, add: endAdd, initCallback: function initCallback(d1) {
+                                    _this2.props.serverFilterChangeCallback(d.id + "ConditionEnd", d1);
+                                }, callback: function callback(d1) {
+                                    _this2.props.serverFilterChangeCallback(d.id + "ConditionEnd", d1);
+                                } })
+                        )
+                    );
+                    break;
+                case "select":
+                    conditionDom = _react2.default.createElement(
+                        "div",
+                        { className: _index2.default.section, key: i },
+                        _react2.default.createElement(_karlComponentSelect2.default, { data: d.data, text: d.name, initCallback: function initCallback(d1) {
+                                _this2.props.serverFilterChangeCallback(d.id + "Condition", d1);
+                            }, callback: function callback(d1) {
+                                _this2.props.serverFilterChangeCallback(d.id + "Condition", d1);
+                            } })
+                    );
+                    break;
+            }
+            return conditionDom;
+        }
+    }, {
         key: "render",
         value: function render() {
-            var _this2 = this;
+            var _this3 = this;
 
             var loadingJson = {};
             loadingJson[_index2.default.loading] = this.props.isLoading;
@@ -50,130 +183,8 @@ var MyComponent = function (_Component) {
             return _react2.default.createElement(
                 "div",
                 { className: _index2.default.serverFilter },
-                this.props.serverFilter.map(function (d) {
-                    var condition = void 0;
-                    //设置条件筛选的默认日期
-                    var add = 0,
-                        startAdd = -7,
-                        endAdd = 0;
-
-                    if (d.type === "rangeMonth") {
-                        startAdd = -1;
-                    }
-                    if (d.type === "rangeSecond") {
-                        startAdd = -60 * 60 * 24 * 7;
-                    }
-                    if (d.hasOwnProperty("dateAdd")) {
-                        var dateAdd = d.dateAdd;
-                        add = dateAdd.hasOwnProperty("add") ? dateAdd.add : add;
-                        startAdd = dateAdd.hasOwnProperty("startAdd") ? dateAdd.startAdd : startAdd;
-                        endAdd = dateAdd.hasOwnProperty("endAdd") ? dateAdd.endAdd : endAdd;
-                    }
-                    var _d$placeholder = d.placeholder,
-                        placeholder = _d$placeholder === undefined ? d.name : _d$placeholder;
-
-                    var requiredJson = {};
-                    requiredJson[_index2.default.required] = d.required;
-                    switch (d.type) {
-                        case "input":
-                            condition = _react2.default.createElement(
-                                "div",
-                                { className: _index2.default.section },
-                                _react2.default.createElement("input", { className: (0, _classnames2.default)(_index2.default.filter, requiredJson),
-                                    placeholder: placeholder, type: "text",
-                                    value: _this2.props[d.id + "Condition"],
-                                    onChange: function onChange(e) {
-                                        _this2.props.serverFilterChangeCallback(d.id + "Condition", e.target.value);
-                                    } })
-                            );
-                            break;
-                        case "integer":
-                            condition = _react2.default.createElement(
-                                "div",
-                                { className: _index2.default.section },
-                                _react2.default.createElement("input", { className: _index2.default.filter + requiredClassName, placeholder: placeholder, min: "0",
-                                    type: "number",
-                                    value: _this2.props[d.id + "Condition"],
-                                    onChange: function onChange(e) {
-                                        _this2.props.serverFilterChangeCallback(d.id + "Condition", e.target.value);
-                                    } })
-                            );
-                            break;
-                        case "radio":
-                            condition = _react2.default.createElement(
-                                "div",
-                                { className: _index2.default.section },
-                                _react2.default.createElement(Radio, { data: d.data, prefix: d.name + " : ", initCallback: function initCallback(d1) {
-                                        _this2.props.serverFilterChangeCallback(d.id + "Condition", d1);
-                                    }, callback: function callback(d1) {
-                                        _this2.props.serverFilterChangeCallback(d.id + "Condition", d1);
-                                    } })
-                            );
-                            break;
-                        case "day":
-                        case "month":
-                        case "second":
-                            condition = _react2.default.createElement(
-                                "div",
-                                { className: _index2.default.section },
-                                _react2.default.createElement(Datepicker, { type: d.type, add: add, initCallback: function initCallback(d1) {
-                                        _this2.props.serverFilterChangeCallback(d.id + "Condition", d1);
-                                    }, callback: function callback(d1) {
-                                        _this2.props.serverFilterChangeCallback(d.id + "Condition", d1);
-                                    } })
-                            );
-                            break;
-                        case "rangeDay":
-                        case "rangeMonth":
-                        case "rangeSecond":
-                            var type = void 0;
-                            switch (d.type) {
-                                case "rangeDay":
-                                    type = "day";
-                                    break;
-                                case "rangeMonth":
-                                    type = "month";
-                                    break;
-                                case "rangeSecond":
-                                    type = "second";
-                                    break;
-                            }
-                            condition = _react2.default.createElement(
-                                "div",
-                                { style: { display: "inline-block" } },
-                                _react2.default.createElement(
-                                    "div",
-                                    { className: _index2.default.section },
-                                    _react2.default.createElement(Datepicker, { type: type, add: startAdd, initCallback: function initCallback(d1) {
-                                            _this2.props.serverFilterChangeCallback(d.id + "ConditionStart", d1);
-                                        }, callback: function callback(d1) {
-                                            _this2.props.serverFilterChangeCallback(d.id + "ConditionStart", d1);
-                                        } })
-                                ),
-                                _react2.default.createElement(
-                                    "div",
-                                    { className: _index2.default.section },
-                                    _react2.default.createElement(Datepicker, { type: type, add: endAdd, initCallback: function initCallback(d1) {
-                                            _this2.props.serverFilterChangeCallback(d.id + "ConditionEnd", d1);
-                                        }, callback: function callback(d1) {
-                                            _this2.props.serverFilterChangeCallback(d.id + "ConditionEnd", d1);
-                                        } })
-                                )
-                            );
-                            break;
-                        case "select":
-                            condition = _react2.default.createElement(
-                                "div",
-                                { className: _index2.default.section },
-                                _react2.default.createElement(_karlComponentSelect2.default, { data: d.data, text: d.name, initCallback: function initCallback(d1) {
-                                        _this2.props.serverFilterChangeCallback(d.id + "Condition", d1);
-                                    }, callback: function callback(d1) {
-                                        _this2.props.serverFilterChangeCallback(d.id + "Condition", d1);
-                                    } })
-                            );
-                            break;
-                    }
-                    return condition;
+                this.props.serverFilter.map(function (d, i) {
+                    return _this3.condition(d, i);
                 }),
                 _react2.default.createElement(
                     "div",
@@ -191,11 +202,21 @@ var MyComponent = function (_Component) {
                     { className: _index2.default.section },
                     _react2.default.createElement(
                         "button",
-                        { className: _index2.default.filter, onClick: this.download },
+                        { className: _index2.default.filter, onClick: this.props.exportClickCallback },
                         _react2.default.createElement("i", { className: "fa fa-download" }),
                         "\u5BFC\u51FA"
                     )
-                )
+                ),
+                this.props.curd.includes("c") ? _react2.default.createElement(
+                    "div",
+                    { className: _index2.default.section },
+                    _react2.default.createElement(
+                        "button",
+                        { className: _index2.default.filter, onClick: this.props.createClickCallback },
+                        _react2.default.createElement("i", { className: "fa fa-plus" }),
+                        this.props.createText
+                    )
+                ) : ""
             );
         }
     }]);
@@ -204,10 +225,13 @@ var MyComponent = function (_Component) {
 }(_react.Component);
 
 MyComponent.propTypes = {
-    read: _react.PropTypes.func.isRequired
-
-};
-MyComponent.defaultProps = {
-    serverFilter: []
+    curd: _react.PropTypes.string.isRequired,
+    read: _react.PropTypes.func.isRequired,
+    serverFilterChangeCallback: _react.PropTypes.func.isRequired,
+    isLoading: _react.PropTypes.bool.isRequired,
+    serverFilter: _react.PropTypes.array.isRequired,
+    exportClickCallback: _react.PropTypes.func.isRequired,
+    createClickCallback: _react.PropTypes.func.isRequired,
+    createText: _react.PropTypes.string.isRequired
 };
 exports.default = MyComponent;
