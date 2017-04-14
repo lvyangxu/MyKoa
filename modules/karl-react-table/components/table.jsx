@@ -8,7 +8,8 @@ export default class MyComponent extends Component {
     static propTypes = {
         thClickCallback: PropTypes.func.isRequired,
         sortDesc: PropTypes.bool.isRequired,
-        sortColumnId: PropTypes.string.isRequired
+        sortColumnId: PropTypes.string.isRequired,
+        is100TableWidth: PropTypes.bool.isRequired,
     }
 
     static defaultProps = {
@@ -76,7 +77,7 @@ export default class MyComponent extends Component {
         }
         </tbody>;
         let dom = <div className={css.table}>
-            <table>
+            <table style={this.props.is100TableWidth === true ? {} : {width: "auto"}}>
                 {
                     thead
                 }

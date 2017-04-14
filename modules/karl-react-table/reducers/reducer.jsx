@@ -6,8 +6,6 @@ import {
     START_LOADING, END_LOADING,
     SET_SOURCE_DATA, SET_COMPONENT_FILTER_DATA, SET_INPUT_FILTER_DATA, SET_SORTED_DATA, SET_DISPLAY_DATA,
     CHANGE_SORT_DESC, CHANGE_SORT_COLUMN_ID,
-    UPDATE_COMPONENT_FILTER_DATA,
-
     RESET_TABLE,
 } from "../actions/action"
 
@@ -154,9 +152,6 @@ export default (state, action) => {
             newState = Object.assign({}, state, {displayData: action.data})
             break
 
-        case UPDATE_COMPONENT_FILTER_DATA:
-            newState = Object.assign({}, state, {displayData: action.data})
-            break
 
         //改变表格排序状态
         case CHANGE_SORT_DESC:

@@ -24,15 +24,17 @@ export default class MyComponent extends Component {
         return (
             <div className={css.itemBundleCreate}>
                 <h2>创建礼包</h2>
-                <div className={css.name}>
-                    <div><label className={css.label}>*</label>礼包名称</div>
+                <div className={css.row}>
+                    <h3 className={css.title}>礼包名称</h3>
                     <div><input className={css.input} placeholder="请输入礼包名称"/></div>
                 </div>
-                <div className={css.detail}>
-                    <div><label className={css.label}>*</label>礼包内容</div>
-                    <button className={css.button} onClick={this.props.addButtonClickCallback}><i
-                        className="fa fa-plus"></i>添加更多物品
-                    </button>
+                <div className={css.row}>
+                    <h3 className={css.title}>礼包内容</h3>
+                    <div className={css.itemAction}>
+                        <button className={css.button} onClick={this.props.addButtonClickCallback}>
+                            <i className="fa fa-plus"></i>添加更多物品
+                        </button>
+                    </div>
                     <div className={css.table}>
                         <table>
                             <thead>
@@ -72,8 +74,8 @@ export default class MyComponent extends Component {
                     </div>
                     <div>总价值:{totalValue}水晶</div>
                 </div>
-                <div className={css.submit}>
-                    <button className={css.button}>保存</button>
+                <div className={css.row}>
+                    <button className={classnames(css.button, css.submit)}>保存</button>
                     <button className={css.button}>取消</button>
                 </div>
             </div>

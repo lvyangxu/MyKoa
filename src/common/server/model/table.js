@@ -11,22 +11,14 @@ module.exports = (ctx, config) => ({
         };
 
         //设置额外的筛选条件
-        if (config.hasOwnProperty("extraFilter")) {
-            data.extraFilter = config.extraFilter;
-        }
-
         //是否在初始化时自动读取一次数据
-        if (config.hasOwnProperty("autoRead")) {
-            data.autoRead = config.autoRead;
-        }
-
+        //table是否100%宽度显示
+        //创建按钮文本
+        //创建按钮跳转的url
         //是否隐藏值为空的列
-        if (config.hasOwnProperty("isMinColumn")) {
-            data.isMinColumn = config.isMinColumn;
-        }
-
         //每一页显示的行数和图表
-        ["rowPerPage", "chart"].forEach(d => {
+        let sourcePropsArr = ["extraFilter", "autoRead", "is100TableWidth", "createText", "createUrl", "isMinColumn","rowPerPage", "chart"];
+        sourcePropsArr.forEach(d => {
             if (config.hasOwnProperty(d)) {
                 data[d] = config[d];
             }

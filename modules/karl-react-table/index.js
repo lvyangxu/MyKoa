@@ -63,7 +63,10 @@ var MyComponent = function (_Component) {
                 _props$rowPerPage = _props.rowPerPage,
                 rowPerPage = _props$rowPerPage === undefined ? 10 : _props$rowPerPage,
                 _props$createText = _props.createText,
-                createText = _props$createText === undefined ? "新增" : _props$createText;
+                createText = _props$createText === undefined ? "新增" : _props$createText,
+                createUrl = _props.createUrl,
+                _props$is100TableWidt = _props.is100TableWidth,
+                is100TableWidth = _props$is100TableWidt === undefined ? true : _props$is100TableWidt;
             //数据顺序为 sourceData > componentFilterData > inputFilterData > sortedData > displayData
 
             var preloadedState = {
@@ -78,7 +81,9 @@ var MyComponent = function (_Component) {
                 pageIndex: 1, rowPerPage: rowPerPage,
                 serverFilter: [],
                 isLoading: false,
-                createText: createText
+                createText: createText,
+                createUrl: createUrl,
+                is100TableWidth: is100TableWidth
             };
             store = (0, _redux.createStore)(_reducer2.default, preloadedState, (0, _redux.applyMiddleware)(_reduxThunk2.default));
         }

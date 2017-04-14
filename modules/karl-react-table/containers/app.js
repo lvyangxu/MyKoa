@@ -95,7 +95,12 @@ var MyComponent = function (_Component) {
 
                             this.props.init(initData);
 
-                        case 15:
+                            //初始化时自动读取
+                            if (initData.autoRead) {
+                                this.props.read(this.props);
+                            }
+
+                        case 16:
                         case "end":
                             return _context.stop();
                     }
@@ -124,7 +129,9 @@ var MyComponent = function (_Component) {
                     },
                     curd: this.props.curd,
                     exportClickCallback: this.props.exportClickCallback,
-                    createClickCallback: this.props.createClickCallback,
+                    createClickCallback: function createClickCallback() {
+                        _this2.props.createClickCallback(_this2.props);
+                    },
                     createText: this.props.createText
                 }),
                 _react2.default.createElement(_clientFilter2.default, { columns: this.props.columns,
@@ -144,7 +151,8 @@ var MyComponent = function (_Component) {
                     sortDesc: this.props.sortDesc, sortColumnId: this.props.sortColumnId,
                     thClickCallback: function thClickCallback(id) {
                         _this2.props.thClickCallback(id, _this2.props);
-                    }
+                    },
+                    is100TableWidth: this.props.is100TableWidth
                 })
             );
         }
@@ -284,8 +292,10 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
             dispatch({ type: _action.CHANGE_SORT_COLUMN_ID, sortColumnId: id });
         },
         exportClickCallback: function exportClickCallback() {},
-        createClickCallback: function createClickCallback() {
-            location.hash = "itemBundleCreate";
+        createClickCallback: function createClickCallback(props) {
+            if (props.hasOwnProperty("createUrl")) {
+                location.hash = props.createUrl;
+            }
         }
     };
 };

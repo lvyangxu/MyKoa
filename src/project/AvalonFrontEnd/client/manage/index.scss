@@ -93,11 +93,21 @@ body {
         box-sizing: border-box;
         width: 100%;
 
-        .itemBundleCreate {
-            .label {
-                color: red;
-                margin-bottom: 10px;
+        .itemBundleCreate, .codeBundleCreate {
+            .row {
+                margin-top: 15px;
+                margin-bottom: 15px;
+                .title {
+                    margin-bottom: 10px;
+                    &:before {
+                        margin-left: -10px;
+                        padding-right: 5px;
+                        content: "*";
+                        color: red;
+                    }
+                }
             }
+
             .button {
                 height: 34px;
                 padding-left: 10px;
@@ -117,91 +127,105 @@ body {
                 font-size: 13px;
             }
 
-            .name {
+            .table {
                 margin-bottom: 20px;
-                .input {
-                    margin-top: 20px;
-                }
-            }
-
-            .detail {
-                margin-bottom: 20px;
-                .table {
-                    margin-bottom: 20px;
-                    table {
-                        border-collapse: collapse;
-                        thead {
-                            background-color: rgba(233, 233, 233, 1);
-                            color: rgba(37, 37, 37, 1);
-                            font-weight: bold;
-                            font-size: 14px;
-                            tr {
-                                th {
-                                    min-width: 50px;
-                                    padding: 10px;
-                                    border: 1px solid rgba(204, 204, 204, 1);
-                                    text-align: center;
-                                    user-select: none;
-                                }
-                                th.checkbox {
-                                    padding: 2px;
-                                    .input[type=checkbox] {
-                                        height: 20px;
-                                        width: 20px;
-                                        cursor: pointer;
-                                    }
-                                }
-                                th:hover {
+                table {
+                    border-collapse: collapse;
+                    thead {
+                        background-color: rgba(233, 233, 233, 1);
+                        color: rgba(37, 37, 37, 1);
+                        font-weight: bold;
+                        font-size: 14px;
+                        tr {
+                            th {
+                                min-width: 50px;
+                                padding: 10px;
+                                border: 1px solid rgba(204, 204, 204, 1);
+                                text-align: center;
+                                user-select: none;
+                            }
+                            th.checkbox {
+                                padding: 2px;
+                                .input[type=checkbox] {
+                                    height: 20px;
+                                    width: 20px;
                                     cursor: pointer;
-                                    box-shadow: inset 0 0 0 1px rgba(222, 222, 222, 1);
-                                    background-color: rgba(243, 243, 243, 1);
-                                }
-                                th.checkbox:hover {
-                                    cursor: auto;
                                 }
                             }
+                            th:hover {
+                                cursor: pointer;
+                                box-shadow: inset 0 0 0 1px rgba(222, 222, 222, 1);
+                                background-color: rgba(243, 243, 243, 1);
+                            }
+                            th.checkbox:hover {
+                                cursor: auto;
+                            }
                         }
-                        tbody {
-                            background-color: white;
-                            color: rgba(39, 39, 39, 1);
-                            font-size: 12px;
-                            tr {
-                                td {
-                                    padding: 10px;
+                    }
+                    tbody {
+                        background-color: white;
+                        color: rgba(39, 39, 39, 1);
+                        font-size: 12px;
+                        tr {
+                            td {
+                                padding: 10px;
+                                border: 1px solid rgba(204, 204, 204, 1);
+                                word-break: break-all;
+                                text-align: center;
+                                .input {
+                                    width: 40px;
+                                    height: 30px;
+                                    padding-left: 10px;
+                                    padding-right: 10px;
                                     border: 1px solid rgba(204, 204, 204, 1);
-                                    word-break: break-all;
-                                    text-align: center;
-                                    .input {
-                                        width: 40px;
-                                        height: 30px;
-                                        padding-left: 10px;
-                                        padding-right: 10px;
-                                        border: 1px solid rgba(204, 204, 204, 1);
-                                    }
                                 }
-                                td.checkbox {
-                                    padding: 2px;
-                                    .input[type=checkbox] {
-                                        height: 20px;
-                                        width: 20px;
-                                        cursor: pointer;
-                                    }
+                            }
+                            td.checkbox {
+                                padding: 2px;
+                                .input[type=checkbox] {
+                                    height: 20px;
+                                    width: 20px;
+                                    cursor: pointer;
                                 }
                             }
                         }
                     }
                 }
-
-                .button {
-                    margin-bottom: 20px;
-                    margin-top: 20px;
-                }
             }
 
             .submit {
-                button:first-child {
-                    margin-right: 20px
+                margin-right: 20px
+            }
+
+            .validTime {
+                .startTime, .endTime, .totalTime {
+                    display: inline-block;
                 }
+                .startTime, .endTime {
+                    margin-right: 30px;
+                }
+                .label {
+                    margin-bottom: 10px;
+                }
+            }
+
+            .rules {
+                .ruleRow {
+                    margin-top: 10px;
+                    input[type=number] {
+                        margin-left: 20px;
+                    }
+                }
+                .activeType {
+                    .left, .right {
+                        display: inline-block;
+                        vertical-align: top;
+                    }
+                }
+            }
+
+            .itemAction {
+                margin-bottom: 20px;
             }
         }
     }

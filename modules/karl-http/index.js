@@ -1,66 +1,72 @@
-let http = require("http");
-let querystring = require('querystring');
+"use strict";
 
-module.exports = {
-    get: params => {
-        let {hostname = "localhost", port = 80, path, data = {}} = params;
-        let postData = querystring.stringify(data);
-        let options = {
-            hostname: hostname,
-            port: port,
-            path: path
-        };
-        let promise = new Promise((resolve, reject) => {
-            let req = http.get(options, res => {
-                res.setEncoding('utf8');
-                res.on('data', (chunk) => {
-                    try {
-                        let jsonData = JSON.parse(chunk);
-                        resolve(jsonData);
-                    } catch (e) {
-                        reject(chunk);
-                    }
-                });
-            });
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.postWithJWT = exports.getWithJWT = exports.post = exports.get = undefined;
 
-            req.on('error', e => {
-                reject(e.message);
-            });
+require("isomorphic-fetch");
 
-            req.write(postData);
-            req.end();
-        });
-        return promise;
-    },
-    post: params => {
-        let {hostname = "localhost", port = 80, path, data = {}} = params;
-        let postData = querystring.stringify(data);
-        let options = {
-            hostname: hostname,
-            port: port,
-            path: path,
-            method: 'POST',
-        };
-        let promise = new Promise((resolve, reject) => {
-            let req = http.request(options, res => {
-                res.setEncoding('utf8');
-                res.on('data', (chunk) => {
-                    try {
-                        let jsonData = JSON.parse(chunk);
-                        resolve(jsonData);
-                    } catch (e) {
-                        reject(chunk);
-                    }
-                });
-            });
+var doFetch = function _callee(url, data) {
+    var method = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "POST";
+    var promise;
+    return regeneratorRuntime.async(function _callee$(_context) {
+        while (1) {
+            switch (_context.prev = _context.next) {
+                case 0:
+                    promise = new Promise(function (resolve, reject) {
+                        fetch(url, {
+                            method: method,
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        }).then(function (d) {
+                            return d.json();
+                        }).then(function (d) {
+                            if (d.success && d.hasOwnProperty("message")) {
+                                resolve(d.message);
+                            } else {
+                                reject(d);
+                            }
+                        }).catch(function (e) {
+                            reject(e);
+                        });
+                    });
+                    return _context.abrupt("return", promise);
 
-            req.on('error', e => {
-                reject(e.message);
-            });
+                case 2:
+                case "end":
+                    return _context.stop();
+            }
+        }
+    }, null, undefined);
+};
 
-            req.write(postData);
-            req.end();
-        });
-        return promise;
+var get = exports.get = function get(url, data) {
+    return doFetch(url, data, "GET");
+};
+
+var post = exports.post = function post(url, data) {
+    return doFetch(url, data);
+};
+
+var getWithJWT = exports.getWithJWT = function getWithJWT(project, url, data) {
+    var jwt = localStorage.getItem(project + "-jwt");
+    if (jwt === null) {
+        location.href = "../login/";
+        return;
     }
+    data = Object.assign({}, { jwt: jwt }, data);
+    return get(url, data);
+};
+
+var postWithJWT = exports.postWithJWT = function postWithJWT(project, url, data) {
+    var jwt = localStorage.getItem(project + "-jwt");
+    if (jwt === null) {
+        location.href = "../login/";
+        return;
+    }
+    data = Object.assign({}, { jwt: jwt }, data);
+    return post(url, data);
 };

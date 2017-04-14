@@ -22,7 +22,7 @@ class MyComponent extends Component {
     }
 
     componentWillMount() {
-        let {id, project, serviceName, curd = "r", rowFilterValue = "", rowPerPage = 10, createText = "新增"} = this.props;
+        let {id, project, serviceName, curd = "r", rowFilterValue = "", rowPerPage = 10, createText = "新增", createUrl, is100TableWidth = true} = this.props;
         //数据顺序为 sourceData > componentFilterData > inputFilterData > sortedData > displayData
         let preloadedState = {
             id: id,
@@ -36,7 +36,9 @@ class MyComponent extends Component {
             pageIndex: 1, rowPerPage: rowPerPage,
             serverFilter: [],
             isLoading: false,
-            createText: createText
+            createText: createText,
+            createUrl: createUrl,
+            is100TableWidth: is100TableWidth,
         }
         store = createStore(reducer, preloadedState, applyMiddleware(thunkMiddleware))
     }

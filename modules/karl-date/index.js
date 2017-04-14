@@ -101,7 +101,7 @@ var date = function () {
             } else {
                 arr = [{ id: "year", value: date.year }, { id: "month", value: date.month }, { id: "day", value: date.day }, { id: "hour", value: date.hour }, { id: "minute", value: date.minute }, { id: "second", value: date.second }];
             }
-            if (json != undefined) {
+            if (json !== undefined) {
                 arr = arr.map(function (d) {
                     if (json.hasOwnProperty(d.id)) {
                         d.value = d.value + json[d.id];

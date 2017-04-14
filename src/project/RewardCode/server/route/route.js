@@ -37,7 +37,7 @@ router.post("/table/:id/:action", async (ctx, next) => {
     } else {
         //根据表格id获得表格配置
         if (!tableConfig(ctx).hasOwnProperty(id)) {
-            response.fail(res, "unknown table " + name);
+            response.fail(ctx, "unknown table " + id);
             return;
         }
 

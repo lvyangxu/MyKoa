@@ -1,6 +1,7 @@
 let router = require("koa-router")();
 let response = require("./response");
-require('isomorphic-fetch');
+require("babel-polyfill");
+let http = require("karl-http");
 
 /**
  * 初始化工程名称（前端存放localstorage）及登录后跳转路径
@@ -71,22 +72,14 @@ router.post("/api/:services", async (ctx, next) => {
         return;
     }
 
-    let requestData = Object.assign({},ctx.request.body);
+    let requestData = Object.assign({}, ctx.request.body);
     delete requestData.jwt;
     console.log(requestData)
 
     //转发到其他服务
     try {
-        let res = await fetch(`http://localhost:${findService.port}${path}`,{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body:JSON.stringify(requestData)
-        })
-        let data = await res.json();
-
-        response.success(ctx, data.message);
+        let data = await http.post(`http://localhost:${findService.port}${path}`, requestData);
+        response.success(ctx, data);
     } catch (e) {
         console.log(e);
         response.fail(ctx, "service is not available");

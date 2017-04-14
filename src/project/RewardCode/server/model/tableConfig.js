@@ -10,6 +10,8 @@
  * curd:表格需要展示的增删查改操作
  * autoRead:加载时是否自动执行一次读取,默认不读取,只有在为true时执行
  * rowPerPage:每一页显示的table数据行数,默认为10
+ * createText:创建按钮的文本，默认为 "新增"
+ * createUrl:创建按钮跳转的url，不为undefind时跳转到指定react-router路由
  * columns:前端所需的列及其属性，
  *          id:列id，
  *          name:列显示名称，
@@ -51,17 +53,28 @@ module.exports = ctx => {
             name: "道具列表",
             database: "RewardCode",
             curd: "curd",
+            autoRead: true,
+            is100TableWidth: false,
             columns: [
-                {id: "id", name: "道具id", checked: true},
-                {id: "name", name: "道具名称", checked: true},
-                {id: "value", name: "价值", checked: true},
-                {id: "image", name: "图片", checked: true, type: "image", imageStyle: {height: "40px"}},
+                {id: "id", name: "道具id", checked: true, thStyle: {minWidth: "200px"}},
+                {id: "name", name: "道具名称", checked: true, thStyle: {minWidth: "200px"}},
+                {id: "value", name: "价值", checked: true, thStyle: {minWidth: "200px"}},
+                {
+                    id: "image",
+                    name: "图片",
+                    checked: true,
+                    type: "image",
+                    imageStyle: {height: "40px"},
+                    thStyle: {minWidth: "200px"}
+                },
             ]
         },
         itemBundle: {
             name: "礼包管理",
             database: "RewardCode",
-            curd: "urd",
+            curd: "curd",
+            createText: "创建新礼包",
+            createUrl: "itemBundleCreate",
             columns: [
                 {id: "name", name: "名称", checked: true},
                 {id: "id", name: "ID", checked: true},
@@ -81,6 +94,68 @@ module.exports = ctx => {
                                     from itemBundle ${whereStr}`;
                 return sqlCommond;
             }
+        },
+        itemBundleName: {
+            name: "礼包名称",
+            database: "RewardCode",
+            curd: "r",
+            columns: [
+                {id: "name", name: "名称", checked: true},
+                {id: "id", name: "ID", checked: true},
+            ],
+            read: "select id,name from itemBundle"
+        },
+        codeBundle: {
+            name: "兑换码管理",
+            database: "RewardCode",
+            curd: "curd",
+            createText: "创建新兑换码",
+            createUrl: "codeBundleCreate",
+            columns: [
+                {id: "name", name: "名称", checked: true},
+                {id: "id", name: "ID", checked: true},
+                {id: "creater", name: "创建者", checked: true},
+                {id: "startTime", name: "开始时间", checked: true, type: "day", serverFilter: true},
+                {id: "endTime", name: "开始时间", checked: true, type: "day", serverFilter: true},
+                {id: "createTime", name: "创建时间", checked: true, type: "rangeDay", serverFilter: true},
+                {id: "itemBundleName", name: "关联礼包", checked: true},
+                {id: "num", name: "激活数量/生成数量", checked: true},
+                {id: "channel", name: "渠道", checked: true},
+            ],
+            read: () => {
+                console.log(ctx.request.body);
+                let whereArr = [
+                    tableModel.condition.biggerThanOrEqual("startTime", "startTime"),
+                    tableModel.condition.lessThanOrEqual("endTime", "endTime"),
+                    tableModel.condition.rangeDate("createTime", "createTime"),
+                ];
+                let whereStr = tableModel.where(whereArr);
+                let sqlCommond = `select id,name,creater,startTime,endTime,createTime,channel,
+                                    (select name from itemBundle where id=itemBundleId) as itemBundleName,
+                                        concat(total,"/",total," ","100%") as num
+                                            from codeBundle ${whereStr}`;
+                return sqlCommond;
+            }
+        },
+        codeBundleName: {
+            name: "兑换码名称",
+            database: "RewardCode",
+            curd: "r",
+            columns: [
+                {id: "name", name: "名称", checked: true},
+                {id: "id", name: "ID", checked: true},
+            ],
+            read: "select id,name from codeBundle"
+        },
+        channel: {
+            name: "渠道名称",
+            database: "RewardCode",
+            curd: "r",
+            autoRead: true,
+            is100TableWidth: false,
+            columns: [
+                {id: "name", name: "名称", checked: true, thStyle: {minWidth: "200px"}},
+            ],
         }
     }
 

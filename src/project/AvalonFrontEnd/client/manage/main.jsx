@@ -21,11 +21,15 @@ class MyComponent extends React.Component {
             ],
             currentGame: "贪婪洞窟1",
             menuStatus: [
-                {name: "礼包与兑换码", expand: false}
+                {name: "礼包与兑换码", expand: true}
             ],
             activeTab: "礼包管理",
             itemList: [],
             currentItemList: [],
+            itemBundleList: [],
+            channelList: [],
+            itemBundleCreateStartTime: "",
+            itemBundleCreateEndTime: ""
         }
         store = createStore(reducer, preloadedState, applyMiddleware(thunkMiddleware))
     }

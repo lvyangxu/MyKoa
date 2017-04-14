@@ -3,9 +3,9 @@ import {
     CHANGE_GAME,
     TOGGLE_MENU,
     SET_ACTIVE_TAB,
-    SET_ITEM_LIST,
-    ADD_ITEM,
-    CHANGE_ITEM
+    SET_ITEM_LIST, SET_ITEM_BUNDLE_LIST, SET_CHANNEL_LIST,
+    ADD_ITEM, CHANGE_ITEM,
+    SET_ITEM_BUNDLE_CREATE_START_TIME, SET_ITEM_BUNDLE_CREATE_END_TIME,
 } from "../actions/action"
 import $ from "jquery"
 
@@ -32,9 +32,17 @@ export default (state, action) => {
         case SET_ACTIVE_TAB:
             newState = Object.assign({}, state, {activeTab: action.activeTab})
             break
+
         case SET_ITEM_LIST:
             newState = Object.assign({}, state, {itemList: action.itemList})
             break
+        case SET_ITEM_BUNDLE_LIST:
+            newState = Object.assign({}, state, {itemBundleList: action.itemBundleList})
+            break
+        case SET_CHANNEL_LIST:
+            newState = Object.assign({}, state, {channelList: action.channelList})
+            break
+
         case ADD_ITEM:
             currentItemList = state.currentItemList.concat()
             if (state.itemList.length > 0) {
@@ -56,6 +64,14 @@ export default (state, action) => {
             })
             newState = Object.assign({}, state, {currentItemList: currentItemList})
             break
+
+        case SET_ITEM_BUNDLE_CREATE_START_TIME:
+            newState = Object.assign({}, state, {itemBundleCreateStartTime: action.value})
+            break
+        case SET_ITEM_BUNDLE_CREATE_END_TIME:
+            newState = Object.assign({}, state, {itemBundleCreateEndTime: action.value})
+            break
+
         default:
             newState = Object.assign({}, state)
             break

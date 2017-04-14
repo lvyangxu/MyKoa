@@ -119,7 +119,7 @@ var MyComponent = function (_Component) {
                 { className: _index2.default.table },
                 _react2.default.createElement(
                     "table",
-                    null,
+                    { style: this.props.is100TableWidth === true ? {} : { width: "auto" } },
                     thead,
                     tbody
                 )
@@ -134,7 +134,8 @@ var MyComponent = function (_Component) {
 MyComponent.propTypes = {
     thClickCallback: _react.PropTypes.func.isRequired,
     sortDesc: _react.PropTypes.bool.isRequired,
-    sortColumnId: _react.PropTypes.string.isRequired
+    sortColumnId: _react.PropTypes.string.isRequired,
+    is100TableWidth: _react.PropTypes.bool.isRequired
 };
 MyComponent.defaultProps = {
     columns: []

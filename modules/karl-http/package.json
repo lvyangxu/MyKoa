@@ -1,7 +1,7 @@
 {
   "name": "karl-http",
-  "version": "6.0.5",
-  "description": "karl node http request",
+  "version": "7.0.0",
+  "description": "karl http request with fetch",
   "main": "index.js",
   "author": "lvyangxu",
   "license": "ISC",

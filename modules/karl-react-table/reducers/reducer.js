@@ -147,10 +147,6 @@ exports.default = function (state, action) {
             newState = Object.assign({}, state, { displayData: action.data });
             break;
 
-        case _action.UPDATE_COMPONENT_FILTER_DATA:
-            newState = Object.assign({}, state, { displayData: action.data });
-            break;
-
         //改变表格排序状态
         case _action.CHANGE_SORT_DESC:
             newState = Object.assign({}, state, { sortDesc: action.sortDesc });

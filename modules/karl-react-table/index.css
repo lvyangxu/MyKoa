@@ -64,7 +64,7 @@
       padding-left: 10px;
       padding-right: 10px;
       border: 1px solid #ccc;
-      width: 80px;
+      min-width: 80px;
       background-color: white;
       outline: none;
       cursor: pointer; }

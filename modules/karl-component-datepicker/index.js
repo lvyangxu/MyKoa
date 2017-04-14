@@ -28,10 +28,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * react日期组件
- * type：日期类型，day/month/second，默认为day
+ * type：日期类型，day/month/minute/second，默认为day
  * add：默认值的偏移量，默认为0
  * callback：日期改变时执行的回调
  * initCallback：初始化后执行的回调
+ * initValue：初始值
  *
  * 示例：
  * <Datepicker add="2" type="month" callback={d=>{
@@ -52,6 +53,7 @@ var datepicker = function (_React$Component) {
         var currentPanel = void 0;
         switch (type) {
             case "day":
+            case "minute":
             case "second":
                 currentPanel = "day";
                 break;
@@ -75,9 +77,34 @@ var datepicker = function (_React$Component) {
             case "month":
                 month1 = month1 + add;
                 break;
+            case "minute":
+                minute1 = minute1 + add;
+                second1 = 0;
+                break;
             case "second":
                 second1 = second1 + add;
                 break;
+        }
+        //如果初始值不为undefind和""，解析初始值字符串
+        if (_this.props.hasOwnProperty("initValue") && _this.props.initValue !== "") {
+            var arr = _this.props.initValue.split(" ");
+            if (arr.length === 2) {
+                var arr1 = arr[0].split("-");
+                var arr2 = arr[1].split(":");
+                if (arr1.length === 3 && arr2.length === 3) {
+                    var _arr = _slicedToArray(arr1, 3);
+
+                    year1 = _arr[0];
+                    month1 = _arr[1];
+                    day1 = _arr[2];
+
+                    var _arr2 = _slicedToArray(arr2, 3);
+
+                    hour1 = _arr2[0];
+                    minute1 = _arr2[1];
+                    second1 = _arr2[2];
+                }
+            }
         }
 
         var _date$add2 = _karlDate2.default.add({
@@ -158,80 +185,110 @@ var datepicker = function (_React$Component) {
             var ymdValue = this.state.value.match(/\d{4}-\d{2}-\d{2}/)[0];
             var hmsValue = this.state.value.match(/\d{2}:\d{2}:\d{2}/);
             var arr = [];
-            if (hmsValue != null) {
+            if (hmsValue !== null) {
                 hmsValue = hmsValue[0];
                 arr = hmsValue.split(":");
             }
-
-            var valueDom = this.state.type == "second" ? _react2.default.createElement(
-                "div",
-                { className: _index2.default.value },
-                _react2.default.createElement(
-                    "div",
-                    { className: _index2.default.left },
-                    ymdValue
-                ),
-                _react2.default.createElement(
-                    "div",
-                    { className: _index2.default.right, onClick: function onClick(e) {
-                            e.stopPropagation();
-                        } },
-                    _react2.default.createElement("input", { type: "number", min: "0", max: "23", value: arr[0], onWheel: function onWheel(e) {
-                            _this3.doWheel(e, "hour");
-                        }, onClick: function onClick(e) {
-                            e.stopPropagation();
-                        }, onChange: function onChange(e) {
-                            var regex = /^(([0-1]?\d)|(2[0-3])|(0?((1\d)|(2[0-3]))))$/;
-                            var value = e.target.value;
-                            if (value.length == 3) {
-                                value = Number.parseInt(value);
-                            }
-                            if (regex.test(value)) {
-                                _this3.setValue("hour", {
-                                    hour: value
-                                });
-                            }
-                        } }),
-                    ":",
-                    _react2.default.createElement("input", { type: "number", min: "0", max: "59", value: arr[1], onWheel: function onWheel(e) {
-                            _this3.doWheel(e, "minute");
-                        }, onClick: function onClick(e) {
-                            e.stopPropagation();
-                        }, onChange: function onChange(e) {
-                            var regex = /^(0?\d|(0?[0-5]\d))$/;
-                            var value = e.target.value;
-                            if (value.length == 3) {
-                                value = Number.parseInt(value);
-                            }
-                            if (regex.test(value)) {
-                                _this3.setValue("minute", {
-                                    minute: value
-                                });
-                            }
-                        } }),
-                    ":",
-                    _react2.default.createElement("input", { type: "number", min: "0", max: "59", value: arr[2], onWheel: function onWheel(e) {
-                            _this3.doWheel(e, "second");
-                        }, onClick: function onClick(e) {
-                            e.stopPropagation();
-                        }, onChange: function onChange(e) {
-                            var regex = /^(0?\d|(0?[0-5]\d))$/;
-                            var value = e.target.value;
-                            if (value.length == 3) {
-                                value = Number.parseInt(value);
-                            }
-                            if (regex.test(value)) {
-                                _this3.setValue("second", {
-                                    second: value
-                                });
-                            }
-                        } })
-                )
-            ) : _react2.default.createElement(
-                "div",
-                { className: _index2.default.value },
-                ymdValue
-            );
+            var valueDom = void 0;
+            var inputHourDom = _react2.default.createElement("input", { type: "number", min: "0", max: "23", value: arr[0], onWheel: function onWheel(e) {
+                    _this3.doWheel(e, "hour");
+                }, onClick: function onClick(e) {
+                    e.stopPropagation();
+                }, onChange: function onChange(e) {
+                    var regex = /^(([0-1]?\d)|(2[0-3])|(0?((1\d)|(2[0-3]))))$/;
+                    var value = e.target.value;
+                    if (value.length === 3) {
+                        value = Number.parseInt(value);
+                    }
+                    if (regex.test(value)) {
+                        _this3.setValue("hour", {
+                            hour: value
+                        });
+                    }
+                } });
+            var inputMinuteDom = _react2.default.createElement("input", { type: "number", min: "0", max: "59", value: arr[1], onWheel: function onWheel(e) {
+                    _this3.doWheel(e, "minute");
+                }, onClick: function onClick(e) {
+                    e.stopPropagation();
+                }, onChange: function onChange(e) {
+                    var regex = /^(0?\d|(0?[0-5]\d))$/;
+                    var value = e.target.value;
+                    if (value.length === 3) {
+                        value = Number.parseInt(value);
+                    }
+                    if (regex.test(value)) {
+                        _this3.setValue("minute", {
+                            minute: value
+                        });
+                    }
+                } });
+            var inputSecondDom = _react2.default.createElement("input", { type: "number", min: "0", max: "59", value: arr[2], onWheel: function onWheel(e) {
+                    _this3.doWheel(e, "second");
+                }, onClick: function onClick(e) {
+                    e.stopPropagation();
+                }, onChange: function onChange(e) {
+                    var regex = /^(0?\d|(0?[0-5]\d))$/;
+                    var value = e.target.value;
+                    if (value.length === 3) {
+                        value = Number.parseInt(value);
+                    }
+                    if (regex.test(value)) {
+                        _this3.setValue("second", {
+                            second: value
+                        });
+                    }
+                } });
+            switch (this.state.type) {
+                case "minute":
+                    valueDom = _react2.default.createElement(
+                        "div",
+                        { className: _index2.default.value },
+                        _react2.default.createElement(
+                            "div",
+                            { className: _index2.default.left },
+                            ymdValue
+                        ),
+                        _react2.default.createElement(
+                            "div",
+                            { className: _index2.default.right, onClick: function onClick(e) {
+                                    e.stopPropagation();
+                                } },
+                            inputHourDom,
+                            ":",
+                            inputMinuteDom
+                        )
+                    );
+                    break;
+                case "second":
+                    valueDom = _react2.default.createElement(
+                        "div",
+                        { className: _index2.default.value },
+                        _react2.default.createElement(
+                            "div",
+                            { className: _index2.default.left },
+                            ymdValue
+                        ),
+                        _react2.default.createElement(
+                            "div",
+                            { className: _index2.default.right, onClick: function onClick(e) {
+                                    e.stopPropagation();
+                                } },
+                            inputHourDom,
+                            ":",
+                            inputMinuteDom,
+                            ":",
+                            inputSecondDom
+                        )
+                    );
+                    break;
+                default:
+                    valueDom = _react2.default.createElement(
+                        "div",
+                        { className: _index2.default.value },
+                        ymdValue
+                    );
+                    break;
+            }
             return _react2.default.createElement(
                 "div",
                 { className: _index2.default.base + " react-datepicker" },
@@ -306,7 +363,7 @@ var datepicker = function (_React$Component) {
             var arr = [];
             var gradtion = ["year", "month", "day", "hour", "minute", "second"];
             var index = gradtion.findIndex(function (d) {
-                return d == type;
+                return d === type;
             });
             var start = void 0,
                 end = void 0,
@@ -354,7 +411,7 @@ var datepicker = function (_React$Component) {
                         { className: _index2.default.middle, onClick: function onClick() {
                                 //返回上一级面板，如果已到最高层，则返回第2层
                                 var currentPanel = void 0;
-                                if (index == 0) {
+                                if (index === 0) {
                                     currentPanel = gradtion[1];
                                 } else {
                                     currentPanel = gradtion[index - 1];
@@ -387,13 +444,13 @@ var datepicker = function (_React$Component) {
                                     var isEqual = false;
                                     switch (type) {
                                         case "year":
-                                            isEqual = _this4.state.year == d1;
+                                            isEqual = _this4.state.year === d1;
                                             break;
                                         case "month":
-                                            isEqual = _this4.state.year == _this4.state.panelYear && _this4.state.month == d1;
+                                            isEqual = _this4.state.year === _this4.state.panelYear && _this4.state.month === d1;
                                             break;
                                         case "day":
-                                            isEqual = _this4.state.year == _this4.state.panelYear && _this4.state.month == _this4.state.panelMonth && _this4.state.day == d1;
+                                            isEqual = _this4.state.year === _this4.state.panelYear && _this4.state.month === _this4.state.panelMonth && _this4.state.day === d1;
                                             break;
                                     }
 
@@ -403,7 +460,7 @@ var datepicker = function (_React$Component) {
                                         { key: j, className: className, onClick: function onClick() {
                                                 var oldJson = {};
                                                 gradtion.forEach(function (d2) {
-                                                    if (d2 == type) {
+                                                    if (d2 === type) {
                                                         oldJson[d2] = d1;
                                                     } else {
                                                         oldJson[d2] = _this4.state[d2];
@@ -443,7 +500,7 @@ var datepicker = function (_React$Component) {
             var daysOfMonth = _karlDate2.default.getDaysOfMonth(year, month);
             var daysOfLastMonth = _karlDate2.default.getDaysOfLastMonth(year, month);
             var daysOfWeek = new Date(year, month - 1, 1).getDay();
-            daysOfWeek = daysOfWeek == 0 ? 7 : daysOfWeek;
+            daysOfWeek = daysOfWeek === 0 ? 7 : daysOfWeek;
             var prefixDays = daysOfWeek - 1;
 
             for (var i = 1; i <= 42; i = i + 7) {
@@ -482,9 +539,9 @@ var datepicker = function (_React$Component) {
                         { className: _index2.default.middle, onClick: function onClick() {
                                 //返回上一级面板，如果已到最高层，则返回第2层
                                 var index = gradtion.findIndex(function (d) {
-                                    return d == "day";
+                                    return d === "day";
                                 });
-                                if (index == 0) {
+                                if (index === 0) {
                                     index = 1;
                                 } else {
                                     index--;
@@ -525,12 +582,12 @@ var datepicker = function (_React$Component) {
                                 "div",
                                 { key: i, className: _index2.default.row },
                                 d.map(function (d1, j) {
-                                    var isActive = _this5.state.panelYear == _this5.state.year;
-                                    isActive = isActive && _this5.state.panelMonth == _this5.state.month;
-                                    isActive = isActive && _this5.state.panelDay == d1.text;
-                                    isActive = isActive && d1.add == 0;
+                                    var isActive = _this5.state.panelYear === _this5.state.year;
+                                    isActive = isActive && _this5.state.panelMonth === _this5.state.month;
+                                    isActive = isActive && _this5.state.panelDay === d1.text;
+                                    isActive = isActive && d1.add === 0;
                                     var className = isActive ? _index2.default.cell + " " + _index2.default.day + " " + _index2.default.active : _index2.default.cell + " " + _index2.default.day;
-                                    if (d1.add != 0) {
+                                    if (d1.add !== 0) {
                                         className = className + " " + _index2.default.dark;
                                     }
                                     return _react2.default.createElement(
@@ -600,19 +657,20 @@ var datepicker = function (_React$Component) {
                     endPanel = "month";
                     break;
                 case "day":
+                case "minute":
                 case "second":
                     endPanel = "day";
                     break;
             }
             var isLastPanel = false;
-            if (this.state.currentPanel == endPanel) {
+            if (this.state.currentPanel === endPanel) {
                 //到达最后一级面板时关闭
                 isLastPanel = true;
                 newState.panelShow = false;
             } else {
                 //跳转到下一级面板
                 var index = gradtion.findIndex(function (d) {
-                    return d == type;
+                    return d === type;
                 });
                 index++;
                 newState.currentPanel = gradtion[index];
@@ -664,6 +722,9 @@ var datepicker = function (_React$Component) {
                 case "month":
                     value = year + "-" + month;
                     break;
+                case "minute":
+                    value = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":00";
+                    break;
                 case "second":
                     value = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
                     break;
@@ -690,7 +751,7 @@ var datepicker = function (_React$Component) {
                     var json = {};
                     var gradtion = ["year", "month", "day"];
                     var index = gradtion.findIndex(function (d) {
-                        return d == _this8.state.currentPanel;
+                        return d === _this8.state.currentPanel;
                     });
                     var changePanel = gradtion[index - 1];
                     json[changePanel] = this.state[changePanel] - 1;
@@ -728,7 +789,7 @@ var datepicker = function (_React$Component) {
                     var json = {};
                     var gradtion = ["year", "month", "day"];
                     var index = gradtion.findIndex(function (d) {
-                        return d == _this9.state.currentPanel;
+                        return d === _this9.state.currentPanel;
                     });
                     var changePanel = gradtion[index - 1];
                     json[changePanel] = this.state[changePanel] + 1;
@@ -758,7 +819,7 @@ var datepicker = function (_React$Component) {
         value: function doWheel(e, type) {
             e.preventDefault();
             var json = {};
-            var max = type == "hour" ? 23 : 59;
+            var max = type === "hour" ? 23 : 59;
             if (e.deltaY > 0) {
                 //向下
                 var value = this.state[type];

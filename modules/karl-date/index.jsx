@@ -93,7 +93,7 @@ class date {
                 {id: "second", value: date.second}
             ]
         }
-        if (json != undefined) {
+        if (json !== undefined) {
             arr = arr.map(d=> {
                 if (json.hasOwnProperty(d.id)) {
                     d.value = d.value + json[d.id];

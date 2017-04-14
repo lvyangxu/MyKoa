@@ -46,6 +46,11 @@ class MyComponent extends Component {
             serverFilter: serverFilter
         })
         this.props.init(initData)
+
+        //初始化时自动读取
+        if(initData.autoRead){
+            this.props.read(this.props)
+        }
     }
 
     componentDidMount() {
@@ -64,7 +69,9 @@ class MyComponent extends Component {
                               }}
                               curd={this.props.curd}
                               exportClickCallback={this.props.exportClickCallback}
-                              createClickCallback={this.props.createClickCallback}
+                              createClickCallback={() => {
+                                  this.props.createClickCallback(this.props)
+                              }}
                               createText={this.props.createText}
                 />
                 <ClientFilter columns={this.props.columns}
@@ -85,6 +92,7 @@ class MyComponent extends Component {
                        thClickCallback={id => {
                            this.props.thClickCallback(id, this.props)
                        }}
+                       is100TableWidth={this.props.is100TableWidth}
                 />
             </div>
         )
@@ -193,8 +201,11 @@ let mapDispatchToProps = dispatch => ({
     exportClickCallback: () => {
 
     },
-    createClickCallback: () => {
-        location.hash = "itemBundleCreate"
+    createClickCallback: props => {
+        if (props.hasOwnProperty("createUrl")) {
+            location.hash = props.createUrl
+        }
+
     }
 })
 

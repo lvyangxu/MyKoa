@@ -4,7 +4,10 @@ import ItemBundle from "../components/itemBundle"
 import Item from "../components/item"
 import CodeBundle from "../components/codeBundle"
 import ItemBundleCreate from "../components/itemBundleCreate"
+import CodeBundleCreate from "../components/codeBundleCreate"
 import Game from "../components/game"
+import Channel from "../components/channel"
+
 import css from "../index.css"
 import classnames from "classnames"
 import $ from "jquery"
@@ -14,35 +17,32 @@ import {
     CHANGE_GAME,
     TOGGLE_MENU,
     SET_ACTIVE_TAB,
-    SET_ITEM_LIST,
-    ADD_ITEM,
-    CHANGE_ITEM
+    SET_ITEM_LIST, SET_ITEM_BUNDLE_LIST, SET_CHANNEL_LIST,
+    ADD_ITEM, CHANGE_ITEM,
+    SET_ITEM_BUNDLE_CREATE_START_TIME, SET_ITEM_BUNDLE_CREATE_END_TIME,
 } from "../actions/action"
+import {postWithJWT} from "karl-http"
 import {HashRouter as Router, Route, Link} from 'react-router-dom'
 
 class MyComponent extends Component {
 
     async componentWillMount() {
-        let jwt = localStorage.getItem("AuthorizeServer-jwt")
-        if (jwt === null) {
-            location.href = "../login/"
-            return
-        }
-        let data = {jwt: jwt}
-        let path = `/table/item/read`
-        data = Object.assign({}, {path: path}, data)
-        let itemList = []
         try {
-            let response = await fetch(`../api/rewardCode`, {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            let responseData = await response.json()
-            itemList = responseData.message.data
+            let {data: itemList} = await postWithJWT("AuthorizeServer", `../api/rewardCode`, {path: `/table/item/read`})
             this.props.setItemList(itemList)
+
+            let {data: itemBundleList} = await postWithJWT("AuthorizeServer", `../api/rewardCode`, {path: `/table/itemBundleName/read`})
+            itemBundleList = itemBundleList.map(d => {
+                return d.name
+            })
+            this.props.setItemBundleList(itemBundleList)
+
+            let {data: channelList} = await postWithJWT("AuthorizeServer", `../api/rewardCode`, {path: `/table/channel/read`})
+            channelList = channelList.map(d => {
+                return d.name
+            })
+            this.props.setChannelList(channelList)
+
         } catch (e) {
             console.log(e)
         }
@@ -56,12 +56,21 @@ class MyComponent extends Component {
     }
 
     render() {
-        let giftAndCodeStatus = this.props.menuStatus.filter(d => {
+        let rewardCodeStatus = this.props.menuStatus.filter(d => {
             return d.name === "礼包与兑换码"
         }).map(d => {
             return d.expand
         })
-        let giftAndCodeExpand = giftAndCodeStatus.length > 0 ? giftAndCodeStatus[0] : false
+        let rewardCodeExpand = rewardCodeStatus.length > 0 ? rewardCodeStatus[0] : false
+        let rewardCodeMenuArr = [
+            {id: "/itemBundle", name: "礼包管理"},
+            {id: "/codeBundle", name: "兑换码管理"},
+            {id: "/item", name: "道具列表"},
+            {id: "/channel", name: "渠道列表"},
+            {id: "/itemBundleCreate", name: "新建礼包"},
+            {id: "/codeBundleCreate", name: "新建兑换码"},
+        ]
+
         return (
             <Router>
                 <div>
@@ -76,35 +85,24 @@ class MyComponent extends Component {
                                 this.props.toggleMenu("礼包与兑换码")
                             }}>
                                 <i className={classnames("fa", {
-                                    "fa-plus": !giftAndCodeExpand,
-                                    "fa-minus": giftAndCodeExpand
+                                    "fa-plus": !rewardCodeExpand,
+                                    "fa-minus": rewardCodeExpand
                                 })}></i>礼包与兑换码
                             </div>
-                            <div style={giftAndCodeExpand ? {} : {display: "none"}}>
-                                <Link to="/itemBundle" replace>
-                                    <div onClick={() => {
-                                        this.props.setActiveTab("礼包管理")
-                                    }}
-                                         className={classnames(css.li, this.props.activeTab === "礼包管理" ? css.active : "")}>
-                                        礼包管理
-                                    </div>
-                                </Link>
-                                <Link to="/item" replace>
-                                    <div onClick={() => {
-                                        this.props.setActiveTab("道具列表")
-                                    }}
-                                         className={classnames(css.li, this.props.activeTab === "道具列表" ? css.active : "")}>
-                                        道具列表
-                                    </div>
-                                </Link>
-                                <Link to="/codeBundle" replace>
-                                    <div onClick={() => {
-                                        this.props.setActiveTab("兑换码管理")
-                                    }}
-                                         className={classnames(css.li, this.props.activeTab === "兑换码管理" ? css.active : "")}>
-                                        兑换码管理
-                                    </div>
-                                </Link>
+                            <div style={rewardCodeExpand ? {} : {display: "none"}}>
+                                {
+                                    rewardCodeMenuArr.map((d, i) => {
+                                        return <Link key={i} to={d.id} replace>
+                                            <div
+                                                className={classnames(css.li, this.props.activeTab === d.name ? css.active : "")}
+                                                onClick={() => {
+                                                    this.props.setActiveTab(d.name)
+                                                }}>
+                                                {d.name}
+                                            </div>
+                                        </Link>
+                                    })
+                                }
                             </div>
                         </div>
                     </div>
@@ -120,7 +118,18 @@ class MyComponent extends Component {
                             />
                         }}/>
                         <Route path="/item" component={Item}/>
+                        <Route path="/channel" component={Channel}/>
                         <Route path="/codeBundle" component={CodeBundle}/>
+                        <Route path="/codeBundleCreate" component={() => {
+                            return <CodeBundleCreate itemBundleList={this.props.itemBundleList}
+                                                     channelList={this.props.channelList}
+                                                     submitCallback={this.props.createCode}
+                                                     itemBundleCreateStartTimeChangeCallback={this.props.setItemBundleCreateStartTime}
+                                                     itemBundleCreateEndTimeChangeCallback={this.props.setItemBundleCreateEndTime}
+                                                     itemBundleCreateStartTime={this.props.itemBundleCreateStartTime}
+                                                     itemBundleCreateEndTime={this.props.itemBundleCreateEndTime}
+                            />
+                        }}/>
                     </div>
                 </div>
             </Router>
@@ -158,11 +167,26 @@ const mapDispatchToProps = dispatch => ({
     setItemList: itemList => {
         dispatch({type: SET_ITEM_LIST, itemList: itemList})
     },
+    setItemBundleList: itemBundleList => {
+        dispatch({type: SET_ITEM_BUNDLE_LIST, itemBundleList: itemBundleList})
+    },
+    setChannelList: channelList => {
+        dispatch({type: SET_CHANNEL_LIST, channelList: channelList})
+    },
     addItem: () => {
         dispatch({type: ADD_ITEM})
     },
     changeItem: (d, i) => {
         dispatch({type: CHANGE_ITEM, itemName: d, index: i})
+    },
+    createCode: () => {
+
+    },
+    setItemBundleCreateStartTime: d => {
+        dispatch({type: SET_ITEM_BUNDLE_CREATE_START_TIME, value: d})
+    },
+    setItemBundleCreateEndTime: d => {
+        dispatch({type: SET_ITEM_BUNDLE_CREATE_END_TIME, value: d})
     }
 })
 
