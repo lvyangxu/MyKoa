@@ -1,0 +1,11 @@
+.base {
+    position: fixed;
+    z-index: 20;
+    top: 0;
+    right: 0;
+    min-width: 200px;
+    min-height: 70px;
+    background: linear-gradient(to bottom, rgba(237, 237, 237, 1), rgba(219, 219, 219, 1));
+    box-shadow: inset 0px 0px 2px 2px rgba(200, 200, 200, 1);
+}
+
