@@ -63,7 +63,7 @@ module.exports = ctx => {
     //客户端ui中的game
     let uiGameJson = {
         id: "uiGame",
-        regex: /^[a-z]+$/g
+        regex: /^[a-z0-9]+$/g
     }
 
     return {
@@ -98,13 +98,24 @@ module.exports = ctx => {
             createText: "创建新礼包",
             createUrl: "pack/create",
             columns: [
-                {id: "name", name: "名称", checked: true},
+                {
+                    id: "name", name: "名称", checked: true,
+                    style: {
+                        textDecoration: "underline"
+                    }
+                },
                 {id: "id", name: "ID", checked: true},
                 {id: "creater", name: "创建者", checked: true},
                 {id: "createTime", name: "创建日期", checked: true, type: "rangeDay", serverFilter: true},
                 {id: "itemNum", name: "包含物品数量", checked: true},
                 {id: "usedTimes", name: "被引用次数", checked: true},
-                {id: "review", name: "审核", checked: true},
+                {
+                    id: "review",
+                    name: "审核",
+                    checked: true,
+                    type: "buttons",
+                    buttons: [{name: "通过", style: {}}, {name: "不通过", style: {}}]
+                },
             ],
             read: () => {
                 let whereArr = [
@@ -112,8 +123,9 @@ module.exports = ctx => {
                     tableModel.condition.simpleStr("game", "uiGame")
                 ];
                 let whereStr = tableModel.where(whereArr);
-                let sqlCommond = `select id,name,creater,createTime,(length(itemIds)-length(replace(itemIds,",",""))+1) as itemNum
-                                    from pack ${whereStr}`;
+                let sqlCommond = `select id,name,creater,createTime,(length(itemIds)-length(replace(itemIds,",",""))+1) as itemNum,t2.usedTimes as usedTimes
+                                    from pack left join (select packId,count(id) as usedTimes from redeem_code group by packId) as t2
+                                       on pack.id = t2.packId ${whereStr}`;
                 return sqlCommond;
             },
             create: () => {
@@ -305,7 +317,7 @@ module.exports = ctx => {
                     if (type === "通用码") {
                         let historyCodeList = await getHistoryCodeList(`${ctx.request.body.uiGame}_general_code`)
                         let buildCodeMap = buildRandomCode(1, historyCodeList, true)
-                        let id = buildCodeMap.entries().next().value
+                        let id = buildCodeMap.entries().next().value[0]
 
                         //插入general_code表
                         try {

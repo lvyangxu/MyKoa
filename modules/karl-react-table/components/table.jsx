@@ -50,9 +50,14 @@ class MyComponent extends Component {
             this.props.displayData.map((d, i) => {
                 let tds = this.props.columns.map((d1, j) => {
                     let tdDom
-                    let {style = {}, imageStyle = {}} = d1
+                    let {
+                        style = {}, imageStyle = {}, callback = () => {
+                        }
+                    } = d1
                     if (d1.type === "image") {
-                        tdDom = <td key={j} style={style}>
+                        tdDom = <td key={j} style={style} onClick={() => {
+                            callback()
+                        }}>
                             <img style={imageStyle} src={`images/${d[d1.id]}`}/>
                         </td>
                     } else {
@@ -69,7 +74,9 @@ class MyComponent extends Component {
                         } else {
                             delete style.display
                         }
-                        tdDom = <td key={j} style={style} dangerouslySetInnerHTML={{__html: tdHtml}}></td>
+                        tdDom = <td key={j} style={style} dangerouslySetInnerHTML={{__html: tdHtml}} onClick={() => {
+                            callback()
+                        }}></td>
                     }
                     return tdDom
                 })

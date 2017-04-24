@@ -94,12 +94,16 @@ var MyComponent = function (_Component) {
                         var _d1$style = d1.style,
                             style = _d1$style === undefined ? {} : _d1$style,
                             _d1$imageStyle = d1.imageStyle,
-                            imageStyle = _d1$imageStyle === undefined ? {} : _d1$imageStyle;
+                            imageStyle = _d1$imageStyle === undefined ? {} : _d1$imageStyle,
+                            _d1$callback = d1.callback,
+                            callback = _d1$callback === undefined ? function () {} : _d1$callback;
 
                         if (d1.type === "image") {
                             tdDom = _react2.default.createElement(
                                 "td",
-                                { key: j, style: style },
+                                { key: j, style: style, onClick: function onClick() {
+                                        callback();
+                                    } },
                                 _react2.default.createElement("img", { style: imageStyle, src: "images/" + d[d1.id] })
                             );
                         } else {
@@ -116,7 +120,9 @@ var MyComponent = function (_Component) {
                             } else {
                                 delete style.display;
                             }
-                            tdDom = _react2.default.createElement("td", { key: j, style: style, dangerouslySetInnerHTML: { __html: tdHtml } });
+                            tdDom = _react2.default.createElement("td", { key: j, style: style, dangerouslySetInnerHTML: { __html: tdHtml }, onClick: function onClick() {
+                                    callback();
+                                } });
                         }
                         return tdDom;
                     });

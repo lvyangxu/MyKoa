@@ -20,6 +20,15 @@ class MyComponent extends Component {
         } catch (e) {
             console.log(e)
         }
+
+        // let json = {}
+        // json["CHANNEL-ID"] = 999
+        // json["USER-ID"] = "afaf"
+        // json["GAME-NAME"] = "CAVE"
+        // json["CD-KEY"] = "00065lpq09yq"
+        // let {data: d1} = await postWithJWT(this.props.project, `../RedeemCode/check`, json)
+        // console.log(d1)
+
     }
 
     render() {
