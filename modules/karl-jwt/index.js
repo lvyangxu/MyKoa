@@ -16,10 +16,10 @@ var jwt = function () {
     function jwt(json) {
         _classCallCheck(this, jwt);
 
-        var algorithm = json.algorithm,
+        var _json$algorithm = json.algorithm,
+            algorithm = _json$algorithm === undefined ? "aes192" : _json$algorithm,
             secret = json.secret;
 
-        this.algorithm = algorithm === undefined ? "aes192" : algorithm;
         this.secret = secret;
     }
 

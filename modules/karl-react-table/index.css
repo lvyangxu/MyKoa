@@ -1,3 +1,56 @@
+.base .serverFilter .section {
+  display: inline-block;
+  margin-right: 20px; }
+.base .actions {
+  margin-bottom: 20px; }
+  .base .actions .section {
+    display: inline-block;
+    margin-right: 20px; }
+    .base .actions .section input[type=number].filter, .base .actions .section input[type=text].filter {
+      padding-left: 10px;
+      padding-right: 10px;
+      height: 28px;
+      width: 100px;
+      font-size: 13px; }
+    .base .actions .section input[type=number].filter.required::-webkit-input-placeholder, .base .actions .section input[type=text].filter.required::-webkit-input-placeholder {
+      color: #dd4b39; }
+    .base .actions .section input[type=number].filter.required:-moz-placeholder, .base .actions .section input[type=text].filter.required:-moz-placeholder {
+      color: #dd4b39; }
+    .base .actions .section input[type=number].filter.required::-moz-placeholder, .base .actions .section input[type=text].filter.required::-moz-placeholder {
+      color: #dd4b39; }
+    .base .actions .section input[type=number].filter.required:-ms-input-placeholder, .base .actions .section input[type=text].filter.required:-ms-input-placeholder {
+      color: #dd4b39; }
+    .base .actions .section button.filter {
+      height: 34px;
+      padding-left: 10px;
+      padding-right: 10px;
+      border: 1px solid #ccc;
+      min-width: 80px;
+      background-color: white;
+      outline: none;
+      cursor: pointer; }
+      .base .actions .section button.filter i.loading {
+        animation: loading 5s infinite linear; }
+@keyframes loading {
+  from {
+    transform: rotateZ(0deg); }
+  to {
+    transform: rotateZ(360deg); } }
+    .base .actions .section button.loading {
+      background-color: #ccc; }
+    .base .actions .section select.filter {
+      height: 34px;
+      min-width: 80px;
+      padding-left: 10px;
+      padding-right: 10px;
+      margin-right: 10px; }
+    .base .actions .section .rowFilter {
+      height: 28px;
+      padding: 2px 10px;
+      border: 1px solid #ccc;
+      outline: none;
+      width: 120px;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); }
 .base .clientFilter {
   margin-bottom: 20px; }
   .base .clientFilter .section {
@@ -40,56 +93,6 @@
       padding-right: 10px;
       height: 28px;
       width: 100px; }
-.base .serverFilter {
-  margin-bottom: 20px; }
-  .base .serverFilter .section {
-    display: inline-block;
-    margin-right: 20px; }
-    .base .serverFilter .section input[type=number].filter, .base .serverFilter .section input[type=text].filter {
-      padding-left: 10px;
-      padding-right: 10px;
-      height: 28px;
-      width: 100px;
-      font-size: 13px; }
-    .base .serverFilter .section input[type=number].filter.required::-webkit-input-placeholder, .base .serverFilter .section input[type=text].filter.required::-webkit-input-placeholder {
-      color: #dd4b39; }
-    .base .serverFilter .section input[type=number].filter.required:-moz-placeholder, .base .serverFilter .section input[type=text].filter.required:-moz-placeholder {
-      color: #dd4b39; }
-    .base .serverFilter .section input[type=number].filter.required::-moz-placeholder, .base .serverFilter .section input[type=text].filter.required::-moz-placeholder {
-      color: #dd4b39; }
-    .base .serverFilter .section input[type=number].filter.required:-ms-input-placeholder, .base .serverFilter .section input[type=text].filter.required:-ms-input-placeholder {
-      color: #dd4b39; }
-    .base .serverFilter .section button.filter {
-      height: 34px;
-      padding-left: 10px;
-      padding-right: 10px;
-      border: 1px solid #ccc;
-      min-width: 80px;
-      background-color: white;
-      outline: none;
-      cursor: pointer; }
-      .base .serverFilter .section button.filter i.loading {
-        animation: loading 5s infinite linear; }
-@keyframes loading {
-  from {
-    transform: rotateZ(0deg); }
-  to {
-    transform: rotateZ(360deg); } }
-    .base .serverFilter .section button.loading {
-      background-color: #ccc; }
-    .base .serverFilter .section select.filter {
-      height: 34px;
-      min-width: 80px;
-      padding-left: 10px;
-      padding-right: 10px;
-      margin-right: 10px; }
-    .base .serverFilter .section .rowFilter {
-      height: 28px;
-      padding: 2px 10px;
-      border: 1px solid #ccc;
-      outline: none;
-      width: 120px;
-      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); }
 .base .panel-attachment .upload {
   margin-bottom: 20px; }
   .base .panel-attachment .upload input {
@@ -154,20 +157,20 @@
         border: 1px solid #cccccc;
         text-align: center;
         user-select: none; }
-      .base .table table thead tr th.checkbox {
-        padding: 2px; }
-        .base .table table thead tr th.checkbox input[type=checkbox] {
-          height: 20px;
-          width: 20px;
-          cursor: pointer; }
-      .base .table table thead tr th.hide {
-        display: none; }
-      .base .table table thead tr th:hover {
-        cursor: pointer;
-        box-shadow: inset 0 0 0 1px #dedede;
-        background-color: #f3f3f3; }
-      .base .table table thead tr th.checkbox:hover {
-        cursor: auto; }
+        .base .table table thead tr th.checkbox {
+          padding: 2px; }
+          .base .table table thead tr th.checkbox input[type=checkbox] {
+            height: 20px;
+            width: 20px;
+            cursor: pointer; }
+          .base .table table thead tr th.checkbox:hover {
+            cursor: auto; }
+        .base .table table thead tr th.hide {
+          display: none; }
+        .base .table table thead tr th:hover {
+          cursor: pointer;
+          box-shadow: inset 0 0 0 1px #dedede;
+          background-color: #f3f3f3; }
     .base .table table tbody {
       background-color: white;
       color: #272727;
@@ -191,13 +194,13 @@
         .base .table table tbody tr td a {
           text-decoration: none;
           color: #14c864; }
-        .base .table table tbody tr td a:hover {
-          color: rgba(20, 200, 100, 0.8); }
-      .base .table table tbody tr td.checkbox {
-        padding: 2px; }
-        .base .table table tbody tr td.checkbox input[type=checkbox] {
-          height: 20px;
-          width: 20px;
-          cursor: pointer; }
-      .base .table table tbody tr td.hide {
-        display: none; }
+          .base .table table tbody tr td a:hover {
+            color: rgba(20, 200, 100, 0.8); }
+        .base .table table tbody tr td.checkbox {
+          padding: 2px; }
+          .base .table table tbody tr td.checkbox input[type=checkbox] {
+            height: 20px;
+            width: 20px;
+            cursor: pointer; }
+        .base .table table tbody tr td.hide {
+          display: none; }

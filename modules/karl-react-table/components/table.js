@@ -10,6 +10,8 @@ var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = require("react-redux");
+
 var _classnames = require("classnames");
 
 var _classnames2 = _interopRequireDefault(_classnames);
@@ -18,9 +20,7 @@ var _index = require("../index.css");
 
 var _index2 = _interopRequireDefault(_index);
 
-var _karlComponentSelect = require("karl-component-select");
-
-var _karlComponentSelect2 = _interopRequireDefault(_karlComponentSelect);
+var _dataMap = require("../utils/dataMap");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44,31 +44,46 @@ var MyComponent = function (_Component) {
         value: function render() {
             var _this2 = this;
 
+            var ths = this.props.columns.map(function (d, i) {
+                var _d$thStyle = d.thStyle,
+                    style = _d$thStyle === undefined ? {} : _d$thStyle;
+
+                if (d.hasOwnProperty("checked") && d.checked === false) {
+                    style.display = "none";
+                }
+                var th = _react2.default.createElement(
+                    "th",
+                    { key: i, style: style, onClick: function onClick() {
+                            _this2.props.thClickCallback(d.id);
+                        } },
+                    d.name,
+                    _this2.props.sortColumnId === d.id ? _react2.default.createElement("i", { className: (0, _classnames2.default)("fa", {
+                            "fa-caret-up": _this2.props.sortDesc,
+                            "fa-caret-down": !_this2.props.sortDesc
+                        }) }) : ""
+                );
+                return th;
+            });
+            var thRow = this.props.curd.includes("u") || this.props.curd.includes("d") ? _react2.default.createElement(
+                "tr",
+                null,
+                _react2.default.createElement(
+                    "th",
+                    { className: _index2.default.checkbox },
+                    _react2.default.createElement("input", { type: "checkbox", checked: this.props.isAllChecked, onChange: function onChange() {
+                            _this2.props.thCheck(_this2.props);
+                        } })
+                ),
+                ths
+            ) : _react2.default.createElement(
+                "tr",
+                null,
+                ths
+            );
             var thead = _react2.default.createElement(
                 "thead",
                 null,
-                _react2.default.createElement(
-                    "tr",
-                    null,
-                    this.props.columns.map(function (d, i) {
-                        var style = d.hasOwnProperty("thStyle") ? d.thStyle : {};
-                        if (d.hasOwnProperty("checked") && d.checked === false) {
-                            style.display = "none";
-                        }
-                        var th = _react2.default.createElement(
-                            "th",
-                            { key: i, style: style, onClick: function onClick() {
-                                    _this2.props.thClickCallback(d.id);
-                                } },
-                            d.name,
-                            _this2.props.sortColumnId === d.id ? _react2.default.createElement("i", { className: (0, _classnames2.default)("fa", {
-                                    "fa-caret-up": _this2.props.sortDesc,
-                                    "fa-caret-down": !_this2.props.sortDesc
-                                }) }) : ""
-                        );
-                        return th;
-                    })
-                )
+                thRow
             );
             var tbody = _react2.default.createElement(
                 "tbody",
@@ -103,10 +118,26 @@ var MyComponent = function (_Component) {
                             }
                             tdDom = _react2.default.createElement("td", { key: j, style: style, dangerouslySetInnerHTML: { __html: tdHtml } });
                         }
-
                         return tdDom;
                     });
-                    var tr = _react2.default.createElement(
+                    var findChecked = _this2.props.checkedArr.find(function (d1) {
+                        return d1.id === d.id;
+                    });
+                    var isChecked = findChecked === undefined ? false : findChecked.checked;
+                    var tr = _this2.props.curd.includes("u") || _this2.props.curd.includes("d") ? _react2.default.createElement(
+                        "tr",
+                        { key: i },
+                        _react2.default.createElement(
+                            "td",
+                            { className: _index2.default.checkbox },
+                            _react2.default.createElement("input", { type: "checkbox", checked: isChecked,
+                                onChange: function onChange() {
+                                    _this2.props.tdCheck(_this2.props, d.id);
+                                }
+                            })
+                        ),
+                        tds
+                    ) : _react2.default.createElement(
                         "tr",
                         { key: i },
                         tds
@@ -131,13 +162,63 @@ var MyComponent = function (_Component) {
     return MyComponent;
 }(_react.Component);
 
-MyComponent.propTypes = {
-    thClickCallback: _react.PropTypes.func.isRequired,
-    sortDesc: _react.PropTypes.bool.isRequired,
-    sortColumnId: _react.PropTypes.string.isRequired,
-    is100TableWidth: _react.PropTypes.bool.isRequired
-};
 MyComponent.defaultProps = {
     columns: []
 };
-exports.default = MyComponent;
+
+
+var mapStateToProps = function mapStateToProps(state) {
+    var props = Object.assign({}, state, {});
+    return props;
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        //th列点击后进行排序
+        thClickCallback: function thClickCallback(id, props) {
+            var sortDesc = id === props.sortColumnId ? !props.sortDesc : true;
+            var sortedData = (0, _dataMap.mapInputFilterDataToSortedData)(props.inputFilterData, id, sortDesc);
+            dispatch({ type: "SET_SORTED_DATA", data: sortedData });
+
+            var displayData = (0, _dataMap.mapSortedDataToDisplayData)(sortedData, props.pageIndex, props.rowPerPage);
+            dispatch({ type: "SET_DISPLAY_DATA", data: displayData });
+
+            dispatch({ type: "CHANGE_SORT_DESC", sortDesc: sortDesc });
+            dispatch({ type: "CHANGE_SORT_COLUMN_ID", sortColumnId: id });
+        },
+        //checkbox选中状态改变
+        tdCheck: function tdCheck(props, id) {
+            var checkedArr = props.checkedArr.concat();
+            checkedArr = checkedArr.map(function (d) {
+                if (d.id === id) {
+                    d.checked = !d.checked;
+                }
+                return d;
+            });
+            dispatch({ type: "SET_CHECKED_ARR", data: checkedArr });
+        },
+        //全选状态改变
+        thCheck: function thCheck(props) {
+            var checkedArr = props.checkedArr.concat();
+            var idArr = props.displayData.map(function (d) {
+                return d.id;
+            });
+            if (props.isAllChecked) {
+                //从全选到全不选
+                dispatch({ type: "CLEAR_CHECKED_ARR" });
+            } else {
+                //从全不选到全选
+                checkedArr = checkedArr.map(function (d) {
+                    if (idArr.includes(d.id)) {
+                        d.checked = true;
+                    }
+                    return d;
+                });
+                dispatch({ type: "SET_CHECKED_ARR", data: checkedArr });
+            }
+            dispatch({ type: "SET_ALL_CHECKED", isAllChecked: !props.isAllChecked });
+        }
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(MyComponent);

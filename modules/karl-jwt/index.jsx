@@ -3,8 +3,7 @@ import crypto from "crypto"
 class jwt {
 
     constructor(json) {
-        let {algorithm, secret} = json
-        this.algorithm = algorithm === undefined ? "aes192" : algorithm
+        let {algorithm = "aes192", secret} = json
         this.secret = secret
     }
 

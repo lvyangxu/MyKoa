@@ -10,6 +10,7 @@ import date from "karl-date";
  * callback：日期改变时执行的回调
  * initCallback：初始化后执行的回调
  * initValue：初始值
+ * prefix：前缀
  *
  * 示例：
  * <Datepicker add="2" type="month" callback={d=>{
@@ -50,7 +51,7 @@ class datepicker extends React.Component {
                 break;
         }
         //如果初始值不为undefind和""，解析初始值字符串
-        if (this.props.hasOwnProperty("initValue") && this.props.initValue !== "") {
+        if (this.props.hasOwnProperty("initValue") && this.props.initValue !== "" && this.props.initValue !== undefined) {
             let arr = this.props.initValue.split(" ");
             if (arr.length === 2) {
                 let arr1 = arr[0].split("-");

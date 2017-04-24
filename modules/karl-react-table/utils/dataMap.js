@@ -51,7 +51,7 @@ var mapComponentFilterDataToInputFilterData = exports.mapComponentFilterDataToIn
  */
 var mapInputFilterDataToSortedData = exports.mapInputFilterDataToSortedData = function mapInputFilterDataToSortedData(inputFilterData, sortColumnId, sortDesc) {
     var id = sortColumnId;
-    if (id === undefined) {
+    if (id === undefined || id === "") {
         return inputFilterData;
     }
     var sortedData = inputFilterData.concat();

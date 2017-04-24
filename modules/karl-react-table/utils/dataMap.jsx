@@ -46,7 +46,7 @@ export const mapComponentFilterDataToInputFilterData = (componentFilterData, row
  */
 export const mapInputFilterDataToSortedData = (inputFilterData, sortColumnId, sortDesc) => {
     let id = sortColumnId
-    if (id === undefined) {
+    if (id === undefined || id === "") {
         return inputFilterData
     }
     let sortedData = inputFilterData.concat()

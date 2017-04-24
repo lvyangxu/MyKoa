@@ -33,6 +33,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * callback：日期改变时执行的回调
  * initCallback：初始化后执行的回调
  * initValue：初始值
+ * prefix：前缀
  *
  * 示例：
  * <Datepicker add="2" type="month" callback={d=>{
@@ -86,7 +87,7 @@ var datepicker = function (_React$Component) {
                 break;
         }
         //如果初始值不为undefind和""，解析初始值字符串
-        if (_this.props.hasOwnProperty("initValue") && _this.props.initValue !== "") {
+        if (_this.props.hasOwnProperty("initValue") && _this.props.initValue !== "" && _this.props.initValue !== undefined) {
             var arr = _this.props.initValue.split(" ");
             if (arr.length === 2) {
                 var arr1 = arr[0].split("-");

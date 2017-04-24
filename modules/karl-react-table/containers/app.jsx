@@ -1,7 +1,10 @@
 import React, {Component} from "react"
 import {connect} from "react-redux"
-import ClientFilter from "../components/clientFilter"
+
 import ServerFilter from "../components/serverFilter"
+import ActionRow from "../components/actionRow"
+import ClientFilter from "../components/clientFilter"
+
 import Table from "../components/table"
 import css from "../index.css"
 import {
@@ -12,13 +15,13 @@ import {
     START_LOADING, END_LOADING,
     CHANGE_SORT_DESC, CHANGE_SORT_COLUMN_ID,
 } from "../actions/action"
-import request from "../utils/request"
 import {
     mapSourceDataToComponentFilterData,
     mapComponentFilterDataToInputFilterData,
     mapInputFilterDataToSortedData,
     mapSortedDataToDisplayData
 } from "../utils/dataMap"
+import {postWithJWT} from "karl-http"
 
 class MyComponent extends Component {
 
@@ -28,10 +31,25 @@ class MyComponent extends Component {
         let data
         try {
             //从服务器获取数据
-            data = await request("init", this.props)
+            let requestData = {}
+            if (this.props.requestParams !== undefined) {
+                this.props.requestParams.forEach(d => {
+                    requestData[d.id] = d.value
+                })
+            }
+            data = await postWithJWT(this.props.project, `/${this.props.service}/table/${this.props.id}/init`, requestData)
         } catch (e) {
             console.log(`init table ${this.props.id} failed`)
             console.log(e)
+            // if (this.props.showTips) {
+            //     let errorMessage = e.message === "service is not available" ? "服务不可用" : e.message
+            //     this.props.showTips({
+            //         level: "danger",
+            //         title: "初始化表格数据失败",
+            //         text: "请重新刷新此页面,失败原因：" + errorMessage
+            //     })
+            // }
+            return
         }
 
         //服务器过滤列组件
@@ -48,8 +66,8 @@ class MyComponent extends Component {
         this.props.init(initData)
 
         //初始化时自动读取
-        if(initData.autoRead){
-            this.props.read(this.props)
+        if (initData.autoRead) {
+            this.props.read(this.props, true)
         }
     }
 
@@ -62,18 +80,8 @@ class MyComponent extends Component {
     render() {
         return (
             <div className={css.base}>
-                <ServerFilter isLoading={this.props.isLoading} serverFilter={this.props.serverFilter}
-                              serverFilterChangeCallback={this.props.serverFilterChangeCallback}
-                              read={() => {
-                                  this.props.read(this.props)
-                              }}
-                              curd={this.props.curd}
-                              exportClickCallback={this.props.exportClickCallback}
-                              createClickCallback={() => {
-                                  this.props.createClickCallback(this.props)
-                              }}
-                              createText={this.props.createText}
-                />
+                <ServerFilter/>
+                <ActionRow requestParams={this.props.requestParams}/>
                 <ClientFilter columns={this.props.columns}
                               curd={this.props.curd}
                               rowFilterValue={this.props.rowFilterValue}
@@ -87,13 +95,7 @@ class MyComponent extends Component {
                                   this.props.rowPerPageChangeCallback(rowPerPage, this.props)
                               }}
                 />
-                <Table columns={this.props.columns} displayData={this.props.displayData}
-                       sortDesc={this.props.sortDesc} sortColumnId={this.props.sortColumnId}
-                       thClickCallback={id => {
-                           this.props.thClickCallback(id, this.props)
-                       }}
-                       is100TableWidth={this.props.is100TableWidth}
-                />
+                <Table/>
             </div>
         )
     }
@@ -118,29 +120,42 @@ let mapDispatchToProps = dispatch => ({
         initData = Object.assign({}, {type: INIT}, initData)
         dispatch(initData)
     },
+    setInitial: () => {
+        dispatch({type: SET_IS_INITIAL_FALSE})
+    },
     rowFilterChangeCallback: rowFilterValue => {
+        dispatch({type: "CLEAR_CHECKED_ARR"})
         dispatch({type: CHANGE_ROW_FILTER, rowFilterValue: rowFilterValue})
     },
     columnFilterChangeCallback: columns => {
         dispatch({type: CHANGE_COLUMN_FILTER, columns: columns})
     },
     pageIndexChangeCallback: pageIndex => {
+        dispatch({type: "CLEAR_CHECKED_ARR"})
         dispatch({type: CHANGE_PAGE_INDEX, pageIndex: pageIndex})
     },
     rowPerPageChangeCallback: (rowPerPage, props) => {
+        dispatch({type: "CLEAR_CHECKED_ARR"})
         dispatch({type: CHANGE_ROW_PER_PAGE, rowPerPage: rowPerPage})
         dispatch({type: CHANGE_PAGE_INDEX, pageIndex: 1})
         let displayData = mapSortedDataToDisplayData(props.sortedData, 1, rowPerPage)
         dispatch({type: SET_DISPLAY_DATA, data: displayData})
     },
-    read: async props => {
+    read: async (props, isAutoRead) => {
         dispatch({type: START_LOADING})
         let data
         //附加查询条件的数据
-        let requestData = {};
+        let requestData = isAutoRead ? {autoRead: true} : {}
+        if (props.requestParams !== undefined) {
+            props.requestParams.forEach(d => {
+                requestData[d.id] = d.value
+            })
+        }
+
         props.serverFilter.forEach(d => {
             switch (d.type) {
                 case "day":
+                case "second":
                 case "month":
                 case "select":
                 case "input":
@@ -159,14 +174,37 @@ let mapDispatchToProps = dispatch => ({
             }
         })
         try {
-            let message = await request("read", props, requestData)
+            let message = await postWithJWT(props.project, `/${props.service}/table/${props.id}/read`, requestData)
             data = message.data
             dispatch({type: END_LOADING})
         } catch (e) {
             dispatch({type: END_LOADING})
-            console.log(e)
+            if (props.showTips) {
+                let text
+                switch (e.status) {
+                    case 400:
+                        text = "参数不正确"
+                        break
+                    case 500:
+                        text = "服务器内部错误"
+                        break
+                    default:
+                        text = e.message
+                        break
+                }
+                props.showTips({
+                    level: "danger",
+                    title: "读取数据失败",
+                    text: text
+                })
+            }
             return
         }
+
+        let checkedArr = data.map(d => {
+            return {id: d.id, checked: false}
+        })
+        dispatch({type: "SET_CHECKED_ARR", data: checkedArr})
         dispatch({type: SET_SOURCE_DATA, data: data})
 
         let componentFilterData = mapSourceDataToComponentFilterData(props, data)
@@ -183,30 +221,17 @@ let mapDispatchToProps = dispatch => ({
 
         dispatch({type: CHANGE_PAGE_INDEX, pageIndex: 1})
 
-    },
-    serverFilterChangeCallback: (id, value) => {
-        dispatch({type: CHANGE_SERVER_FILTER, id: id, value: value})
-    },
-    thClickCallback: (id, props) => {
-        let sortDesc = id === props.sortColumnId ? !props.sortDesc : true
-        let sortedData = mapInputFilterDataToSortedData(props.inputFilterData, id, sortDesc);
-        dispatch({type: SET_SORTED_DATA, data: sortedData})
-
-        let displayData = mapSortedDataToDisplayData(sortedData, props.pageIndex, props.rowPerPage)
-        dispatch({type: SET_DISPLAY_DATA, data: displayData})
-
-        dispatch({type: CHANGE_SORT_DESC, sortDesc: sortDesc})
-        dispatch({type: CHANGE_SORT_COLUMN_ID, sortColumnId: id})
-    },
-    exportClickCallback: () => {
-
-    },
-    createClickCallback: props => {
-        if (props.hasOwnProperty("createUrl")) {
-            location.hash = props.createUrl
+        if (props.showTips) {
+            props.showTips({
+                level: "info",
+                title: "读取数据成功",
+                text: props.name,
+            })
         }
 
-    }
+    },
+
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyComponent)

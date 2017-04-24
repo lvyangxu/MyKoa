@@ -1,6 +1,7 @@
-import request from "../utils/request"
 
+//初始化
 export const INIT = "INIT"
+
 
 //改变过滤器的值
 export const CHANGE_ROW_FILTER = "CHANGE_ROW_FILTER"

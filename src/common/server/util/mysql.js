@@ -19,7 +19,8 @@ let mysql = {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(rows, {
+                    resolve({
+                        rows: rows,
                         sqlCommand: sqlCommand,
                         values: values,
                         fields: fields

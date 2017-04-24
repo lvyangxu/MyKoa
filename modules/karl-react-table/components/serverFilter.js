@@ -10,6 +10,8 @@ var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRedux = require("react-redux");
+
 var _classnames = require("classnames");
 
 var _classnames2 = _interopRequireDefault(_classnames);
@@ -113,7 +115,8 @@ var MyComponent = function (_Component) {
                     conditionDom = _react2.default.createElement(
                         "div",
                         { className: _index2.default.section, key: i },
-                        _react2.default.createElement(_karlComponentDatepicker2.default, { type: d.type, add: add, initCallback: function initCallback(d1) {
+                        d.name + "：",
+                        _react2.default.createElement(_karlComponentDatepicker2.default, { prefix: d.name, type: d.type, add: add, initCallback: function initCallback(d1) {
                                 _this2.props.serverFilterChangeCallback(d.id + "Condition", d1);
                             }, callback: function callback(d1) {
                                 _this2.props.serverFilterChangeCallback(d.id + "Condition", d1);
@@ -141,6 +144,7 @@ var MyComponent = function (_Component) {
                         _react2.default.createElement(
                             "div",
                             { className: _index2.default.section },
+                            d.name + "开始：",
                             _react2.default.createElement(_karlComponentDatepicker2.default, { type: type, add: startAdd, initCallback: function initCallback(d1) {
                                     _this2.props.serverFilterChangeCallback(d.id + "ConditionStart", d1);
                                 }, callback: function callback(d1) {
@@ -150,6 +154,7 @@ var MyComponent = function (_Component) {
                         _react2.default.createElement(
                             "div",
                             { className: _index2.default.section },
+                            d.name + "结束：",
                             _react2.default.createElement(_karlComponentDatepicker2.default, { type: type, add: endAdd, initCallback: function initCallback(d1) {
                                     _this2.props.serverFilterChangeCallback(d.id + "ConditionEnd", d1);
                                 }, callback: function callback(d1) {
@@ -177,46 +182,13 @@ var MyComponent = function (_Component) {
         value: function render() {
             var _this3 = this;
 
-            var loadingJson = {};
-            loadingJson[_index2.default.loading] = this.props.isLoading;
-
             return _react2.default.createElement(
                 "div",
-                { className: _index2.default.serverFilter },
+                { className: _index2.default.serverFilter,
+                    style: this.props.serverFilter.length === 0 ? {} : { marginBottom: "20px" } },
                 this.props.serverFilter.map(function (d, i) {
                     return _this3.condition(d, i);
-                }),
-                _react2.default.createElement(
-                    "div",
-                    { className: _index2.default.section },
-                    _react2.default.createElement(
-                        "button",
-                        { className: (0, _classnames2.default)(_index2.default.filter, loadingJson),
-                            onClick: this.props.read, disabled: this.props.isLoading },
-                        _react2.default.createElement("i", { className: (0, _classnames2.default)("fa fa-refresh", loadingJson) }),
-                        "\u5237\u65B0"
-                    )
-                ),
-                _react2.default.createElement(
-                    "div",
-                    { className: _index2.default.section },
-                    _react2.default.createElement(
-                        "button",
-                        { className: _index2.default.filter, onClick: this.props.exportClickCallback },
-                        _react2.default.createElement("i", { className: "fa fa-download" }),
-                        "\u5BFC\u51FA"
-                    )
-                ),
-                this.props.curd.includes("c") ? _react2.default.createElement(
-                    "div",
-                    { className: _index2.default.section },
-                    _react2.default.createElement(
-                        "button",
-                        { className: _index2.default.filter, onClick: this.props.createClickCallback },
-                        _react2.default.createElement("i", { className: "fa fa-plus" }),
-                        this.props.createText
-                    )
-                ) : ""
+                })
             );
         }
     }]);
@@ -224,14 +196,22 @@ var MyComponent = function (_Component) {
     return MyComponent;
 }(_react.Component);
 
-MyComponent.propTypes = {
-    curd: _react.PropTypes.string.isRequired,
-    read: _react.PropTypes.func.isRequired,
-    serverFilterChangeCallback: _react.PropTypes.func.isRequired,
-    isLoading: _react.PropTypes.bool.isRequired,
-    serverFilter: _react.PropTypes.array.isRequired,
-    exportClickCallback: _react.PropTypes.func.isRequired,
-    createClickCallback: _react.PropTypes.func.isRequired,
-    createText: _react.PropTypes.string.isRequired
+MyComponent.propTypes = {};
+
+
+var mapStateToProps = function mapStateToProps(state) {
+    var props = Object.assign({}, state, {});
+    return props;
 };
-exports.default = MyComponent;
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+    return {
+        //监听服务器控件状态变化
+        serverFilterChangeCallback: function serverFilterChangeCallback(id, value) {
+            dispatch({ type: "CHANGE_SERVER_FILTER", id: id, value: value });
+        }
+
+    };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(MyComponent);

@@ -21,20 +21,13 @@ let store = {}
  */
 class MyComponent extends React.Component {
 
-    async componentWillMount() {
-        let data = []
-        if (this.props.hasOwnProperty("url")) {
-            data = await http.post(this.props.url)
-        } else {
-            data = this.props.data
-        }
-        let value = this.props.hasOwnProperty("initValue") ? this.props.initValue : data[0]
+    componentWillMount() {
+        let {initValue} = this.props
         let preloadedState = {
             classNames: this.props.classNames,
-            data: data,
-            value: value,
             prefix: this.props.prefix,
             suffix: this.props.suffix,
+            initValue: initValue,
             isPanelShow: false,
             pageIndex: 0,
             filterValue: "",
@@ -46,7 +39,7 @@ class MyComponent extends React.Component {
 
     render() {
         return <Provider store={store}>
-            <App/>
+            <App data={this.props.data}/>
         </Provider>
     }
 }

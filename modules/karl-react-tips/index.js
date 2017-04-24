@@ -49,25 +49,16 @@ var MyComponent = function (_React$Component) {
     _createClass(MyComponent, [{
         key: "componentWillMount",
         value: function componentWillMount() {
-            var preloadedState;
-            return regeneratorRuntime.async(function componentWillMount$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-                            preloadedState = {
-                                classNames: this.props.classNames,
-                                data: this.props.data,
-                                isShow: false
-                            };
-
-                            store = (0, _redux.createStore)(_reducer2.default, preloadedState);
-
-                        case 2:
-                        case "end":
-                            return _context.stop();
-                    }
-                }
-            }, null, this);
+            var preloadedState = {
+                classNames: this.props.classNames,
+                isShow: false
+            };
+            store = (0, _redux.createStore)(_reducer2.default, preloadedState);
+        }
+    }, {
+        key: "componentWillReceiveProps",
+        value: function componentWillReceiveProps(nextProps) {
+            console.log(nextProps);
         }
     }, {
         key: "render",
@@ -75,7 +66,7 @@ var MyComponent = function (_React$Component) {
             return _react2.default.createElement(
                 _reactRedux.Provider,
                 { store: store },
-                _react2.default.createElement(_app2.default, null)
+                _react2.default.createElement(_app2.default, { data: this.props.data })
             );
         }
     }]);

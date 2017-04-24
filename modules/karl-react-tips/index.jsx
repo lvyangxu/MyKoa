@@ -15,19 +15,21 @@ let store = {}
  */
 class MyComponent extends React.Component {
 
-    async componentWillMount() {
-
+    componentWillMount() {
         let preloadedState = {
             classNames: this.props.classNames,
-            data: this.props.data,
             isShow: false,
         }
         store = createStore(reducer, preloadedState)
     }
 
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps)
+    }
+
     render() {
         return <Provider store={store}>
-            <App/>
+            <App data={this.props.data}/>
         </Provider>
     }
 }

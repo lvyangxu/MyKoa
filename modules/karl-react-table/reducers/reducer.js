@@ -19,13 +19,14 @@ exports.default = function (state, action) {
             delete initData.type;
             newState = Object.assign({}, state, initData);
             break;
+
         case _action.CHANGE_ROW_FILTER:
             inputFilterData = (0, _dataMap.mapComponentFilterDataToInputFilterData)(state.componentFilterData, action.rowFilterValue);
             sortedData = (0, _dataMap.mapInputFilterDataToSortedData)(inputFilterData, state.sortColumnId, state.sortDesc);
-            displayData = (0, _dataMap.mapSortedDataToDisplayData)(sortedData, 0, state.rowPerPage);
+            displayData = (0, _dataMap.mapSortedDataToDisplayData)(sortedData, 1, state.rowPerPage);
             newState = Object.assign({}, state, {
                 rowFilterValue: action.rowFilterValue,
-                pageIndex: 0,
+                pageIndex: 1,
                 inputFilterData: inputFilterData,
                 sortedData: sortedData,
                 displayData: displayData
@@ -153,6 +154,24 @@ exports.default = function (state, action) {
             break;
         case _action.CHANGE_SORT_COLUMN_ID:
             newState = Object.assign({}, state, { sortColumnId: action.sortColumnId });
+            break;
+
+        //改变checkbox选中状态
+        case "SET_CHECKED_ARR":
+            newState = Object.assign({}, state, { checkedArr: action.data });
+            break;
+        //清除所有checkbox的选中
+        case "CLEAR_CHECKED_ARR":
+            var checkedArr = state.checkedArr.concat();
+            checkedArr = checkedArr.map(function (d) {
+                d.checked = false;
+                return d;
+            });
+            newState = Object.assign({}, state, { checkedArr: checkedArr });
+            break;
+        //改变全选状态
+        case "SET_ALL_CHECKED":
+            newState = Object.assign({}, state, { isAllChecked: action.isAllChecked });
             break;
 
         default:

@@ -12,9 +12,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = require("react-redux");
 
-var _button = require("../components/button");
+var _tips = require("../components/tips");
 
-var _button2 = _interopRequireDefault(_button);
+var _tips2 = _interopRequireDefault(_tips);
 
 var _index = require("../index.css");
 
@@ -44,12 +44,27 @@ var MyComponent = function (_Component) {
     }
 
     _createClass(MyComponent, [{
+        key: "componentWillReceiveProps",
+        value: function componentWillReceiveProps(nextProps) {
+            var _this2 = this;
+
+            if (this.props.data !== nextProps.data) {
+                if ($(this.base).is(":animated")) {
+                    $(this.base).stop();
+                }
+                $(this.base).css({ opacity: "1", display: "block" });
+                $(this.base).animate({ opacity: "0" }, 10000, "linear", function () {
+                    $(_this2.base).css({ display: "none" });
+                });
+            }
+        }
+    }, {
         key: "render",
         value: function render() {
             return _react2.default.createElement(
                 "div",
                 { className: (0, _classnames2.default)(_index2.default.base, this.props.classNames) },
-                _react2.default.createElement(_button2.default, { data: this.props.data, isShow: this.props.isShow })
+                _react2.default.createElement(_tips2.default, { data: this.props.data, isShow: this.props.isShow })
             );
         }
     }]);
@@ -63,11 +78,7 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-    return {
-        togglePanel: function togglePanel() {
-            dispatch({ type: _action.TOGGLE_PANEL });
-        }
-    };
+    return {};
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(MyComponent);

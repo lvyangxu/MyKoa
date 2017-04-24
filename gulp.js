@@ -25,34 +25,34 @@ let project = params === undefined ? "" : params.replace("--project=", "");
 let config = {
     isProduction: false,
     isOnlyServer: {
-        AuthorizeServer: true,
-        RewardCode: true
+        Authorize: true,
+        RedeemCode: true
     },
     isOnlyClient: {
-        AvalonFrontEnd: true
+        AvalonGameFrontEnd: true
     },
     mysql: {
-        RewardCode: {
+        RedeemCode: {
             user: "root",
             password: "root",
-            database: "RewardCode"
+            database: "RedeemCode"
         },
     },
     mongodb: {
-        AuthorizeServer: {
+        Authorize: {
             host: "localhost",
             port: 27017,
-            database: "FrontEnd"
+            database: "Authorize"
         }
     },
     account: {
-        AuthorizeServer: {
+        Authorize: {
             loginRedirect: "manage"
         }
     },
     port: {
-        AuthorizeServer: 3001,
-        RewardCode: 3002
+        Authorize: 3001,
+        RedeemCode: 3002
     }
 };
 

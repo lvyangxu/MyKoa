@@ -172,9 +172,14 @@ module.exports = ctx => {
                 let str = ` ${field}<>"${value}" `;
                 return str;
             },
-            //等于固定的值
-            equal: (field, value) => {
+            //等于固定的字符串值
+            equalStr: (field, value) => {
                 let str = ` ${field}="${value}" `;
+                return str;
+            },
+            //等于固定的数字值
+            equalNum: (field, value) => {
+                let str = ` ${field}=${value} `;
                 return str;
             },
         },
@@ -182,25 +187,55 @@ module.exports = ctx => {
          * 参数检查
          */
         check: {
-            //固定时间
-            day: (param) => {
-                let hasParam = ctx.request.body.hasOwnProperty(param);
-                let regex = /^\d{4}-\d{2}-\d{2}$/;
-                let isValid = regex.test(ctx.request.body[param]);
-                return hasParam && isValid;
+            //天
+            day: param => {
+                let hasParam = ctx.request.body.hasOwnProperty(param)
+                let regex = /^\d{4}-\d{2}-\d{2}$/
+                let isValid = regex.test(ctx.request.body[param])
+                return hasParam && isValid
+            },
+            //秒
+            second: param => {
+                let hasParam = ctx.request.body.hasOwnProperty(param)
+                let regex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/
+                let isValid = regex.test(ctx.request.body[param])
+                return hasParam && isValid
+            },
+            //秒,该参数为数组，数组所有元素必须匹配秒正则
+            secondArr: (param1, param2) => {
+                let hasParam = ctx.request.body.hasOwnProperty(param1)
+                param1 = ctx.request.body[param1]
+                hasParam = hasParam && Array.isArray(param1) && param1.length > 0
+                let regex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/
+                let isValid = param1.every(d => {
+                    return regex.test(d[param2])
+                })
+                return hasParam && isValid
             },
             //范围时间-天
-            rangeDay: (param) => {
-                let hasParam = ctx.request.body.hasOwnProperty(param) && ctx.request.body[param].hasOwnProperty("start") && ctx.request.body[param].hasOwnProperty("end");
-                let regex = /^\d{4}-\d{2}-\d{2}$/;
-                let isValid = regex.test(ctx.request.body[param].start) && regex.test(ctx.request.body[param].end);
-                return hasParam && isValid;
+            rangeDay: param => {
+                let hasParam = ctx.request.body.hasOwnProperty(param) && ctx.request.body[param].hasOwnProperty("start") && ctx.request.body[param].hasOwnProperty("end")
+                let regex = /^\d{4}-\d{2}-\d{2}$/
+                let isValid = regex.test(ctx.request.body[param].start) && regex.test(ctx.request.body[param].end)
+                return hasParam && isValid
             },
             //范围时间-秒
             rangeSecond: (param) => {
                 let hasParam = ctx.request.body.hasOwnProperty(param) && ctx.request.body[param].hasOwnProperty("start") && ctx.request.body[param].hasOwnProperty("end");
                 let regex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
                 let isValid = regex.test(ctx.request.body[param].start) && regex.test(ctx.request.body[param].end);
+                return hasParam && isValid;
+            },
+            //范围时间-秒，该参数为数组，数组所有元素必须匹配秒正则
+            rangeSecondArr: (param1, param2) => {
+                let hasParam = ctx.request.body.hasOwnProperty(param1)
+                param1 = ctx.request.body[param1]
+                hasParam = hasParam && Array.isArray(param1) && param1.length > 0
+                let regex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
+                let isValid = param1.every(d => {
+                    return d[param2].hasOwnProperty("start") && d[param2].hasOwnProperty("end")
+                        && regex.test(d[param2].start) && regex.test(d[param2].end)
+                })
                 return hasParam && isValid;
             },
             //多选插件的数组
@@ -213,6 +248,16 @@ module.exports = ctx => {
             regex: (param, regex) => {
                 if (ctx.request.body.hasOwnProperty(param) && ctx.request.body[param] !== "") {
                     return regex.test(ctx.request.body[param]);
+                } else {
+                    return false;
+                }
+            },
+            //必要条件,该参数为数组，数组所有元素必须匹配正则
+            regexArr: (param1, param2, regex) => {
+                if (ctx.request.body.hasOwnProperty(param1) && Array.isArray(ctx.request.body[param1]) && ctx.request.body[param1].length > 0) {
+                    return ctx.request.body[param1].every(d => {
+                        return regex.test(d[param2])
+                    })
                 } else {
                     return false;
                 }

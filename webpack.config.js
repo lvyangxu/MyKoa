@@ -34,6 +34,11 @@ module.exports = {
             "process.env": {
                 NODE_ENV: JSON.stringify("production")
             }
+        }),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "common",
+            filename: "bundle.js",
+            chunks: ["index"]
         })
     ]
 };

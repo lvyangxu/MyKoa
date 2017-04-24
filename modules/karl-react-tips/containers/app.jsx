@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 import {connect} from "react-redux"
-import Tips from "../components/button"
+import Tips from "../components/tips"
 import css from "../index.css"
 import {
     TOGGLE_PANEL,
@@ -8,6 +8,18 @@ import {
 import classnames from "classnames"
 
 class MyComponent extends Component {
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.data !== nextProps.data) {
+            if ($(this.base).is(":animated")) {
+                $(this.base).stop()
+            }
+            $(this.base).css({opacity: "1", display: "block"})
+            $(this.base).animate({opacity: "0"}, 10000, "linear", () => {
+                $(this.base).css({display: "none"})
+            })
+        }
+    }
 
     render() {
         return (
@@ -23,10 +35,6 @@ let mapStateToProps = state => {
     return props
 }
 
-const mapDispatchToProps = dispatch => ({
-    togglePanel: () => {
-        dispatch({type: TOGGLE_PANEL})
-    },
-})
+let mapDispatchToProps = dispatch => ({})
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyComponent)

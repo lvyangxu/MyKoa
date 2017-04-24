@@ -1,11 +1,11 @@
 {
   "name": "karl-http",
-  "version": "7.0.0",
+  "version": "7.0.9",
   "description": "karl http request with fetch",
   "main": "index.js",
   "author": "lvyangxu",
   "license": "ISC",
   "dependencies": {
-
+    "isomorphic-fetch": "latest"
   }
 }

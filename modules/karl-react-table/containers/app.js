@@ -12,13 +12,17 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = require("react-redux");
 
-var _clientFilter = require("../components/clientFilter");
-
-var _clientFilter2 = _interopRequireDefault(_clientFilter);
-
 var _serverFilter = require("../components/serverFilter");
 
 var _serverFilter2 = _interopRequireDefault(_serverFilter);
+
+var _actionRow = require("../components/actionRow");
+
+var _actionRow2 = _interopRequireDefault(_actionRow);
+
+var _clientFilter = require("../components/clientFilter");
+
+var _clientFilter2 = _interopRequireDefault(_clientFilter);
 
 var _table = require("../components/table");
 
@@ -30,11 +34,9 @@ var _index2 = _interopRequireDefault(_index);
 
 var _action = require("../actions/action");
 
-var _request = require("../utils/request");
-
-var _request2 = _interopRequireDefault(_request);
-
 var _dataMap = require("../utils/dataMap");
+
+var _karlHttp = require("karl-http");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -56,29 +58,47 @@ var MyComponent = function (_Component) {
     _createClass(MyComponent, [{
         key: "componentWillMount",
         value: function componentWillMount() {
-            var data, serverFilter, initData;
+            var data, requestData, serverFilter, initData;
             return regeneratorRuntime.async(function componentWillMount$(_context) {
                 while (1) {
                     switch (_context.prev = _context.next) {
                         case 0:
                             data = void 0;
                             _context.prev = 1;
-                            _context.next = 4;
-                            return regeneratorRuntime.awrap((0, _request2.default)("init", this.props));
 
-                        case 4:
+                            //从服务器获取数据
+                            requestData = {};
+
+                            if (this.props.requestParams !== undefined) {
+                                this.props.requestParams.forEach(function (d) {
+                                    requestData[d.id] = d.value;
+                                });
+                            }
+                            _context.next = 6;
+                            return regeneratorRuntime.awrap((0, _karlHttp.postWithJWT)(this.props.project, "/" + this.props.service + "/table/" + this.props.id + "/init", requestData));
+
+                        case 6:
                             data = _context.sent;
-                            _context.next = 11;
+                            _context.next = 14;
                             break;
 
-                        case 7:
-                            _context.prev = 7;
+                        case 9:
+                            _context.prev = 9;
                             _context.t0 = _context["catch"](1);
 
                             console.log("init table " + this.props.id + " failed");
                             console.log(_context.t0);
+                            // if (this.props.showTips) {
+                            //     let errorMessage = e.message === "service is not available" ? "服务不可用" : e.message
+                            //     this.props.showTips({
+                            //         level: "danger",
+                            //         title: "初始化表格数据失败",
+                            //         text: "请重新刷新此页面,失败原因：" + errorMessage
+                            //     })
+                            // }
+                            return _context.abrupt("return");
 
-                        case 11:
+                        case 14:
 
                             //服务器过滤列组件
                             serverFilter = data.columns.filter(function (d) {
@@ -97,15 +117,15 @@ var MyComponent = function (_Component) {
 
                             //初始化时自动读取
                             if (initData.autoRead) {
-                                this.props.read(this.props);
+                                this.props.read(this.props, true);
                             }
 
-                        case 16:
+                        case 19:
                         case "end":
                             return _context.stop();
                     }
                 }
-            }, null, this, [[1, 7]]);
+            }, null, this, [[1, 9]]);
         }
     }, {
         key: "componentDidMount",
@@ -122,18 +142,8 @@ var MyComponent = function (_Component) {
             return _react2.default.createElement(
                 "div",
                 { className: _index2.default.base },
-                _react2.default.createElement(_serverFilter2.default, { isLoading: this.props.isLoading, serverFilter: this.props.serverFilter,
-                    serverFilterChangeCallback: this.props.serverFilterChangeCallback,
-                    read: function read() {
-                        _this2.props.read(_this2.props);
-                    },
-                    curd: this.props.curd,
-                    exportClickCallback: this.props.exportClickCallback,
-                    createClickCallback: function createClickCallback() {
-                        _this2.props.createClickCallback(_this2.props);
-                    },
-                    createText: this.props.createText
-                }),
+                _react2.default.createElement(_serverFilter2.default, null),
+                _react2.default.createElement(_actionRow2.default, { requestParams: this.props.requestParams }),
                 _react2.default.createElement(_clientFilter2.default, { columns: this.props.columns,
                     curd: this.props.curd,
                     rowFilterValue: this.props.rowFilterValue,
@@ -147,13 +157,7 @@ var MyComponent = function (_Component) {
                         _this2.props.rowPerPageChangeCallback(rowPerPage, _this2.props);
                     }
                 }),
-                _react2.default.createElement(_table2.default, { columns: this.props.columns, displayData: this.props.displayData,
-                    sortDesc: this.props.sortDesc, sortColumnId: this.props.sortColumnId,
-                    thClickCallback: function thClickCallback(id) {
-                        _this2.props.thClickCallback(id, _this2.props);
-                    },
-                    is100TableWidth: this.props.is100TableWidth
-                })
+                _react2.default.createElement(_table2.default, null)
             );
         }
     }]);
@@ -182,23 +186,29 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
             initData = Object.assign({}, { type: _action.INIT }, initData);
             dispatch(initData);
         },
+        setInitial: function setInitial() {
+            dispatch({ type: SET_IS_INITIAL_FALSE });
+        },
         rowFilterChangeCallback: function rowFilterChangeCallback(rowFilterValue) {
+            dispatch({ type: "CLEAR_CHECKED_ARR" });
             dispatch({ type: _action.CHANGE_ROW_FILTER, rowFilterValue: rowFilterValue });
         },
         columnFilterChangeCallback: function columnFilterChangeCallback(columns) {
             dispatch({ type: _action.CHANGE_COLUMN_FILTER, columns: columns });
         },
         pageIndexChangeCallback: function pageIndexChangeCallback(pageIndex) {
+            dispatch({ type: "CLEAR_CHECKED_ARR" });
             dispatch({ type: _action.CHANGE_PAGE_INDEX, pageIndex: pageIndex });
         },
         rowPerPageChangeCallback: function rowPerPageChangeCallback(rowPerPage, props) {
+            dispatch({ type: "CLEAR_CHECKED_ARR" });
             dispatch({ type: _action.CHANGE_ROW_PER_PAGE, rowPerPage: rowPerPage });
             dispatch({ type: _action.CHANGE_PAGE_INDEX, pageIndex: 1 });
             var displayData = (0, _dataMap.mapSortedDataToDisplayData)(props.sortedData, 1, rowPerPage);
             dispatch({ type: _action.SET_DISPLAY_DATA, data: displayData });
         },
-        read: function read(props) {
-            var data, requestData, message, componentFilterData, inputFilterData, sortedData, displayData;
+        read: function read(props, isAutoRead) {
+            var data, requestData, message, text, checkedArr, componentFilterData, inputFilterData, sortedData, displayData;
             return regeneratorRuntime.async(function read$(_context2) {
                 while (1) {
                     switch (_context2.prev = _context2.next) {
@@ -207,11 +217,18 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
                             data = void 0;
                             //附加查询条件的数据
 
-                            requestData = {};
+                            requestData = isAutoRead ? { autoRead: true } : {};
+
+                            if (props.requestParams !== undefined) {
+                                props.requestParams.forEach(function (d) {
+                                    requestData[d.id] = d.value;
+                                });
+                            }
 
                             props.serverFilter.forEach(function (d) {
                                 switch (d.type) {
                                     case "day":
+                                    case "second":
                                     case "month":
                                     case "select":
                                     case "input":
@@ -229,27 +246,62 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
                                         break;
                                 }
                             });
-                            _context2.prev = 4;
-                            _context2.next = 7;
-                            return regeneratorRuntime.awrap((0, _request2.default)("read", props, requestData));
+                            _context2.prev = 5;
+                            _context2.next = 8;
+                            return regeneratorRuntime.awrap((0, _karlHttp.postWithJWT)(props.project, "/" + props.service + "/table/" + props.id + "/read", requestData));
 
-                        case 7:
+                        case 8:
                             message = _context2.sent;
 
                             data = message.data;
                             dispatch({ type: _action.END_LOADING });
-                            _context2.next = 17;
+                            _context2.next = 29;
                             break;
 
-                        case 12:
-                            _context2.prev = 12;
-                            _context2.t0 = _context2["catch"](4);
+                        case 13:
+                            _context2.prev = 13;
+                            _context2.t0 = _context2["catch"](5);
 
                             dispatch({ type: _action.END_LOADING });
-                            console.log(_context2.t0);
+
+                            if (!props.showTips) {
+                                _context2.next = 28;
+                                break;
+                            }
+
+                            text = void 0;
+                            _context2.t1 = _context2.t0.status;
+                            _context2.next = _context2.t1 === 400 ? 21 : _context2.t1 === 500 ? 23 : 25;
+                            break;
+
+                        case 21:
+                            text = "参数不正确";
+                            return _context2.abrupt("break", 27);
+
+                        case 23:
+                            text = "服务器内部错误";
+                            return _context2.abrupt("break", 27);
+
+                        case 25:
+                            text = _context2.t0.message;
+                            return _context2.abrupt("break", 27);
+
+                        case 27:
+                            props.showTips({
+                                level: "danger",
+                                title: "读取数据失败",
+                                text: text
+                            });
+
+                        case 28:
                             return _context2.abrupt("return");
 
-                        case 17:
+                        case 29:
+                            checkedArr = data.map(function (d) {
+                                return { id: d.id, checked: false };
+                            });
+
+                            dispatch({ type: "SET_CHECKED_ARR", data: checkedArr });
                             dispatch({ type: _action.SET_SOURCE_DATA, data: data });
 
                             componentFilterData = (0, _dataMap.mapSourceDataToComponentFilterData)(props, data);
@@ -270,33 +322,22 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 
                             dispatch({ type: _action.CHANGE_PAGE_INDEX, pageIndex: 1 });
 
-                        case 27:
+                            if (props.showTips) {
+                                props.showTips({
+                                    level: "info",
+                                    title: "读取数据成功",
+                                    text: props.name
+                                });
+                            }
+
+                        case 42:
                         case "end":
                             return _context2.stop();
                     }
                 }
-            }, null, undefined, [[4, 12]]);
-        },
-        serverFilterChangeCallback: function serverFilterChangeCallback(id, value) {
-            dispatch({ type: _action.CHANGE_SERVER_FILTER, id: id, value: value });
-        },
-        thClickCallback: function thClickCallback(id, props) {
-            var sortDesc = id === props.sortColumnId ? !props.sortDesc : true;
-            var sortedData = (0, _dataMap.mapInputFilterDataToSortedData)(props.inputFilterData, id, sortDesc);
-            dispatch({ type: _action.SET_SORTED_DATA, data: sortedData });
-
-            var displayData = (0, _dataMap.mapSortedDataToDisplayData)(sortedData, props.pageIndex, props.rowPerPage);
-            dispatch({ type: _action.SET_DISPLAY_DATA, data: displayData });
-
-            dispatch({ type: _action.CHANGE_SORT_DESC, sortDesc: sortDesc });
-            dispatch({ type: _action.CHANGE_SORT_COLUMN_ID, sortColumnId: id });
-        },
-        exportClickCallback: function exportClickCallback() {},
-        createClickCallback: function createClickCallback(props) {
-            if (props.hasOwnProperty("createUrl")) {
-                location.hash = props.createUrl;
-            }
+            }, null, undefined, [[5, 13]]);
         }
+
     };
 };
 

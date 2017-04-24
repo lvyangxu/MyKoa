@@ -10,7 +10,7 @@ export default class MyComponent extends Component {
 
     render() {
         if (this.props.data.length === 0) {
-            return ""
+            return <div></div>
         }
 
         let lastMessage = this.props.data[0]

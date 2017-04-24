@@ -6,7 +6,7 @@ $height: 32px;
     font-size: 12px;
     position: relative;
     .input {
-        width: $width;
+        min-width: $width;
         height: $height;
         line-height: 32px;
         padding-left: 8px;
@@ -16,7 +16,7 @@ $height: 32px;
         user-select: none;
         color: rgba(34, 34, 34, 1);
         font-size: 0;
-        font-family: Arial;
+        font-family: Arial, serif;
         border-radius: 3px;
         cursor: pointer;
         text-decoration: none;
@@ -26,7 +26,7 @@ $height: 32px;
 
         .value {
             font-size: 13px;
-            width: ($width)-20;
+            min-width: ($width)-20;
             display: inline-block;
             box-sizing: border-box;
             text-align: center;
@@ -42,7 +42,7 @@ $height: 32px;
                 height: $height;
                 line-height: $height;
                 input[type=number] {
-                    font-family: Arial;
+                    font-family: Arial, serif;
                     font-size: 13px;
                     font-weight: bold;
                     text-align: center;
@@ -69,7 +69,7 @@ $height: 32px;
 
     .input:hover {
         background: linear-gradient(to bottom, rgba(237, 237, 237, 1), rgba(219, 219, 219, 1));
-        box-shadow: inset 0px 0px 2px 2px rgba(200, 200, 200, 1);
+        box-shadow: inset 0 0 2px 2px rgba(200, 200, 200, 1);
         .value .right input[type=number] {
             background: linear-gradient(to bottom, rgba(237, 237, 237, 0.5), rgba(219, 219, 219, 0.5));
             border-bottom: 1px solid rgba(0, 0, 0, 0.8);

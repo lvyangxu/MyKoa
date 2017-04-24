@@ -3,14 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.RESET_TABLE = exports.SET_DISPLAY_DATA = exports.SET_SORTED_DATA = exports.SET_INPUT_FILTER_DATA = exports.SET_COMPONENT_FILTER_DATA = exports.SET_SOURCE_DATA = exports.CHANGE_ROW_PER_PAGE = exports.END_LOADING = exports.START_LOADING = exports.CHANGE_PAGE_INDEX = exports.CHANGE_SORT_COLUMN_ID = exports.CHANGE_SORT_DESC = exports.CHANGE_SERVER_FILTER = exports.CHANGE_COLUMN_FILTER = exports.CHANGE_ROW_FILTER = exports.INIT = undefined;
 
-var _request = require("../utils/request");
-
-var _request2 = _interopRequireDefault(_request);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+//初始化
 var INIT = exports.INIT = "INIT";
 
 //改变过滤器的值

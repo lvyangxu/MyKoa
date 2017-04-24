@@ -145,23 +145,30 @@ var getButtonValue = function getButtonValue(prefix, value, suffix) {
     return prefix + value + suffix;
 };
 
-var mapStateToProps = function mapStateToProps(state) {
-    var filterData = getFilterData(state.data, state.filterValue);
+var mapStateToProps = function mapStateToProps(state, ownProps) {
+    var _ownProps$data = ownProps.data,
+        data = _ownProps$data === undefined ? [] : _ownProps$data;
+
+    var initValue = state.initValue === undefined ? data.length === 0 ? "" : data[0] : state.initValue;
+    var _state$value = state.value,
+        value = _state$value === undefined ? initValue : _state$value;
+
+    var filterData = getFilterData(data, state.filterValue);
     var pageEndIndex = getPageEndIndex(filterData);
     var pageData = getPageData(filterData, state.pageIndex);
     pageData = pageData.map(function (d) {
         var html = getMarkedHtml(d, state.filterValue);
         return { value: d, html: html };
     });
-    var buttonValue = getButtonValue(state.prefix, state.value, state.suffix);
+    var buttonValue = getButtonValue(state.prefix, value, state.suffix);
     return {
         classNames: state.classNames,
         isPanelShow: state.isPanelShow,
-        value: state.value,
+        value: value,
         buttonValue: buttonValue,
         prefix: state.prefix,
         suffix: state.suffix,
-        data: state.data,
+        data: data,
         filterValue: state.filterValue,
         filterData: filterData,
         pageIndex: state.pageIndex,

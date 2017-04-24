@@ -36,8 +36,11 @@ var store = {};
 
 /**
  * react表格
+ * id：表格id
+ * project：使用jwt的工程名称
+ * service：url请求相关的后台服务名称
  * 示例：
- * <Table id="aa" project="vgas"/>
+ * <Table id="aa" project="vgas" service=""/>
  */
 
 var MyComponent = function (_Component) {
@@ -55,7 +58,7 @@ var MyComponent = function (_Component) {
             var _props = this.props,
                 id = _props.id,
                 project = _props.project,
-                serviceName = _props.serviceName,
+                service = _props.service,
                 _props$curd = _props.curd,
                 curd = _props$curd === undefined ? "r" : _props$curd,
                 _props$rowFilterValue = _props.rowFilterValue,
@@ -66,13 +69,14 @@ var MyComponent = function (_Component) {
                 createText = _props$createText === undefined ? "新增" : _props$createText,
                 createUrl = _props.createUrl,
                 _props$is100TableWidt = _props.is100TableWidth,
-                is100TableWidth = _props$is100TableWidt === undefined ? true : _props$is100TableWidt;
+                is100TableWidth = _props$is100TableWidt === undefined ? true : _props$is100TableWidt,
+                showTips = _props.showTips;
             //数据顺序为 sourceData > componentFilterData > inputFilterData > sortedData > displayData
 
             var preloadedState = {
                 id: id,
                 project: project,
-                serviceName: serviceName,
+                service: service,
                 curd: curd,
                 rowFilterValue: rowFilterValue,
                 isMinColumn: false,
@@ -83,7 +87,10 @@ var MyComponent = function (_Component) {
                 isLoading: false,
                 createText: createText,
                 createUrl: createUrl,
-                is100TableWidth: is100TableWidth
+                is100TableWidth: is100TableWidth,
+                showTips: showTips,
+                checkedArr: [],
+                isAllChecked: false
             };
             store = (0, _redux.createStore)(_reducer2.default, preloadedState, (0, _redux.applyMiddleware)(_reduxThunk2.default));
         }
@@ -93,7 +100,7 @@ var MyComponent = function (_Component) {
             return _react2.default.createElement(
                 _reactRedux.Provider,
                 { store: store },
-                _react2.default.createElement(_app2.default, null)
+                _react2.default.createElement(_app2.default, { requestParams: this.props.requestParams })
             );
         }
     }]);
@@ -104,7 +111,7 @@ var MyComponent = function (_Component) {
 MyComponent.propTypes = {
     id: _react.PropTypes.string.isRequired,
     project: _react.PropTypes.string.isRequired,
-    serviceName: _react.PropTypes.string.isRequired
+    service: _react.PropTypes.string.isRequired
 };
 
 

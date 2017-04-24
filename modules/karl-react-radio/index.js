@@ -58,52 +58,20 @@ var MyComponent = function (_React$Component) {
     _createClass(MyComponent, [{
         key: "componentWillMount",
         value: function componentWillMount() {
-            var data, value, preloadedState;
-            return regeneratorRuntime.async(function componentWillMount$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-                            data = [];
+            var initValue = this.props.initValue;
 
-                            if (!this.props.hasOwnProperty("url")) {
-                                _context.next = 7;
-                                break;
-                            }
-
-                            _context.next = 4;
-                            return regeneratorRuntime.awrap(_karlHttp2.default.post(this.props.url));
-
-                        case 4:
-                            data = _context.sent;
-                            _context.next = 8;
-                            break;
-
-                        case 7:
-                            data = this.props.data;
-
-                        case 8:
-                            value = this.props.hasOwnProperty("initValue") ? this.props.initValue : data[0];
-                            preloadedState = {
-                                classNames: this.props.classNames,
-                                data: data,
-                                value: value,
-                                prefix: this.props.prefix,
-                                suffix: this.props.suffix,
-                                isPanelShow: false,
-                                pageIndex: 0,
-                                filterValue: "",
-                                initCallback: this.props.initCallback,
-                                callback: this.props.callback
-                            };
-
-                            store = (0, _redux.createStore)(_reducer2.default, preloadedState);
-
-                        case 11:
-                        case "end":
-                            return _context.stop();
-                    }
-                }
-            }, null, this);
+            var preloadedState = {
+                classNames: this.props.classNames,
+                prefix: this.props.prefix,
+                suffix: this.props.suffix,
+                initValue: initValue,
+                isPanelShow: false,
+                pageIndex: 0,
+                filterValue: "",
+                initCallback: this.props.initCallback,
+                callback: this.props.callback
+            };
+            store = (0, _redux.createStore)(_reducer2.default, preloadedState);
         }
     }, {
         key: "render",
@@ -111,7 +79,7 @@ var MyComponent = function (_React$Component) {
             return _react2.default.createElement(
                 _reactRedux.Provider,
                 { store: store },
-                _react2.default.createElement(_app2.default, null)
+                _react2.default.createElement(_app2.default, { data: this.props.data })
             );
         }
     }]);

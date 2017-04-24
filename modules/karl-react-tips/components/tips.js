@@ -39,7 +39,7 @@ var MyComponent = function (_Component) {
         key: "render",
         value: function render() {
             if (this.props.data.length === 0) {
-                return "";
+                return _react2.default.createElement("div", null);
             }
 
             var lastMessage = this.props.data[0];

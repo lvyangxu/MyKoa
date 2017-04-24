@@ -1,21 +1,14 @@
 import React, {PropTypes, Component} from "react"
+import {connect} from "react-redux"
+
 import classnames from "classnames"
 import css from "../index.css"
 import Select from "karl-component-select"
 import Datepicker from "karl-component-datepicker"
 
-export default class MyComponent extends Component {
+class MyComponent extends Component {
 
-    static propTypes = {
-        curd: PropTypes.string.isRequired,
-        read: PropTypes.func.isRequired,
-        serverFilterChangeCallback: PropTypes.func.isRequired,
-        isLoading: PropTypes.bool.isRequired,
-        serverFilter: PropTypes.array.isRequired,
-        exportClickCallback: PropTypes.func.isRequired,
-        createClickCallback: PropTypes.func.isRequired,
-        createText: PropTypes.string.isRequired
-    }
+    static propTypes = {}
 
     condition(d, i) {
         let conditionDom
@@ -70,7 +63,8 @@ export default class MyComponent extends Component {
             case "month":
             case "second":
                 conditionDom = <div className={css.section} key={i}>
-                    <Datepicker type={d.type} add={add} initCallback={d1 => {
+                    {d.name + "："}
+                    <Datepicker prefix={d.name} type={d.type} add={add} initCallback={d1 => {
                         this.props.serverFilterChangeCallback(d.id + "Condition", d1);
                     }} callback={d1 => {
                         this.props.serverFilterChangeCallback(d.id + "Condition", d1);
@@ -94,6 +88,7 @@ export default class MyComponent extends Component {
                 }
                 conditionDom = <div style={{display: "inline-block"}} key={i}>
                     <div className={css.section}>
+                        {d.name + "开始："}
                         <Datepicker type={type} add={startAdd} initCallback={d1 => {
                             this.props.serverFilterChangeCallback(d.id + "ConditionStart", d1);
                         }} callback={d1 => {
@@ -101,6 +96,7 @@ export default class MyComponent extends Component {
                         }}/>
                     </div>
                     <div className={css.section}>
+                        {d.name + "结束："}
                         <Datepicker type={type} add={endAdd} initCallback={d1 => {
                             this.props.serverFilterChangeCallback(d.id + "ConditionEnd", d1);
                         }} callback={d1 => {
@@ -123,37 +119,30 @@ export default class MyComponent extends Component {
     }
 
     render() {
-        let loadingJson = {}
-        loadingJson[css.loading] = this.props.isLoading
-
         return (
-            <div className={css.serverFilter}>
+            <div className={css.serverFilter}
+                 style={this.props.serverFilter.length === 0 ? {} : {marginBottom: "20px"}}>
                 {
                     this.props.serverFilter.map((d, i) => {
                         return this.condition(d, i);
                     })
                 }
-                <div className={css.section}>
-                    <button className={classnames(css.filter, loadingJson) }
-                            onClick={this.props.read} disabled={this.props.isLoading}>
-                        <i className={classnames("fa fa-refresh", loadingJson)}></i>刷新
-                    </button>
-                </div>
-                <div className={css.section}>
-                    <button className={css.filter} onClick={this.props.exportClickCallback}>
-                        <i className="fa fa-download"></i>导出
-                    </button>
-                </div>
-                {
-                    this.props.curd.includes("c") ?
-                        <div className={css.section}>
-                            <button className={css.filter} onClick={this.props.createClickCallback}>
-                                <i className="fa fa-plus"></i>{this.props.createText}
-                            </button>
-                        </div>
-                        : ""
-                }
             </div>
         )
     }
 }
+
+let mapStateToProps = state => {
+    let props = Object.assign({}, state, {})
+    return props
+}
+
+let mapDispatchToProps = dispatch => ({
+    //监听服务器控件状态变化
+    serverFilterChangeCallback: (id, value) => {
+        dispatch({type: "CHANGE_SERVER_FILTER", id: id, value: value})
+    },
+
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyComponent)

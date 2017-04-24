@@ -95,23 +95,26 @@ let getButtonValue = (prefix, value, suffix) => {
     return prefix + value + suffix
 }
 
-let mapStateToProps = state => {
-    let filterData = getFilterData(state.data, state.filterValue)
+let mapStateToProps = (state, ownProps) => {
+    let {data = []} = ownProps
+    let initValue = state.initValue === undefined ? (data.length === 0 ? "" : data[0] ) : state.initValue
+    let {value = initValue} = state
+    let filterData = getFilterData(data, state.filterValue)
     let pageEndIndex = getPageEndIndex(filterData)
     let pageData = getPageData(filterData, state.pageIndex)
     pageData = pageData.map(d => {
         let html = getMarkedHtml(d, state.filterValue)
         return {value: d, html: html}
     })
-    let buttonValue = getButtonValue(state.prefix, state.value, state.suffix)
+    let buttonValue = getButtonValue(state.prefix, value, state.suffix)
     return {
         classNames: state.classNames,
         isPanelShow: state.isPanelShow,
-        value: state.value,
+        value: value,
         buttonValue: buttonValue,
         prefix: state.prefix,
         suffix: state.suffix,
-        data: state.data,
+        data: data,
         filterValue: state.filterValue,
         filterData: filterData,
         pageIndex: state.pageIndex,
@@ -122,7 +125,7 @@ let mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => ({
+let mapDispatchToProps = dispatch => ({
     togglePanel: () => {
         dispatch({type: TOGGLE_PANEL})
     },

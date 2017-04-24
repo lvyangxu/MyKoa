@@ -1,5 +1,5 @@
 import {
-    INIT,
+    INIT, SET_IS_INITIAL_FALSE,
     CHANGE_ROW_FILTER, CHANGE_COLUMN_FILTER, CHANGE_SERVER_FILTER, CHANGE_ROW_PER_PAGE,
     CHANGE_PAGE_INDEX,
     READ,
@@ -24,13 +24,14 @@ export default (state, action) => {
             delete initData.type
             newState = Object.assign({}, state, initData)
             break
+
         case CHANGE_ROW_FILTER:
             inputFilterData = mapComponentFilterDataToInputFilterData(state.componentFilterData, action.rowFilterValue)
             sortedData = mapInputFilterDataToSortedData(inputFilterData, state.sortColumnId, state.sortDesc)
-            displayData = mapSortedDataToDisplayData(sortedData, 0, state.rowPerPage)
+            displayData = mapSortedDataToDisplayData(sortedData, 1, state.rowPerPage)
             newState = Object.assign({}, state, {
                 rowFilterValue: action.rowFilterValue,
-                pageIndex: 0,
+                pageIndex: 1,
                 inputFilterData: inputFilterData,
                 sortedData: sortedData,
                 displayData: displayData
@@ -159,6 +160,24 @@ export default (state, action) => {
             break
         case CHANGE_SORT_COLUMN_ID:
             newState = Object.assign({}, state, {sortColumnId: action.sortColumnId})
+            break
+
+        //改变checkbox选中状态
+        case "SET_CHECKED_ARR":
+            newState = Object.assign({}, state, {checkedArr: action.data})
+            break
+        //清除所有checkbox的选中
+        case "CLEAR_CHECKED_ARR":
+            let checkedArr = state.checkedArr.concat()
+            checkedArr = checkedArr.map(d => {
+                d.checked = false
+                return d
+            })
+            newState = Object.assign({}, state, {checkedArr: checkedArr})
+            break
+        //改变全选状态
+        case "SET_ALL_CHECKED":
+            newState = Object.assign({}, state, {isAllChecked: action.isAllChecked})
             break
 
         default:

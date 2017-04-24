@@ -2,7 +2,7 @@ let xml = require("karl-xml");
 let fs = require("fs");
 let mysql = require("./mysql");
 
-let load = async()=> {
+let load = async () => {
     try {
         //如果不存在mysql.xml,则跳过mysql初始化
         let path = "./server/config/mysql.xml";
@@ -24,7 +24,7 @@ let load = async()=> {
             for (let i = 0; i < global.mysqlObject.length; i++) {
                 //get all table names
                 let {database, pool} = global.mysqlObject[i];
-                let showTables = await mysql.excuteQuery({
+                let {rows: showTables} = await mysql.excuteQuery({
                     pool: pool,
                     sqlCommand: "show tables"
                 });
@@ -40,7 +40,7 @@ let load = async()=> {
                 //set global table struct
                 for (let i = 0; i < tableNames.length; i++) {
                     let table = tableNames[i];
-                    let fields = await mysql.excuteQuery({
+                    let {rows: fields} = await mysql.excuteQuery({
                         pool: pool,
                         sqlCommand: "desc " + table
                     });

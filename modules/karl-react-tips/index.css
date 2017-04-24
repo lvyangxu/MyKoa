@@ -7,3 +7,11 @@
   min-height: 70px;
   background: linear-gradient(to bottom, #ededed, #dbdbdb);
   box-shadow: inset 0px 0px 2px 2px #c8c8c8; }
+  .base .info {
+    background-color: #d9edf7; }
+  .base .success {
+    background-color: #dff0d8; }
+  .base .warning {
+    background-color: #fcf8e3; }
+  .base .danger {
+    background-color: #f2dede; }

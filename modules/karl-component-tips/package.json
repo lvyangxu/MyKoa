@@ -1,0 +1,13 @@
+{
+  "name": "karl-component-tips",
+  "version": "0.1.0",
+  "description": "react component tips",
+  "main": "index.js",
+  "author": "lvyangxu",
+  "license": "ISC",
+  "devDependencies": {
+  },
+  "dependencies": {
+    "jquery": "latest"
+  }
+}
